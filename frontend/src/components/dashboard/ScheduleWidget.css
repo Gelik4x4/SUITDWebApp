@@ -1,0 +1,62 @@
+.schedule-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.schedule-item {
+  display: flex;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+
+.schedule-item__accent {
+  width: 4px;
+  flex-shrink: 0;
+  background: var(--accent);
+  border-radius: 2px 0 0 2px;
+}
+
+.schedule-item__body {
+  flex: 1;
+  padding: 10px 14px;
+}
+
+.schedule-item__row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.schedule-item__time {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 2px;
+}
+
+.schedule-item__subject {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.schedule-item__teacher {
+  font-size: 11px;
+  color: var(--text-link);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.schedule-item__right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+}
+
+.schedule-item__room {
+  font-size: 12px;
+  color: var(--text-secondary);
+}
