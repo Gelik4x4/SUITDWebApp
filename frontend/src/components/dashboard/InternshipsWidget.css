@@ -1,0 +1,26 @@
+.intern-card {
+  border-radius: var(--radius-sm);
+  padding: 12px;
+  position: relative;
+  overflow: hidden;
+  min-height: 120px;
+}
+
+.intern-card--pink   { background: #fff0f0; }
+.intern-card--yellow { background: #fffbe6; }
+
+.intern-card__top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  position: relative;
+  z-index: 1;
+}
+
+.intern-card__title   { font-size: 12px; font-weight: 700; color: var(--text-primary); }
+.intern-card__company { font-size: 11px; color: var(--text-secondary); margin-top: 2px; }
+
+.intern-card__art {
+  position: absolute;
+  bottom: 0; left: 0; right: 0; top: 0;
+}
