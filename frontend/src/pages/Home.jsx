@@ -1,14 +1,17 @@
-import React from 'react';
-import Sidebar from './Sidebar';
-import Header from './Header';
-import ScheduleWidget    from '../widgets/ScheduleWidget';
-import InternshipsWidget from '../widgets/InternshipsWidget';
-import VacanciesWidget   from '../widgets/VacanciesWidget';
-import OffersWidget      from '../widgets/OffersWidget';
-import NewsWidget        from '../widgets/NewsWidget';
-import EventsWidget      from '../widgets/EventsWidget';
+import Sidebar from "../components/layout/Sidebar"
+import Header from "../components/layout/Header"
 
-export default function Home() {
+import ScheduleWidget from "../components/dashboard/ScheduleWidget"
+import InternshipsWidget from "../components/dashboard/InternshipsWidget"
+import OffersWidget from "../components/dashboard/OffersWidget"
+import NewsWidget from "../components/dashboard/NewsWidget"
+import VacanciesWidget from "../components/dashboard/VacanciesWidget"
+import EventsWidget from "../components/dashboard/EventsWidget"
+
+// import "../styles/dashboard.css"
+import "../styles/main.css"
+
+ function Home() {
   return (
     <div className="layout">
       <Sidebar />
@@ -54,3 +57,5 @@ export default function Home() {
     </div>
   );
 }
+
+export default Home
