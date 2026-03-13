@@ -1,26 +1,25 @@
 /* ─── Google Font ────────────────────────────────────────────────────────────── */
-@import url('https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap');
 
-/* ─── Reset & Base ─────────────────────────────────────────────────────────── */
+/* ─── Reset & Base ──────────────────────────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
   --gap: 24px;
 
-  --bg:           #f5f5f7;
-  --sidebar-bg:   #ffffff;
-  --card-bg:      #ffffff;
-  --accent:       #5b6ef5;
-  --accent-light: #eef0ff;
+  --bg:             #f5f5f7;
+  --sidebar-bg:     #ffffff;
+  --card-bg:        #ffffff;
+  --accent:         #5b6ef5;
+  --accent-light:   #eef0ff;
   --text-primary:   #1a1a2e;
   --text-secondary: #6b7280;
   --text-link:      #5b6ef5;
-  --badge-bg:   #5b6ef5;
-  --badge-text: #ffffff;
-  --border:  #e5e7eb;
-  --radius:    16px;
-  --radius-sm: 10px;
-  --sidebar-width: 160px;
+  --badge-bg:       #5b6ef5;
+  --badge-text:     #ffffff;
+  --border:         #e5e7eb;
+  --radius:         16px;
+  --radius-sm:      10px;
 
   /* blob palette */
   --blob-purple:     #a89bff;
@@ -29,6 +28,10 @@
   --blob-yellow:     #ffe066;
   --blob-orange:     #ffb47b;
   --blob-blue-light: #aac4f7;
+}
+
+html, body {
+  height: 100%;
 }
 
 body {
@@ -40,33 +43,89 @@ body {
 /* ─── Layout ─────────────────────────────────────────────────────────────────── */
 .layout {
   display: flex;
-  min-height: 100vh;
+  height: 100vh;
+  overflow: hidden;
 }
 
+/* ─── Main ────────────────────────────────────────────────────────────────────── */
 .main {
   flex: 1;
   min-width: 0;
-  padding: 24px var(--gap);
+  height: 100vh;
+  overflow: hidden;
+  padding: 24px var(--gap) 44px;
   display: flex;
   flex-direction: column;
   gap: var(--gap);
 }
 
-/* ─── 24-column grid ─────────────────────────────────────────────────────────── */
+/* ─── Grid ────────────────────────────────────────────────────────────────────────
+  Экран (24 колонки):
+   [Sidebar 3 кол] [  .grid — 21 колонка  ]
+
+  Внутри .grid — 4 строки:
+
+  Строка 1 (3fr): Расписание  1–9  | Стажировки   10–18 | Новости  19–21 ↓
+  Строка 2 (2fr): Расписание  ↓    | Спецпредлож. 10–18 | Новости  ↓
+  Строка 3 (1fr): Расписание  ↓    | (пусто)            | Новости  ↓
+  ──────────────────────────────────────────────────────────────────────
+  Вакансии и Мероприятия — отдельный ряд ниже:
+  Строка 4 (2fr): Вакансии    1–9  | Мероприятия  10–18 |
+
+  Расписание: строки 1–3  → визуально = Стажировки(1) + Спецпредл.(2) + зазор(3)
+  Новости:    строки 1–3  → совпадает по высоте с левой колонкой
+
+  На практике проще и точнее: используем subgrid-подход через явные пропорции строк.
+──────────────────────────────────────────────────────────────────────────────────── */
 .grid {
   display: grid;
-  grid-template-columns: repeat(24, 1fr);
-  grid-auto-rows: auto;
+  grid-template-columns: repeat(21, 1fr);
+  /*
+    Строка A: Расписание левая часть / Стажировки / Новости верх  — 3fr
+    Строка B: продолжение Расписания / Спецпредложения / Новости  — 2fr
+    Строка C: Вакансии / Мероприятия                              — 2fr
+  */
+  grid-template-rows: 3fr 2fr 2fr;
   gap: var(--gap);
+  flex: 1;
+  min-height: 0;
 }
 
-.col-3  { grid-column: span 3; }
-.col-9  { grid-column: span 9; }
-.col-18 { grid-column: span 18; }
+/* Расписание: строки A–B, кол 1–9 */
+.grid-schedule {
+  grid-column: 1 / 10;
+  grid-row: 1 / 3;
+}
 
-/* News column spans 2 rows */
-.col-3 { grid-row: span 2; }
-.col-18 { grid-row: span 1; }
+/* Стажировки: строка A, кол 10–18 */
+.grid-internships {
+  grid-column: 10 / 19;
+  grid-row: 1;
+}
+
+/* Новости: строки A–B, правая колонка 19–21 */
+.grid-news {
+  grid-column: 19 / 22;
+  grid-row: 1 / 3;
+}
+
+/* Спецпредложения: строка B, кол 10–18 */
+.grid-offers {
+  grid-column: 10 / 19;
+  grid-row: 2;
+}
+
+/* Вакансии: строка C, кол 1–9 */
+.grid-vacancies {
+  grid-column: 1 / 10;
+  grid-row: 3;
+}
+
+/* Мероприятия: строка C, кол 10–21 (включая колонку новостей снизу) */
+.grid-events {
+  grid-column: 10 / 22;
+  grid-row: 3;
+}
 
 /* ─── Card base ──────────────────────────────────────────────────────────────── */
 .card {
@@ -77,12 +136,15 @@ body {
   flex-direction: column;
   gap: 16px;
   height: 100%;
+  min-height: 0;
+  overflow: hidden;
 }
 
 .card__header {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  flex-shrink: 0;
 }
 
 .card__title {
@@ -141,17 +203,11 @@ body {
 .blob--md { width: 38px;  height: 38px; }
 .blob--sm { width: 28px;  height: 28px; }
 
-/* ─── Shared two-column grid (Internships, Events) ──────────────────────────── */
+/* ─── Shared two-column grid ─────────────────────────────────────────────────── */
 .two-col-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 12px;
   flex: 1;
-}
-
-/* ─── Responsive fallback ────────────────────────────────────────────────────── */
-@media (max-width: 1100px) {
-  .col-9  { grid-column: span 12; }
-  .col-18 { grid-column: span 24; }
-  .col-3  { grid-column: span 24; grid-row: span 1; }
+  min-height: 0;
 }

@@ -1,25 +1,26 @@
 import { IconHeart, IconPin } from '../icons/Icons';
 
 
-function EventCard() {
+function EventCard({ img, date, location, title }) {
   return (
     <div className="event-card">
-      <button className="icon-btn icon-btn--sm event-card__fav">
-        <IconHeart />
-      </button>
-      <div className="event-card__art">
-        <div className="blob blob--blue-light blob--xl" style={{ top: -10, left: -10 }} />
+      {/* Фото — верхние 60% */}
+      <div className="event-card__img-wrap">
+        <img src={img} alt={title} className="event-card__photo" />
+        <button className="event-card__fav">
+          <IconHeart />
+        </button>
       </div>
+
+      {/* Текст — нижние 40% */}
       <div className="event-card__footer">
         <div className="event-card__meta">
-          <span>Чт, 6 июня 20:00</span>
+          <span>{date}</span>
           <span className="event-card__location">
-            <IconPin /> Точка Кипения
+            <IconPin /> {location}
           </span>
         </div>
-        <div className="event-card__title">
-          Молодежный экономический форум «День будущего»
-        </div>
+        <div className="event-card__title">{title}</div>
       </div>
     </div>
   );

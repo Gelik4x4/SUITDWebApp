@@ -2,6 +2,10 @@
   display: flex;
   flex-direction: column;
   gap: 12px;
+  flex: 1;
+  min-height: 0;
+  /* пункты расписания равномерно распределяются по доступной высоте */
+  justify-content: space-between;
 }
 
 .schedule-item {
@@ -9,24 +13,29 @@
   border-radius: var(--radius-sm);
   overflow: hidden;
   border: 1px solid var(--border);
+  /* каждый пункт тянется поровну */
+  flex: 1;
+  min-height: 0;
 }
 
 .schedule-item__accent {
   width: 4px;
   flex-shrink: 0;
   background: var(--accent);
-  border-radius: 2px 0 0 2px;
 }
 
 .schedule-item__body {
   flex: 1;
   padding: 10px 14px;
+  display: flex;
+  align-items: center;
 }
 
 .schedule-item__row {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
+  width: 100%;
 }
 
 .schedule-item__time {

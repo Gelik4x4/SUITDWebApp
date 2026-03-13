@@ -11,7 +11,7 @@ import EventsWidget from "../components/dashboard/EventsWidget"
 // import "../styles/dashboard.css"
 import "../styles/main.css"
 
- function Home() {
+function Home() {
   return (
     <div className="layout">
       <Sidebar />
@@ -19,36 +19,29 @@ import "../styles/main.css"
       <main className="main">
         <Header />
 
-        {/* 24-column grid */}
         <div className="grid">
 
-          {/* Row 1 col 1–9: Расписание */}
-          <div className="col-9">
+          <div className="grid-schedule">
             <ScheduleWidget />
           </div>
 
-          {/* Row 1 col 10–18: Стажировки */}
-          <div className="col-9">
+          <div className="grid-internships">
             <InternshipsWidget />
           </div>
 
-          {/* Col 19–21: Новости — spans rows 1 & 2 */}
-          <div className="col-3">
+          <div className="grid-news">
             <NewsWidget />
           </div>
 
-          {/* Row 2 col 1–9: Популярные вакансии */}
-          <div className="col-9">
+          <div className="grid-vacancies">
             <VacanciesWidget />
           </div>
 
-          {/* Row 2 col 10–18: Спецпредложения */}
-          <div className="col-9">
+          <div className="grid-offers">
             <OffersWidget />
           </div>
 
-          {/* Row 3 col 1–18: Мероприятия для вас */}
-          <div className="col-18">
+          <div className="grid-events">
             <EventsWidget />
           </div>
 
@@ -57,5 +50,6 @@ import "../styles/main.css"
     </div>
   );
 }
+
 
 export default Home

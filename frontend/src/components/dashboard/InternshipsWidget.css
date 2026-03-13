@@ -3,11 +3,16 @@
   padding: 12px;
   position: relative;
   overflow: hidden;
-  min-height: 120px;
+  height: 100%;
+  min-height: 0;
 }
 
 .intern-card--pink   { background: #fff0f0; }
 .intern-card--yellow { background: #fffbe6; }
+
+.grid-internships .two-col-grid {
+  height: 100%;
+}
 
 .intern-card__top {
   display: flex;
