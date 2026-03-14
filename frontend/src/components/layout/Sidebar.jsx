@@ -5,8 +5,8 @@ import { IconHome, IconSchedule, IconServices, IconProfile, IconLogout } from '.
 
 
 export default function Sidebar() {
-  const location = useLocation();
-  const activePage = location.pathname
+  const { pathname } = useLocation();
+  const activePage = '/' + pathname.split('/')[1];
   const pages = {
     '/home':     { label: 'главная',    Icon: IconHome },
     '/schedule': { label: 'расписание', Icon: IconSchedule },
