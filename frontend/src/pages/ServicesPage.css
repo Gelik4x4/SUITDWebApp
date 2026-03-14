@@ -1,0 +1,14 @@
+.services-page {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  padding-right: 4px;
+  max-width: calc((21 / 21) * 100%);
+}
+
+.services-page::-webkit-scrollbar { width: 4px; }
+.services-page::-webkit-scrollbar-track { background: transparent; }
+.services-page::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }

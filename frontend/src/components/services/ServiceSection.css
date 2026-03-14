@@ -1,0 +1,51 @@
+.srv-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-height: 0;
+}
+
+.srv-section--university   { flex: 2; }
+.srv-section--opportunities { flex: 1; }
+.srv-section--development  { flex: 1; }
+
+.srv-section__title {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-primary);
+  flex-shrink: 0;
+}
+
+
+.srv-section__grid {
+  display: grid;
+  gap: 24px;
+  flex: 1;
+  min-height: 0;
+}
+
+/*  Университет */
+.srv-section__grid--university {
+  grid-template-columns: repeat(12, 1fr);
+  grid-template-rows: 1fr 1fr;
+}
+/* Строка 1 */
+.srv-section__grid--university .srv-card:nth-child(1) { grid-column: 1 / 5;   grid-row: 1; }
+.srv-section__grid--university .srv-card:nth-child(2) { grid-column: 5 / 10;  grid-row: 1; }
+.srv-section__grid--university .srv-card:nth-child(3) { grid-column: 10 / 13; grid-row: 1; }
+/* Строка 2 */
+.srv-section__grid--university .srv-card:nth-child(4) { grid-column: 1 / 6;   grid-row: 2; }
+.srv-section__grid--university .srv-card:nth-child(5) { grid-column: 6 / 10;  grid-row: 2; }
+.srv-section__grid--university .srv-card:nth-child(6) { grid-column: 10 / 13; grid-row: 2; }
+
+/*  Возможности */
+.srv-section__grid--opportunities {
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: 1fr;
+}
+
+/*  Развитие */
+.srv-section__grid--development {
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr;
+}
