@@ -21,8 +21,8 @@ const PAGE_TITLES = {
 };
 
 export default function Header() {
-  const location = useLocation();
-  const activePage = location.pathname  
+  const { pathname } = useLocation();
+  const activePage = pathname;
   return (
     <header className="topbar">
       <h1 className="topbar__greeting">{PAGE_TITLES[activePage] ?? 'SUITD'}</h1>
