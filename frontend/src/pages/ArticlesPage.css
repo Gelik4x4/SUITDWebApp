@@ -1,0 +1,58 @@
+.art-page {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: 14fr 7fr;
+  gap: var(--gap);
+  overflow: hidden;
+}
+
+/* Detail страница  */
+.art-page--detail {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/*  Левая колонка  */
+.art-page__left {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.art-list {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding-right: 4px;
+}
+.art-list::-webkit-scrollbar { width: 4px; }
+.art-list::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+.art-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 120px;
+  color: var(--text-secondary);
+  font-size: 14px;
+  background: var(--card-bg);
+  border-radius: var(--radius);
+}
+
+/*  Правая колонка (фильтры)  */
+.art-page__right {
+  background: var(--card-bg);
+  border-radius: var(--radius);
+  padding: 20px;
+  overflow-y: auto;
+  min-height: 0;
+}
+.art-page__right::-webkit-scrollbar { width: 4px; }
+.art-page__right::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
