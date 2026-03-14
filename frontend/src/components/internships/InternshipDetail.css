@@ -1,0 +1,127 @@
+.intd {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding-right: 4px;
+}
+.intd::-webkit-scrollbar { width: 4px; }
+.intd::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+/* Title row */
+.intd__titlerow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+.intd__back { color: var(--text-primary); flex-shrink: 0; }
+.intd__title {
+  flex: 1;
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1.3;
+}
+.intd__actions { display: flex; gap: 4px; flex-shrink: 0; }
+
+/* Top block */
+.intd__top {
+  display: flex;
+  gap: 24px;
+  align-items: flex-start;
+}
+.intd__top-left {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.intd__lead {
+  font-size: 13px;
+  line-height: 1.7;
+  color: var(--text-primary);
+}
+.intd__salary-row {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+.intd__salary {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+.intd__join {
+  font-size: 13px;
+  padding: 10px 24px;
+}
+
+/* Photo */
+.intd__photo-wrap {
+  flex-shrink: 0;
+  width: 220px;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+}
+.intd__photo {
+  width: 100%;
+  display: block;
+  object-fit: cover;
+}
+
+/* Body sections */
+.intd__body {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.intd-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.intd-section__title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+.intd-list {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.intd-list li {
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--text-primary);
+  padding-left: 16px;
+  position: relative;
+}
+.intd-list li::before {
+  content: '•';
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: 700;
+}
+
+/* shared btn */
+.btn {
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 10px 22px;
+  border-radius: 10px;
+  cursor: pointer;
+  border: none;
+  outline: none;
+  transition: opacity 0.15s;
+}
+.btn:hover { opacity: 0.88; }
+.btn--primary { background: var(--accent); color: #fff; }
