@@ -1,0 +1,30 @@
+.profile-tabs {
+  display: flex;
+  gap: 6px;
+  background: var(--bg);
+  padding: 4px;
+  border-radius: 12px;
+  width: fit-content;
+}
+
+.profile-tabs__btn {
+  border: none;
+  outline: none;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 8px 18px;
+  border-radius: 9px;
+  background: transparent;
+  color: var(--text-secondary);
+  transition: background 0.15s, color 0.15s;
+}
+.profile-tabs__btn:hover {
+  color: var(--text-primary);
+  background: var(--border);
+}
+.profile-tabs__btn--active {
+  background: var(--accent);
+  color: #ffffff;
+}
