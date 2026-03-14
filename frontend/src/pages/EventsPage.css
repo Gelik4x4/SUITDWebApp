@@ -1,0 +1,54 @@
+.evp-page {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: 14fr 7fr;
+  gap: var(--gap);
+  overflow: hidden;
+}
+
+.evp-page__left {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.evp-grid-wrap {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+.evp-grid-wrap::-webkit-scrollbar { width: 4px; }
+.evp-grid-wrap::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+/* 3-column card grid */
+.evp-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  align-content: start;
+}
+
+.evp-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 120px;
+  color: var(--text-secondary);
+  font-size: 14px;
+  background: var(--card-bg);
+  border-radius: var(--radius);
+}
+
+.evp-page__right {
+  background: var(--card-bg);
+  border-radius: var(--radius);
+  padding: 20px;
+  overflow-y: auto;
+  min-height: 0;
+}
+.evp-page__right::-webkit-scrollbar { width: 4px; }
+.evp-page__right::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
