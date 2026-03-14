@@ -1,0 +1,98 @@
+.vac-filters {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Избранные */
+.vac-filters__favorites {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  background: var(--card-bg);
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  padding: 10px 16px;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s;
+}
+.vac-filters__favorites:hover { border-color: var(--accent); color: var(--accent); }
+
+/* Filter group */
+.vac-filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.vac-filter-group__title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+.vac-filter-group__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px 12px;
+}
+
+/* Checkbox */
+.vac-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+.vac-checkbox__input {
+  display: none;
+}
+.vac-checkbox__box {
+  width: 16px;
+  height: 16px;
+  border-radius: 4px;
+  border: 1.5px solid var(--border);
+  background: var(--card-bg);
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s, border-color 0.15s;
+}
+.vac-checkbox__input:checked + .vac-checkbox__box {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+.vac-checkbox__input:checked + .vac-checkbox__box::after {
+  content: '';
+  width: 8px;
+  height: 5px;
+  border-left: 2px solid #fff;
+  border-bottom: 2px solid #fff;
+  transform: rotate(-45deg) translateY(-1px);
+  display: block;
+}
+.vac-checkbox__label {
+  font-size: 12px;
+  color: var(--text-primary);
+  line-height: 1;
+}
+
+/* Clear */
+.vac-filters__clear {
+  background: none;
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  padding: 10px;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s;
+}
+.vac-filters__clear:hover { border-color: #ef4444; color: #ef4444; }
