@@ -1,0 +1,95 @@
+.lesson {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/*  time row  */
+.lesson__timerow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.lesson__num {
+  width: 26px;
+  height: 26px;
+  border-radius: 8px;
+  background: var(--accent);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.lesson__time {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+/*  card  */
+.lesson__card {
+  background: var(--card-bg);
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: stretch;
+  overflow: hidden;
+  padding: 16px 20px 16px 0;
+  gap: 16px;
+}
+
+
+.lesson__card {
+  position: relative;
+  padding: 16px 20px 16px 20px;
+}
+
+.lesson__card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 4px;
+  background: var(--accent);
+}
+/* полоска на всю высоту карточки */
+.lesson__accent {
+  width: 4px;
+  flex-shrink: 0;
+  background: var(--accent);
+}
+
+.lesson__body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.lesson__subject {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.lesson__teacher,
+.lesson__room {
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+.lesson__tag {
+  align-self: flex-start;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 7px;
+  letter-spacing: 0.2px;
+  white-space: nowrap;
+  margin-top: 2px;
+}

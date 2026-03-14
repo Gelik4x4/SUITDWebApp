@@ -1,0 +1,59 @@
+.sched-page {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  max-width: calc((18 / 21) * 100%);
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+/* ── Controls row ── */
+.sched-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+.sched-controls__right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* ── Shared small icon button (used by DayStrip, CalendarModal, SchedulePage) ── */
+.sched-icon-btn {
+  border: none;
+  background: none;
+  cursor: pointer;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  padding: 6px;
+  border-radius: 8px;
+  transition: background 0.15s, color 0.15s;
+}
+.sched-icon-btn:hover {
+  background: var(--border);
+  color: var(--text-primary);
+}
+
+/* ── Schedule list ── */
+.sched-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* ── Empty day ── */
+.sched-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 160px;
+  color: var(--text-secondary);
+  font-size: 15px;
+  background: var(--card-bg);
+  border-radius: var(--radius);
+}

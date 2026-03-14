@@ -1,0 +1,22 @@
+.break-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 6px 0;
+  background: #ffffff;
+  border-radius: 10px;
+}
+
+.break-row__accent {
+  width: 4px;
+  height: 32px;
+  border-radius: 2px;
+  background: #f5a623;
+  flex-shrink: 0;
+}
+
+.break-row__label {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-secondary);
+}
