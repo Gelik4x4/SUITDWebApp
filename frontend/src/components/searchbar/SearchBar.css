@@ -1,0 +1,50 @@
+.searchbar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+/* back button */
+.searchbar__back {
+  color: var(--text-primary);
+  padding: 6px 4px;
+  flex-shrink: 0;
+}
+.searchbar__back:hover { color: var(--accent); background: var(--bg); }
+
+/* input wrapper */
+.searchbar__field {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--card-bg);
+  border: 1.5px solid var(--border);
+  border-radius: 12px;
+  padding: 11px 16px;
+  color: var(--text-secondary);
+  transition: border-color 0.15s;
+  min-width: 0;
+}
+.searchbar__field:focus-within { border-color: var(--accent); }
+
+.searchbar__input {
+  flex: 1;
+  border: none;
+  outline: none;
+  background: none;
+  font-family: inherit;
+  font-size: 14px;
+  color: var(--text-primary);
+  min-width: 0;
+}
+.searchbar__input::placeholder { color: #c0c4cc; }
+
+/* favorites button */
+.searchbar__fav {
+  color: var(--text-secondary);
+  padding: 8px;
+  flex-shrink: 0;
+}
+.searchbar__fav:hover { color: var(--accent); background: var(--bg); }
