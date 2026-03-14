@@ -1,8 +1,11 @@
+import { useLocation } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import './Sidebar.css';
 import { IconHome, IconSchedule, IconServices, IconProfile, IconLogout } from '../icons/Icons';
 
 
-export default function Sidebar({ activePage, onNavigate }) {
+export default function Sidebar() {
+  const location = useLocation();
   const links = [
     { id: 'home',     label: 'главная',    Icon: IconHome },
     { id: 'schedule', label: 'расписание', Icon: IconSchedule },
@@ -29,13 +32,14 @@ export default function Sidebar({ activePage, onNavigate }) {
 
       <nav className="sidebar__nav">
         {links.map(({ id, label, Icon }) => (
-          <button
+          <NavLink 
             key={id}
-            className={`sidebar__link${activePage === id ? ' sidebar__link--active' : ''}`}
-            onClick={() => onNavigate(id)}
+            className={`sidebar__link${"home" === id ? ' sidebar__link--active' : ''}`}
+            // ({ isActive }) => (isActive ? 'nav-link active' : 'nav-link')
+            to={`/${id}`}
           >
             <Icon /> {label}
-          </button>
+          </NavLink>
         ))}
       </nav>
 

@@ -1,3 +1,4 @@
+import { BrowserRouter, Routes, Route } from "react-router-dom"
 import { useState } from 'react';
 import Home from "./pages/Home"
 import Sidebar from './components/layout/Sidebar';
@@ -18,30 +19,33 @@ import AskQuestionPage     from './pages/AskQuestionPage';
 import PodcastsPage        from './pages/PodcastsPage';
 
 export default function App() {
-  const [page, setPage] = useState('home');
-  const goBack = () => setPage('services');
-
   return (
-    <div className="layout">
-      <Sidebar activePage={page} onNavigate={setPage} />
-      <main className="main">
-        <Header activePage={page} />
-        {page === 'home'          && <Home />}
-        {page === 'schedule'      && <SchedulePage />}
-        {page === 'services'      && <ServicesPage onNavigate={setPage} />}
-        {page === 'profile'       && <ProfilePage />}
-        {page === 'vacancies'     && <VacanciesPage     onBack={goBack} />}
-        {page === 'contests'      && <ContestsPage      onBack={goBack} />}
-        {page === 'news'          && <NewsPage           onBack={goBack} />}
-        {page === 'internships'   && <InternshipsPage    onBack={goBack} />}
-        {page === 'specialoffers' && <SpecialOffersPage  onBack={goBack} />}
-        {page === 'articles'      && <ArticlesPage       onBack={goBack} />}
-        {page === 'events'        && <EventsPage         onBack={goBack} />}
-        {page === 'teachers'      && <TeachersPage       onBack={goBack} />}
-        {page === 'studentcard'   && <StudentCardPage    onBack={goBack} />}
-        {page === 'askquestion'   && <AskQuestionPage    onBack={goBack} />}
-        {page === 'podcasts'      && <PodcastsPage       onBack={goBack} />}
-      </main>
-    </div>
+    <BrowserRouter>
+      <div className="layout">
+        <Sidebar />
+        <main className="main">
+          
+          <Header />
+          <Routes>
+          <Route path="/"              element={<Home />} />
+          <Route path="/home"          element={<Home />} />
+          <Route path="/schedule"      element={<SchedulePage />} />
+          <Route path="/services"      element={<ServicesPage />} />
+          <Route path="/profile"       element={<ProfilePage />} />
+          {/* //<Route path={"/vacancies"}   element={<VacanciesPage     onBack={goBack} />} /> */} 
+          {/* // {page === 'contests'      && <ContestsPage      onBack={goBack} />} 
+          // {page === 'news'          && <NewsPage           onBack={goBack} />}
+          // {page === 'internships'   && <InternshipsPage    onBack={goBack} />}
+          // {page === 'specialoffers' && <SpecialOffersPage  onBack={goBack} />}
+          // {page === 'articles'      && <ArticlesPage       onBack={goBack} />}
+          // {page === 'events'        && <EventsPage         onBack={goBack} />}
+          // {page === 'teachers'      && <TeachersPage       onBack={goBack} />}
+          // {page === 'studentcard'   && <StudentCardPage    onBack={goBack} />}
+          // {page === 'askquestion'   && <AskQuestionPage    onBack={goBack} />}
+          // {page === 'podcasts'      && <PodcastsPage       onBack={goBack} />} */}
+          </Routes>
+        </main>
+      </div>
+    </BrowserRouter>
   );
 }
