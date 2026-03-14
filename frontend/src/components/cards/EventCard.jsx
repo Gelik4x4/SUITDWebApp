@@ -4,7 +4,7 @@ import { IconHeart, IconPin } from '../icons/Icons';
 function EventCard({ img, date, location, title }) {
   return (
     <div className="event-card">
-      {/* Фото — верхние 60% */}
+      {/* Photo */}
       <div className="event-card__img-wrap">
         <img src={img} alt={title} className="event-card__photo" />
         <button className="event-card__fav">
@@ -12,7 +12,7 @@ function EventCard({ img, date, location, title }) {
         </button>
       </div>
 
-      {/* Текст — нижние 40% */}
+      {/* Text */}
       <div className="event-card__footer">
         <div className="event-card__meta">
           <span>{date}</span>

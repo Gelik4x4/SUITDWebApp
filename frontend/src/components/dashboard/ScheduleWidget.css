@@ -4,7 +4,6 @@
   gap: 12px;
   flex: 1;
   min-height: 0;
-  /* пункты расписания равномерно распределяются по доступной высоте */
   justify-content: space-between;
 }
 
@@ -13,7 +12,6 @@
   border-radius: var(--radius-sm);
   overflow: hidden;
   border: 1px solid var(--border);
-  /* каждый пункт тянется поровну */
   flex: 1;
   min-height: 0;
 }

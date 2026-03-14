@@ -1,4 +1,4 @@
-/* Карточка мероприятия: flex-колонка, фото сверху ~60%, текст снизу */
+/* event card*/
 .event-card {
   border-radius: var(--radius-sm);
   overflow: hidden;
@@ -9,7 +9,7 @@
   background: #dce8ff;
 }
 
-/* Зона фото — занимает 60% высоты карточки */
+/* photo */
 .event-card__img-wrap {
   position: relative;
   flex: 0 0 60%;
@@ -23,7 +23,7 @@
   display: block;
 }
 
-/* Кнопка избранного поверх фото */
+/* favourites */
 .event-card__fav {
   position: absolute;
   top: 10px;
@@ -44,7 +44,7 @@
 }
 .event-card__fav:hover { background: rgba(255,255,255,0.95); }
 
-/* Текстовая зона — оставшиеся 40% */
+/* text */
 .event-card__footer {
   flex: 1;
   padding: 10px 14px 12px;
