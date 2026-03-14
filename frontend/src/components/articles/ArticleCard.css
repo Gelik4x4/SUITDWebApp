@@ -5,6 +5,7 @@
   cursor: pointer;
   transition: box-shadow 0.15s, transform 0.15s;
 }
+
 .art-card:hover {
   box-shadow: 0 6px 24px rgba(0,0,0,0.09);
   transform: translateY(-2px);
@@ -42,7 +43,6 @@
   line-height: 1.65;
   color: var(--text-secondary);
   display: -webkit-box;
-  -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
