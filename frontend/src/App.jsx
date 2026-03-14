@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom"
-import { useState } from 'react';
+import { Navigate } from 'react-router-dom';
+
 import Home from "./pages/Home"
 import Sidebar from './components/layout/Sidebar';
 import Header from './components/layout/Header';
@@ -24,25 +25,29 @@ export default function App() {
       <div className="layout">
         <Sidebar />
         <main className="main">
-          
           <Header />
           <Routes>
-          <Route path="/"              element={<Home />} />
-          <Route path="/home"          element={<Home />} />
-          <Route path="/schedule"      element={<SchedulePage />} />
-          <Route path="/services"      element={<ServicesPage />} />
-          <Route path="/profile"       element={<ProfilePage />} />
-          {/* //<Route path={"/vacancies"}   element={<VacanciesPage     onBack={goBack} />} /> */} 
-          {/* // {page === 'contests'      && <ContestsPage      onBack={goBack} />} 
-          // {page === 'news'          && <NewsPage           onBack={goBack} />}
-          // {page === 'internships'   && <InternshipsPage    onBack={goBack} />}
-          // {page === 'specialoffers' && <SpecialOffersPage  onBack={goBack} />}
-          // {page === 'articles'      && <ArticlesPage       onBack={goBack} />}
-          // {page === 'events'        && <EventsPage         onBack={goBack} />}
-          // {page === 'teachers'      && <TeachersPage       onBack={goBack} />}
-          // {page === 'studentcard'   && <StudentCardPage    onBack={goBack} />}
-          // {page === 'askquestion'   && <AskQuestionPage    onBack={goBack} />}
-          // {page === 'podcasts'      && <PodcastsPage       onBack={goBack} />} */}
+            <Route path="/"              element={<Navigate to="/home" replace />} />
+            <Route path="/home"          element={<Home />} />
+            <Route path="/schedule"      element={<SchedulePage />} />
+            <Route path="/services"      element={<ServicesPage />} />
+            <Route path="/profile"       element={<ProfilePage />} />
+            
+            <Route path="/services/studentcard"    element={<StudentCardPage />} />
+            <Route path="/services/news"           element={<NewsPage />} />
+            <Route path="/services/teachers"       element={<TeachersPage />} />
+
+            {/* <Route path="/services/sport"       element={< />} /> */}
+            <Route path="/services/events"         element={<EventsPage />} />
+            <Route path="/services/askquestion"    element={<AskQuestionPage />} />
+
+            <Route path="/services/contests"       element={<ContestsPage />} />
+            <Route path="/services/vacancies"      element={<VacanciesPage />} />
+            <Route path="/services/internships"    element={<InternshipsPage />} />
+            <Route path="/services/specialoffers"  element={<SpecialOffersPage />} />
+
+            <Route path="/services/podcasts"  element={<PodcastsPage />} />
+            <Route path="/services/articles"  element={<ArticlesPage />} />
           </Routes>
         </main>
       </div>

@@ -13,22 +13,28 @@ export default function ServicesPage({ onNavigate }) {
   return (
     <div className="services-page">
       <ServiceSection title="Университет" modifier="university">
-        <ServiceCard label="Студенческий билет" color="orange" Abstract={AbstractStudentCard} onClick={() => onNavigate('studentcard')} />
-        <ServiceCard label="Новости"             color="blue"   Abstract={AbstractNews}         onClick={() => onNavigate('news')} />
-        <ServiceCard label="Преподаватели"       color="purple" Abstract={AbstractTeachers}     onClick={() => onNavigate('teachers')} />
-        <ServiceCard label="Спорт"               color="blue"   Abstract={AbstractSport} />
-        <ServiceCard label="События"             color="orange" Abstract={AbstractEvents}       onClick={() => onNavigate('events')} />
-        <ServiceCard label="Задать вопрос"       color="yellow" Abstract={AbstractQuestion}     onClick={() => onNavigate('askquestion')} />
+        {/* Первый ряд элементов */}
+        <ServiceCard page="/studentcard"        color="orange" Abstract={AbstractStudentCard} />
+        <ServiceCard page="/news"               color="blue"   Abstract={AbstractNews} />
+        <ServiceCard page="/teachers"           color="purple" Abstract={AbstractTeachers} />
+        {/* Второй ряд элементов  */}
+        <ServiceCard page="/sport"              color="blue"   Abstract={AbstractSport} />
+        <ServiceCard page="/events"             color="orange" Abstract={AbstractEvents} />
+        <ServiceCard page="/askquestion"        color="yellow" Abstract={AbstractQuestion} />
       </ServiceSection>
+
       <ServiceSection title="Возможности" modifier="opportunities">
-        <ServiceCard label="Конкурсы"                color="purple" Abstract={AbstractContests}      onClick={() => onNavigate('contests')} />
-        <ServiceCard label="Вакансии"                color="teal"   Abstract={AbstractVacancies}     onClick={() => onNavigate('vacancies')} />
-        <ServiceCard label="Стажировки"              color="pink"   Abstract={AbstractInternships}   onClick={() => onNavigate('internships')} />
-        <ServiceCard label="Специальные предложения" color="blue"   Abstract={AbstractSpecialOffers} onClick={() => onNavigate('specialoffers')} />
+        {/* Третий ряд элементов  */}
+        <ServiceCard page="/contests"           color="purple" Abstract={AbstractContests} />
+        <ServiceCard page="/vacancies"          color="teal"   Abstract={AbstractVacancies} />
+        <ServiceCard page="/internships"        color="pink"   Abstract={AbstractInternships} />
+        <ServiceCard page="/specialoffers"      color="blue"   Abstract={AbstractSpecialOffers} />
       </ServiceSection>
+
       <ServiceSection title="Развитие" modifier="development">
-        <ServiceCard label="Подкасты" color="orange" Abstract={AbstractPodcasts} onClick={() => onNavigate('podcasts')} />
-        <ServiceCard label="Статьи"   color="blue"   Abstract={AbstractArticles} onClick={() => onNavigate('articles')} />
+        {/* Четвертый ряд элементов */}
+        <ServiceCard page="/podcasts" color="orange" Abstract={AbstractPodcasts} />
+        <ServiceCard page="/articles"   color="blue"   Abstract={AbstractArticles} />
       </ServiceSection>
     </div>
   );
