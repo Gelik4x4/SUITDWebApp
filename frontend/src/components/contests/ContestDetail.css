@@ -1,0 +1,112 @@
+.con-detail {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding-right: 4px;
+}
+.con-detail::-webkit-scrollbar { width: 4px; }
+.con-detail::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+/*  Title row  */
+.con-detail__titlerow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+.con-detail__back { color: var(--text-primary); flex-shrink: 0; }
+.con-detail__title {
+  flex: 1;
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+.con-detail__actions { display: flex; gap: 4px; flex-shrink: 0; }
+
+/*  Body  */
+.con-detail__body {
+  display: grid;
+  grid-template-columns: 1fr 200px;
+  gap: 24px;
+  align-items: start;
+  flex: 1;
+  min-height: 0;
+}
+
+.con-detail__left {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  min-height: 0;
+}
+
+/* Hero illustration wide banner */
+.con-detail__hero {
+  width: 100%;
+  border-radius: var(--radius);
+  overflow: hidden;
+  aspect-ratio: 16 / 7;
+  flex-shrink: 0;
+}
+
+/* Text */
+.con-detail__text {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.con-detail__para {
+  font-size: 13px;
+  line-height: 1.75;
+  color: var(--text-primary);
+  white-space: pre-line;
+}
+
+/* Register button */
+.con-detail__register {
+  width: 100%;
+  padding: 14px;
+  font-size: 14px;
+  border-radius: 12px;
+  text-align: center;
+}
+
+/*  Meta sidebar  */
+.con-detail__meta {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  position: sticky;
+  top: 0;
+}
+
+.con-meta-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--bg);
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+.con-meta-item svg { flex-shrink: 0; color: var(--text-secondary); }
+
+/* btn shared */
+.btn {
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 10px 22px;
+  border-radius: 10px;
+  cursor: pointer;
+  border: none;
+  outline: none;
+  transition: opacity 0.15s;
+}
+.btn:hover { opacity: 0.88; }
+.btn--primary { background: var(--accent); color: #fff; }
