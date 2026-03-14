@@ -6,12 +6,13 @@ import { IconHome, IconSchedule, IconServices, IconProfile, IconLogout } from '.
 
 export default function Sidebar() {
   const location = useLocation();
-  const links = [
-    { id: 'home',     label: 'главная',    Icon: IconHome },
-    { id: 'schedule', label: 'расписание', Icon: IconSchedule },
-    { id: 'services', label: 'сервисы',    Icon: IconServices },
-    { id: 'profile',  label: 'профиль',    Icon: IconProfile },
-  ];
+  const activePage = location.pathname
+  const pages = {
+    '/home':     { label: 'главная',    Icon: IconHome },
+    '/schedule': { label: 'расписание', Icon: IconSchedule },
+    '/services': { label: 'сервисы',    Icon: IconServices },
+    '/profile':  { label: 'профиль',    Icon: IconProfile },
+  };
 
   return (
     <aside className="sidebar">
@@ -31,12 +32,11 @@ export default function Sidebar() {
       </div>
 
       <nav className="sidebar__nav">
-        {links.map(({ id, label, Icon }) => (
+        {Object.entries(pages).map(([page, { label, Icon }]) => (
           <NavLink 
-            key={id}
-            className={`sidebar__link${"home" === id ? ' sidebar__link--active' : ''}`}
-            // ({ isActive }) => (isActive ? 'nav-link active' : 'nav-link')
-            to={`/${id}`}
+            key={page}
+            className={`sidebar__link${page === activePage ? ' sidebar__link--active' : ''}`}
+            to={page}
           >
             <Icon /> {label}
           </NavLink>
