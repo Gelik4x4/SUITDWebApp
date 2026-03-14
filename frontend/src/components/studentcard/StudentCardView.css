@@ -1,0 +1,120 @@
+/* Карточка студенческого билета */
+.sc-card {
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 32px 36px 28px;
+  box-shadow: 0 8px 40px rgba(10, 15, 60, 0.10);
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  max-width: 600px;
+  width: 100%;
+}
+
+/* ── Top: left info + right photo ── */
+.sc-card__top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.sc-card__left {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+  min-width: 0;
+}
+
+.sc-card__qualification {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+}
+
+.sc-card__name {
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--text-primary);
+  line-height: 1.25;
+  letter-spacing: -0.3px;
+  margin-top: 4px;
+}
+
+.sc-card__role {
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin-bottom: 16px;
+}
+
+/* ── Fields grid ── */
+.sc-card__fields {
+  display: grid;
+  grid-template-columns: auto auto 1fr 1fr;
+  gap: 0 32px;
+  align-items: start;
+}
+
+.sc-card__field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.sc-card__field-label {
+  font-size: 10px;
+  color: var(--text-secondary);
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.sc-card__field-value {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+/*  Photo  */
+.sc-card__photo-wrap {
+  flex-shrink: 0;
+  width: 84px;
+  height: 84px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 3px solid var(--border);
+}
+
+.sc-card__photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.sc-card__photo-placeholder {
+  width: 100%;
+  height: 100%;
+  background: var(--bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--border);
+}
+
+/*  Divider  */
+.sc-card__divider {
+  height: 1px;
+  background: var(--border);
+  margin: 0 -4px;
+}
+
+/*  Barcode  */
+.sc-card__barcode {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding-top: 4px;
+}
