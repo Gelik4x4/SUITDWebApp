@@ -1,7 +1,15 @@
 import './Sidebar.css';
 import { IconHome, IconSchedule, IconServices, IconProfile, IconLogout } from '../icons/Icons';
 
-export default function Sidebar() {
+
+export default function Sidebar({ activePage, onNavigate }) {
+  const links = [
+    { id: 'home',     label: 'главная',    Icon: IconHome },
+    { id: 'schedule', label: 'расписание', Icon: IconSchedule },
+    { id: 'services', label: 'сервисы',    Icon: IconServices },
+    { id: 'profile',  label: 'профиль',    Icon: IconProfile },
+  ];
+
   return (
     <aside className="sidebar">
       <div className="sidebar__logo">
@@ -20,23 +28,20 @@ export default function Sidebar() {
       </div>
 
       <nav className="sidebar__nav">
-        <a href="#" className="sidebar__link sidebar__link--active">
-          <IconHome /> главная
-        </a>
-        <a href="#" className="sidebar__link">
-          <IconSchedule /> расписание
-        </a>
-        <a href="#" className="sidebar__link">
-          <IconServices /> сервисы
-        </a>
-        <a href="#" className="sidebar__link">
-          <IconProfile /> профиль
-        </a>
+        {links.map(({ id, label, Icon }) => (
+          <button
+            key={id}
+            className={`sidebar__link${activePage === id ? ' sidebar__link--active' : ''}`}
+            onClick={() => onNavigate(id)}
+          >
+            <Icon /> {label}
+          </button>
+        ))}
       </nav>
 
-      <a href="#" className="sidebar__logout">
+      <button className="sidebar__logout">
         <IconLogout /> выход
-      </a>
+      </button>
     </aside>
   );
 }

@@ -49,41 +49,51 @@
 }
 
 .sidebar__link {
+  width: 100%;
+  text-align: left;
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  outline: none;
+  background: none;
   display: flex;
   align-items: center;
   gap: 10px;
   padding: 10px 12px;
   border-radius: var(--radius-sm);
   color: var(--text-secondary);
-  text-decoration: none;
   font-size: 13px;
   font-weight: 500;
   transition: background 0.15s, color 0.15s;
 }
-
 .sidebar__link:hover {
   background: var(--bg);
   color: var(--text-primary);
 }
-
 .sidebar__link--active {
   background: var(--accent-light);
   color: var(--accent);
   font-weight: 600;
 }
 
+/*  Logout button  */
 .sidebar__logout {
+  width: 100%;
+  text-align: left;
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  outline: none;
+  background: none;
   display: flex;
   align-items: center;
   gap: 10px;
   padding: 10px 12px;
   border-radius: var(--radius-sm);
   color: var(--text-secondary);
-  text-decoration: none;
   font-size: 13px;
   font-weight: 500;
   margin-top: auto;
   transition: color 0.15s;
 }
-
 .sidebar__logout:hover { color: #ef4444; }
