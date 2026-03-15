@@ -1,5 +1,7 @@
 import { useState, useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './VacanciesPage.css';
+import { IconBack } from '../components/icons/Icons';
 import SearchBar      from '../components/searchbar/SearchBar';
 import VacancyCard    from '../components/vacancies/VacancyCard';
 import VacancyFilters from '../components/vacancies/VacancyFilters';
@@ -8,10 +10,12 @@ import { VACANCIES }  from '../components/vacancies/vacanciesData';
 
 const EMPTY_FILTERS = { directions: [], experience: [], employment: [], format: [] };
 
-export default function VacanciesPage({ onBack }) {
+function VacanciesPage() {
   const [search,   setSearch]   = useState('');
   const [filters,  setFilters]  = useState(EMPTY_FILTERS);
   const [selected, setSelected] = useState(null);
+
+  const navigate = useNavigate();
 
   const filtered = useMemo(() => VACANCIES.filter(v => {
     const q = search.toLowerCase();
@@ -34,7 +38,10 @@ export default function VacanciesPage({ onBack }) {
   return (
     <div className="vac-page">
       <div className="vac-page__left">
-        <SearchBar value={search} onChange={setSearch} onBack={onBack} />
+        <button className="icon-btn aq-page__back" onClick={() => navigate('/services')}>
+          <IconBack />
+        </button>
+        <SearchBar value={search} onChange={setSearch} />
         <div className="vac-list">
           {filtered.length === 0
             ? <div className="vac-empty">Вакансии не найдены</div>
@@ -48,3 +55,5 @@ export default function VacanciesPage({ onBack }) {
     </div>
   );
 }
+
+export default VacanciesPage
