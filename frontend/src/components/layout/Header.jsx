@@ -1,7 +1,7 @@
 import './Header.css';
 import { useLocation } from 'react-router-dom';
 import { IconMoon, IconBell } from '../icons/Icons';
-import { PAGE_TITLES } from '../../constants/navigation';
+import { PAGE_TITLES } from '@constants/navigation';
 
 export default function Header() {
   const { pathname } = useLocation();
