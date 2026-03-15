@@ -1,17 +1,22 @@
 export const PAGE_TITLES = {
-  '/studentcard': 'Студенческий билет',
-  '/news': 'Новости',
-  '/teachers': 'Преподаватели',
+  '/home': 'Доброе утро!', 
+  '/schedule': 'Расписание', 
+  '/services': 'Сервисы',
+  '/profile': 'Профиль', 
 
-  '/sport': 'Спорт',
-  '/events': 'События',
-  '/askquestion': 'Задать вопрос',
+  '/services/studentcard': 'Студенческий билет',
+  '/services/news': 'Новости',
+  '/services/teachers': 'Преподаватели',
 
-  '/contests': 'Конкурсы',
-  '/vacancies': 'Вакансии',
-  '/internships': 'Стажировки',
-  '/specialoffers': 'Специальные предложения',
+  '/services/sport': 'Спорт',
+  '/services/events': 'События',
+  '/services/askquestion': 'Задать вопрос',
 
-  '/podcasts': 'Подкасты',
-  '/articles': 'Статьи'
+  '/services/contests': 'Конкурсы',
+  '/services/vacancies': 'Вакансии',
+  '/services/internships': 'Стажировки',
+  '/services/specialoffers': 'Специальные предложения',
+
+  '/services/podcasts': 'Подкасты',
+  '/services/articles': 'Статьи'
 };

@@ -1,24 +1,7 @@
 import './Header.css';
 import { useLocation } from 'react-router-dom';
 import { IconMoon, IconBell } from '../icons/Icons';
-
-const PAGE_TITLES = {
-  '/home': 'Доброе утро!', 
-  '/schedule': 'Расписание', 
-  '/services': 'Сервисы',
-  '/profile': 'Профиль', 
-  '/vacancies': 'Вакансии', 
-  '/contests': 'Конкурсы',
-  '/news': 'Новости', 
-  '/internships': 'Стажировки', 
-  '/specialoffers': 'Специальные предложения',
-  '/articles': 'Статьи', 
-  '/events': 'Мероприятия', 
-  '/teachers': 'Преподаватели',
-  '/studentcard': 'Студенческий билет', 
-  '/askquestion': 'Задать вопрос', 
-  '/podcasts': 'Подкасты',
-};
+import { PAGE_TITLES } from '../../constants/navigation';
 
 export default function Header() {
   const { pathname } = useLocation();

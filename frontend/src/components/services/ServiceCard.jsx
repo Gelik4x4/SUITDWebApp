@@ -1,31 +1,12 @@
 import { NavLink } from 'react-router-dom';
 import './ServiceCard.css';
-
-
-const pageTitles = {
-  '/studentcard': 'Студенческий билет',
-  '/news': 'Новости',
-  '/teachers': 'Преподаватели',
-
-  '/sport': 'Спорт',
-  '/events': 'События',
-  '/askquestion': 'Задать вопрос',
-
-  '/contests': 'Конкурсы',
-  '/vacancies': 'Вакансии',
-  '/internships': 'Стажировки',
-  '/specialoffers': 'Специальные предложения',
-
-  '/podcasts': 'Подкасты',
-  '/articles': 'Статьи'
-};
-
+import { PAGE_TITLES } from '../../constants/navigation';
 
 export default function ServiceCard({ page, color, Abstract, size = 'md' }) {
   return (
     <NavLink
       className={`srv-card srv-card--${color} srv-card--${size}`}
-      to={`/services/${page}`}
+      to={page}
     >
       {/* Abstract background illustration */}
       {Abstract && (
@@ -33,7 +14,7 @@ export default function ServiceCard({ page, color, Abstract, size = 'md' }) {
           <Abstract />
         </span>
       )}
-      <span className="srv-card__label">{pageTitles[page]}</span>
+      <span className="srv-card__label">{PAGE_TITLES[page]}</span>
     </NavLink>
   );
 }
