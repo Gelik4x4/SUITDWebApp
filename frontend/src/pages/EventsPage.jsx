@@ -1,5 +1,7 @@
 import { useState, useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './EventsPage.css';
+import { IconBack } from '../components/icons/Icons';
 import SearchBar      from '../components/searchbar/SearchBar';
 import EventCard    from '../components/events/EventCard';
 import EventFilters from '../components/events/EventFilters';
@@ -8,10 +10,12 @@ import { EVENTS }   from '../components/events/eventsData';
 
 const EMPTY_FILTERS = { directions: [] };
 
-export default function EventsPage({ onBack }) {
+function EventsPage() {
   const [search,   setSearch]   = useState('');
   const [filters,  setFilters]  = useState(EMPTY_FILTERS);
   const [selected, setSelected] = useState(null);
+
+  const navigate = useNavigate();
 
   const filtered = useMemo(() => EVENTS.filter(ev => {
     const q = search.toLowerCase();
@@ -32,7 +36,10 @@ export default function EventsPage({ onBack }) {
     <div className="evp-page">
       {/* Left: search + 3-col grid */}
       <div className="evp-page__left">
-        <SearchBar value={search} onChange={setSearch} onBack={onBack} />
+        <button className="icon-btn aq-page__back" onClick={() => navigate('/services')}>
+          <IconBack />
+        </button>
+        <SearchBar value={search} onChange={setSearch} />
         <div className="evp-grid-wrap">
           {filtered.length === 0 ? (
             <div className="evp-empty">Мероприятия не найдены</div>
@@ -57,3 +64,5 @@ export default function EventsPage({ onBack }) {
     </div>
   );
 }
+
+export default EventsPage
