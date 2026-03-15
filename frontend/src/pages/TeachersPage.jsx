@@ -1,5 +1,7 @@
 import { useState, useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './TeachersPage.css';
+import { IconBack } from '../components/icons/Icons';
 import SearchBar      from '../components/searchbar/SearchBar';
 import TeacherListItem  from '../components/teachers/TeacherListItem';
 import TeacherFilters   from '../components/teachers/TeacherFilters';
@@ -8,10 +10,12 @@ import { TEACHERS }     from '../components/teachers/teachersData';
 
 const EMPTY_FILTERS = { institutes: [] };
 
-export default function TeachersPage({ onBack }) {
+function TeachersPage() {
   const [search,   setSearch]   = useState('');
   const [filters,  setFilters]  = useState(EMPTY_FILTERS);
   const [selected, setSelected] = useState(null);
+
+  const navigate = useNavigate();
 
   const filtered = useMemo(() => TEACHERS.filter(t => {
     const q = search.toLowerCase();
@@ -34,11 +38,13 @@ export default function TeachersPage({ onBack }) {
     <div className="tp-page">
       {/* Left: search + list */}
       <div className="tp-page__left">
+        <button className="icon-btn aq-page__back" onClick={() => navigate('/services')}>
+          <IconBack />
+        </button>
         <SearchBar
           value={search}
           onChange={setSearch}
           placeholder="Введите ФИО преподавателя..."
-          onBack={onBack}
         />
         <div className="tp-list">
           {filtered.length === 0 ? (
@@ -67,3 +73,5 @@ export default function TeachersPage({ onBack }) {
     </div>
   );
 }
+
+export default TeachersPage
