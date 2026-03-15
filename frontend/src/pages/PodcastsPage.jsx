@@ -1,5 +1,7 @@
 import { useState, useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './PodcastsPage.css';
+import { IconBack } from '../components/icons/Icons';
 import SearchBar      from '../components/searchbar/SearchBar';
 import PodcastCard    from '../components/podcasts/PodcastCard';
 import PodcastFilters from '../components/podcasts/PodcastFilters';
@@ -8,10 +10,12 @@ import { PODCASTS }   from '../components/podcasts/podcastsData';
 
 const EMPTY_FILTERS = { directions: [] };
 
-export default function PodcastsPage({ onBack }) {
+function PodcastsPage() {
   const [search,   setSearch]   = useState('');
   const [filters,  setFilters]  = useState(EMPTY_FILTERS);
   const [selected, setSelected] = useState(null);
+
+  const navigate = useNavigate();
 
   const filtered = useMemo(() => PODCASTS.filter(p => {
     const q = search.toLowerCase();
@@ -32,7 +36,10 @@ export default function PodcastsPage({ onBack }) {
     <div className="podp-page">
       {/* Left: search + 3-col grid */}
       <div className="podp-page__left">
-        <SearchBar value={search} onChange={setSearch} onBack={onBack} />
+        <button className="icon-btn aq-page__back" onClick={() => navigate('/services')}>
+          <IconBack />
+        </button>
+        <SearchBar value={search} onChange={setSearch} />
         <div className="podp-grid-wrap">
           {filtered.length === 0 ? (
             <div className="podp-empty">Подкасты не найдены</div>
@@ -57,3 +64,5 @@ export default function PodcastsPage({ onBack }) {
     </div>
   );
 }
+
+export default PodcastsPage
