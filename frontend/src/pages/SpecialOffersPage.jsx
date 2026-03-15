@@ -1,5 +1,7 @@
 import { useState, useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './SpecialOffersPage.css';
+import { IconBack } from '../components/icons/Icons';
 import SearchBar     from '../components/searchbar/SearchBar';
 import OfferCard     from '../components/specialoffers/OfferCard';
 import OfferFilters  from '../components/specialoffers/OfferFilters';
@@ -8,10 +10,12 @@ import { SPECIAL_OFFERS } from '../components/specialoffers/specialOffersData';
 
 const EMPTY_FILTERS = { directions: [] };
 
-export default function SpecialOffersPage({ onBack }) {
+export default function SpecialOffersPage() {
   const [search,   setSearch]   = useState('');
   const [filters,  setFilters]  = useState(EMPTY_FILTERS);
   const [selected, setSelected] = useState(null);
+
+  const navigate = useNavigate();
 
   const filtered = useMemo(() => SPECIAL_OFFERS.filter(item => {
     const q = search.toLowerCase();
@@ -25,10 +29,12 @@ export default function SpecialOffersPage({ onBack }) {
       <div className="sop-page">
         {/* Left: search + grid */}
         <div className="sop-page__left">
+          <button className="icon-btn aq-page__back" onClick={() => navigate('/services')}>
+            <IconBack />
+          </button>
           <SearchBar
             value={search}
             onChange={setSearch}
-            onBack={onBack}
             showFavorites
           />
           <div className="sop-grid-wrap">
