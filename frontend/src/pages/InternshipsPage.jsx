@@ -1,5 +1,7 @@
 import { useState, useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './InternshipsPage.css';
+import { IconBack } from '../components/icons/Icons';
 import SearchBar      from '../components/searchbar/SearchBar';
 import InternshipCard    from '../components/internships/InternshipCard';
 import InternshipFilters from '../components/internships/InternshipFilters';
@@ -8,10 +10,12 @@ import { INTERNSHIPS }   from '../components/internships/internshipsData';
 
 const EMPTY_FILTERS = { directions: [], employment: [], format: [] };
 
-export default function InternshipsPage({ onBack }) {
+function InternshipsPage() {
   const [search,   setSearch]   = useState('');
   const [filters,  setFilters]  = useState(EMPTY_FILTERS);
   const [selected, setSelected] = useState(null);
+
+  const navigate = useNavigate();
 
   const filtered = useMemo(() => INTERNSHIPS.filter(item => {
     const q = search.toLowerCase();
@@ -33,7 +37,10 @@ export default function InternshipsPage({ onBack }) {
   return (
     <div className="intp-page">
       <div className="intp-page__left">
-        <SearchBar value={search} onChange={setSearch} onBack={onBack} />
+        <button className="icon-btn aq-page__back" onClick={() => navigate('/services')}>
+          <IconBack />
+        </button>        
+        <SearchBar value={search} onChange={setSearch} />
         <div className="intp-list">
           {filtered.length === 0
             ? <div className="intp-empty">Стажировки не найдены</div>
@@ -47,3 +54,5 @@ export default function InternshipsPage({ onBack }) {
     </div>
   );
 }
+
+export default InternshipsPage
