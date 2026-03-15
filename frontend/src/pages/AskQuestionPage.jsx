@@ -1,13 +1,9 @@
 import { useState, useRef, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { IconBack } from '../components/icons/Icons';
 import './AskQuestionPage.css';
 import ChatMessage from '../components/askquestion/ChatMessage';
 import ChatInput   from '../components/askquestion/ChatInput';
-
-const IconBack = () => (
-  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
-    <polyline points="15 18 9 12 15 6" />
-  </svg>
-);
 
 const INITIAL_MESSAGES = [
   {
@@ -52,6 +48,7 @@ export default function AskQuestionPage({ onBack }) {
   const [messages, setMessages] = useState(INITIAL_MESSAGES);
   const [botIdx,   setBotIdx]   = useState(0);
   const bottomRef = useRef(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -92,7 +89,7 @@ export default function AskQuestionPage({ onBack }) {
     <div className="aq-page">
       {/* Sub-header: back + subtitle */}
       <div className="aq-page__header">
-        <button className="icon-btn aq-page__back" onClick={onBack}>
+        <button className="icon-btn aq-page__back" onClick={() => navigate('/services')}>
           <IconBack />
         </button>
         <span className="aq-page__subtitle">
