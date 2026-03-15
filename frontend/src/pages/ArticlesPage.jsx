@@ -1,5 +1,7 @@
-import React, { useState, useMemo } from 'react';
+import { useState, useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './ArticlesPage.css';
+import { IconBack } from '../components/icons/Icons';
 import SearchBar      from '../components/searchbar/SearchBar';
 import ArticleCard    from '../components/articles/ArticleCard';
 import ArticleFilters from '../components/articles/ArticleFilters';
@@ -8,10 +10,12 @@ import { ARTICLES }   from '../components/articles/articlesData';
 
 const EMPTY_FILTERS = { directions: [] };
 
-export default function ArticlesPage({ onBack }) {
+function ArticlesPage() {
   const [search,   setSearch]   = useState('');
   const [filters,  setFilters]  = useState(EMPTY_FILTERS);
   const [selected, setSelected] = useState(null);
+
+  const navigate = useNavigate();
 
   const filtered = useMemo(() => ARTICLES.filter(item => {
     const q = search.toLowerCase();
@@ -33,7 +37,10 @@ export default function ArticlesPage({ onBack }) {
   return (
     <div className="art-page">
       <div className="art-page__left">
-        <SearchBar value={search} onChange={setSearch} onBack={onBack} />
+        <button className="icon-btn aq-page__back" onClick={() => navigate('/services')}>
+          <IconBack />
+        </button>
+        <SearchBar value={search} onChange={setSearch} />
         <div className="art-list">
           {filtered.length === 0 ? (
             <div className="art-empty">Статьи не найдены</div>
@@ -55,3 +62,5 @@ export default function ArticlesPage({ onBack }) {
     </div>
   );
 }
+
+export default ArticlesPage
