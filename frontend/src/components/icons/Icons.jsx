@@ -70,3 +70,9 @@ export const IconPin = () => (
     <circle cx="12" cy="10" r="3" />
   </svg>
 );
+
+export const IconBack = () => (
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
+    <polyline points="15 18 9 12 15 6" />
+  </svg>
+);
