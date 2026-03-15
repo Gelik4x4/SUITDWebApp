@@ -1,17 +1,21 @@
 import  { useState, useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './NewsPage.css';
-import SearchBar      from '../components/searchbar/SearchBar';
+import SearchBar   from '../components/searchbar/SearchBar';
 import NewsCard    from '../components/news/NewsCard';
 import NewsFilters from '../components/news/NewsFilters';
 import NewsDetail  from '../components/news/NewsDetail';
 import { NEWS }    from '../components/news/newsData';
+import { IconBack } from '../components/icons/Icons';
 
 const EMPTY_FILTERS = { directions: [] };
 
-export default function NewsPage({ onBack }) {
+function NewsPage() {
   const [search,   setSearch]   = useState('');
   const [filters,  setFilters]  = useState(EMPTY_FILTERS);
   const [selected, setSelected] = useState(null);
+
+  const navigate = useNavigate();
 
   const filtered = useMemo(() => NEWS.filter(item => {
     const q = search.toLowerCase();
@@ -31,7 +35,10 @@ export default function NewsPage({ onBack }) {
   return (
     <div className="news-page">
       <div className="news-page__left">
-        <SearchBar value={search} onChange={setSearch} onBack={onBack} />
+        <button className="icon-btn aq-page__back" onClick={() => navigate('/services')}>
+          <IconBack />
+        </button>
+        <SearchBar value={search} onChange={setSearch} />
         <div className="news-list">
           {filtered.length === 0
             ? <div className="news-empty">Новости не найдены</div>
@@ -45,3 +52,5 @@ export default function NewsPage({ onBack }) {
     </div>
   );
 }
+
+export default NewsPage
