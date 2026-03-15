@@ -5,7 +5,7 @@ import SearchBar      from '../components/searchbar/SearchBar';
 import StudentCardView from '../components/studentcard/StudentCardView';
 import { STUDENT_DATA } from '../components/studentcard/StudentCardData';
 
-export default function StudentCardPage() {
+function StudentCardPage() {
   const navigate = useNavigate();
   return (
     <div className="scp-page">
@@ -29,3 +29,5 @@ export default function StudentCardPage() {
     </div>
   );
 }
+
+export default StudentCardPage
