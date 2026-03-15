@@ -1,4 +1,6 @@
 import  { useState, useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { IconBack } from '../components/icons/Icons';
 import './ContestsPage.css';
 import SearchBar      from '../components/searchbar/SearchBar';
 import ContestCard    from '../components/contests/ContestCard';
@@ -9,10 +11,12 @@ import { CONTESTS }   from '../components/contests/contestsData';
 
 const EMPTY_FILTERS = { directions: [], status: null };
 
-export default function ContestsPage({ onBack }) {
+function ContestsPage() {
   const [search,   setSearch]   = useState('');
   const [filters,  setFilters]  = useState(EMPTY_FILTERS);
   const [selected, setSelected] = useState(null);
+
+  const navigate = useNavigate();
 
   const filtered = useMemo(() => CONTESTS.filter(c => {
     const q = search.toLowerCase();
@@ -33,7 +37,10 @@ export default function ContestsPage({ onBack }) {
   return (
     <div className="con-page">
       <div className="con-page__left">
-        <SearchBar value={search} onChange={setSearch} onBack={onBack} />
+        <button className="icon-btn aq-page__back" onClick={() => navigate('/services')}>
+          <IconBack />
+        </button>
+        <SearchBar value={search} onChange={setSearch} />
         <div className="con-grid-wrap">
           {filtered.length === 0
             ? <div className="con-empty">Конкурсы не найдены</div>
@@ -49,3 +56,5 @@ export default function ContestsPage({ onBack }) {
     </div>
   );
 }
+
+export default ContestsPage
