@@ -6,13 +6,13 @@ import { IconArrow } from '../icons/Icons';
 
 const events = [
   {
-    img: 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=600&h=300&fit=crop',
+    img: '/src/components/img/events/events-1.png',
     date: 'Чт, 6 июня 20:00',
     location: 'Точка Кипения',
     title: 'Молодежный экономический форум «День будущего»',
   },
   {
-    img: 'https://images.unsplash.com/photo-1505373877841-8d25f7d46678?w=600&h=300&fit=crop',
+    img: '/src/components/img/events/events-1.png',
     date: 'Чт, 6 июня 20:00',
     location: 'Точка Кипения',
     title: 'Молодежный экономический форум «День будущего»',
@@ -26,7 +26,7 @@ export default function EventsWidget() {
     <div className="card">
       <div className="card__header">
         <span className="card__title">Мероприятия для вас</span>
-        <button className="icon-btn"><IconArrow /></button>
+        <button className="icon-btn"><img src="/src/components/icons/arrow-btn.svg"/></button>
       </div>
       <div className="two-col-grid">
         {events.map((e, i) => <EventCard key={i} {...e} />)}

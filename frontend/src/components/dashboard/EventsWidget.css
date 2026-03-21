@@ -50,8 +50,8 @@
   padding: 10px 14px 12px;
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
-  gap: 4px;
+  justify-content: flex-start;
+  gap: 12px;
   background: #dce8ff;
 }
 
@@ -59,7 +59,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  font-size: 10px;
+  font-size: 14px;
   color: #3a4a7a;
 }
 
@@ -70,8 +70,8 @@
 }
 
 .event-card__title {
-  font-size: 12px;
-  font-weight: 700;
+  font-size: 16px;
+  font-weight: 300;
   color: #1a2a5a;
   line-height: 1.4;
 }
