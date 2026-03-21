@@ -68,8 +68,8 @@
   text-decoration: none;
 }
 .sidebar__link:hover {
-  background: var(--bg);
-  color: var(--text-primary);
+
+  color: var(--accent);
 }
 .sidebar__link--active {
   background: var(--accent-light);
