@@ -1,6 +1,6 @@
 .view-toggle {
   display: flex;
-  background: var(--accent);
+  background: #ffffff;
   border-radius: 10px;
   padding: 3px;
   gap: 2px;
@@ -15,10 +15,10 @@
   padding: 6px 18px;
   border-radius: 8px;
   background: transparent;
-  color: rgba(255, 255, 255, 0.65);
+  color: var(--accent);
   transition: background 0.15s, color 0.15s;
 }
 .view-toggle__btn--active {
-  background: #ffffff;
-  color: var(--accent);
+  background:var(--accent);
+  color: #ffffff;
 }
