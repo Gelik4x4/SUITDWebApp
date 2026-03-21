@@ -1,22 +1,26 @@
 .break-row {
   display: flex;
+  position: relative;
   align-items: center;
-  gap: 12px;
-  padding: 6px 0;
+  gap: 8px;
+  padding: 16px;
   background: #ffffff;
-  border-radius: 10px;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
 }
 
-.break-row__accent {
-  width: 4px;
-  height: 32px;
-  border-radius: 2px;
+.break-row::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 8px;
   background: #f5a623;
-  flex-shrink: 0;
 }
 
 .break-row__label {
-  font-size: 14px;
+  font-size: 18px;
   font-weight: 500;
   color: var(--text-secondary);
 }

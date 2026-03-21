@@ -7,7 +7,8 @@
 
 .day-strip__list {
   display: flex;
-  gap: 4px;
+  gap: 100px;
+  /* align-items: stretch; */
   flex: 1;
 }
 
