@@ -28,17 +28,17 @@
 }
 
 .sidebar__logo-title {
-  font-size: 14px;
-  font-weight: 800;
+  font-size: 16px;
+  font-weight: 600;
   line-height: 1.1;
-  color: var(--text-primary);
+  color: var(--accent);
   letter-spacing: -0.3px;
 }
 
 .sidebar__logo-sub {
-  font-size: 11px;
-  color: var(--text-secondary);
-  font-weight: 500;
+  font-size: 14px;
+  color: var(--accent);
+  font-weight: 600;
 }
 
 .sidebar__nav {
@@ -61,8 +61,8 @@
   gap: 10px;
   padding: 10px 12px;
   border-radius: var(--radius-sm);
-  color: var(--text-secondary);
-  font-size: 13px;
+  color: var(--sidebar-link);
+  font-size: 16px;
   font-weight: 500;
   transition: background 0.15s, color 0.15s;
   text-decoration: none;
