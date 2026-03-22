@@ -1,13 +1,16 @@
+import { useQuery } from '@tanstack/react-query';
 import './ScheduleWidget.css';
 import { IconArrow } from '../icons/Icons';
+import { supabase } from '../../supabaseClient'
 
-const scheduleData = [
-  { time: '10:05 – 11:30', subject: 'Прикладной дизайн', teacher: 'Сошникова И.А.', room: 'В 484' },
-  { time: '10:05 – 11:30', subject: 'Прикладной дизайн', teacher: 'Сошникова И.А.', room: 'В 484' },
-  { time: '10:05 – 11:30', subject: 'Прикладной дизайн', teacher: 'Сошникова И.А.', room: 'В 484' },
-];
 
-function ScheduleItem({ time, subject, teacher, room }) {
+function ScheduleItem({ 
+  "Время": time,
+  "Вид занятий": lessonType, 
+  "Дисциплина": subject, 
+  "Преподаватель": teacher, 
+  "Аудитория": room
+}) {
   return (
     <div className="schedule-item">
       <div className="schedule-item__accent" />
@@ -19,7 +22,7 @@ function ScheduleItem({ time, subject, teacher, room }) {
             <a href="#" className="schedule-item__teacher">{teacher}</a>
           </div>
           <div className="schedule-item__right">
-            <span className="badge">Лек</span>
+            <span className="badge">{lessonType}</span>
             <span className="schedule-item__room">{room}</span>
           </div>
         </div>
@@ -28,13 +31,52 @@ function ScheduleItem({ time, subject, teacher, room }) {
   );
 }
 
+const fetchScheduleData = async (group, capitalizedWeekday) => {
+  const { data, error } = await supabase
+    .from('schedule')
+    .select('*')
+    .eq('Группа', group)
+    .eq('День недели', capitalizedWeekday);
+  if (error) throw error;
+  return data;
+};
+
+
 export default function ScheduleWidget() {
+  const group = "1-МГ-2";
+  // const group = "1-МГ-46";
+  
+  const now = new Date();
+  const dateFormatted = now.toLocaleDateString('ru-RU', {
+    day: 'numeric',
+    month: 'long'
+  });
+  // день недели
+  const weekday = now.toLocaleDateString('ru-RU', { weekday: 'long' });
+  // const capitalizedWeekday = weekday.charAt(0).toUpperCase() + weekday.slice(1).toLowerCase();
+  // const capitalizedWeekday = "Понедельник";
+  const capitalizedWeekday = "Вторник";
+  // const capitalizedWeekday = "Среда";
+  // const capitalizedWeekday = "Четверг";
+
+  const { data: scheduleData, isLoading, error } = useQuery({
+    queryKey: ['schedule', group, capitalizedWeekday],
+    queryFn: () => fetchScheduleData(group, capitalizedWeekday),
+    staleTime: 5 * 60 * 1000,
+    cacheTime: 10 * 60 * 1000,
+  });
+
+  if (isLoading) return <div>Загрузка расписания...</div>;
+  if (error) return <div style={{ color: 'red' }}>Ошибка: {error.message}</div>;
+
+  console.log(scheduleData)
+
   return (
     <div className="card">
       <div className="card__header">
         <div>
           <span className="card__title">Расписание</span>
-          <span className="card__subtitle"> · Четверг, 5 декабря</span>
+          <span className="card__subtitle"> · {capitalizedWeekday}, {dateFormatted}</span>
         </div>
         <button className="icon-btn"><IconArrow /></button>
       </div>
