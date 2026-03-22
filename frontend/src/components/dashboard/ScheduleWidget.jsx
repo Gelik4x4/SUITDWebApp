@@ -34,11 +34,19 @@ function ScheduleItem({
 export default function ScheduleWidget() {
   const group = "1-МГ-2";
   // const group = "1-МГ-46";
+  
   // день недели
-  // const day_of_week = "Понедельник";
-  const day_of_week = "Вторник";
-  // const day_of_week = "Среда";
-  //const day_of_week = "Четверг";
+  const now = new Date();
+  const weekdayName = now.toLocaleDateString('ru-RU', { weekday: 'long' });
+  const capitalizedWeekday = weekdayName.charAt(0).toUpperCase() + weekdayName.slice(1).toLowerCase();
+  const dateFormatted = now.toLocaleDateString('ru-RU', {
+    day: 'numeric',
+    month: 'long'
+  });  
+  // const capitalizedWeekday = "Понедельник";
+  // const capitalizedWeekday = "Вторник";
+  // const capitalizedWeekday = "Среда";
+  // const capitalizedWeekday = "Четверг";
 
   const [scheduleData, setScheduleData] = useState(null);
   const [error, setError] = useState(null);
@@ -51,7 +59,7 @@ export default function ScheduleWidget() {
           .from('schedule')
           .select('*')
           .eq('Группа', group)
-          .eq('День недели', day_of_week);
+          .eq('День недели', capitalizedWeekday);
         if (error)
           throw error;
         setScheduleData(data);
@@ -75,7 +83,7 @@ export default function ScheduleWidget() {
       <div className="card__header">
         <div>
           <span className="card__title">Расписание</span>
-          <span className="card__subtitle"> · {day_of_week}, 5 декабря</span>
+          <span className="card__subtitle"> · {capitalizedWeekday}, {dateFormatted}</span>
         </div>
         <button className="icon-btn"><IconArrow /></button>
       </div>
