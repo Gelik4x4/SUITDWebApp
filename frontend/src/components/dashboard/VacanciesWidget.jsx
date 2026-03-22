@@ -14,14 +14,14 @@ function JobCard({ size = 'sm' }) {
       <div className={`job-card__art job-card__art--${size}`}>
         {size === 'sm' ? (
           <>
-            <div className="blob blob--purple blob--lg" />
-            <div className="blob blob--blue blob--sm" />
+            <div className="blob blob--blue blob--lg" style={{ bottom: 8, left: 160 }} />
+            <div className="blob blob--blue blob--sm" style={{ bottom: 12, left: 120 }}/>
           </>
         ) : (
           <>
-            <div className="blob blob--orange blob--lg" style={{ bottom: 12, right: 40 }} />
-            <div className="blob blob--orange blob--sm" style={{ bottom: 8,  right: 8  }} />
-            <div className="blob blob--blue   blob--md" style={{ bottom: 24, right: 80 }} />
+            <div className="blob blob--orange blob--lg" style={{ bottom: 12, right: 20 }} />
+            <div className="blob blob--orange blob--sm" style={{ bottom: 8,  right: 110  }} />
+            <div className="blob blob--orange   blob--md" style={{ bottom: 65, right: 70 }} />
           </>
         )}
       </div>
@@ -34,7 +34,7 @@ export default function VacanciesWidget() {
     <div className="card">
       <div className="card__header">
         <span className="card__title">Популярные вакансии</span>
-        <button className="icon-btn"><IconArrow /></button>
+        <button className="icon-btn"><img src="/src/components/icons/arrow-btn.svg"/></button>
       </div>
       <div className="vacancies-grid">
         <div className="vacancies-grid__left">

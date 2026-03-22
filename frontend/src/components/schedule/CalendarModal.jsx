@@ -106,14 +106,6 @@ export default function CalendarModal({ onClose }) {
           >
             <IconChevronLeft />
           </button>
-
-          <div className="cal-nav__track">
-            <div
-              className="cal-nav__thumb"
-              style={{ left: `${((offset + 3) / 6) * 100}%` }}
-            />
-          </div>
-
           <button
             className={`cal-nav__btn${!canNext ? ' cal-nav__btn--disabled' : ''}`}
             onClick={() => canNext && setOffset(o => o + 1)}

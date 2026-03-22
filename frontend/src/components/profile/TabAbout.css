@@ -3,7 +3,7 @@
   flex-direction: column;
   gap: 14px;
   max-width: 1080px;
-  overflow-y: auto;
+
   padding-right: 4px;
 }
 .tab-about::-webkit-scrollbar { width: 4px; }

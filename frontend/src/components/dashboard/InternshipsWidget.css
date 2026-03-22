@@ -22,8 +22,8 @@
   z-index: 1;
 }
 
-.intern-card__title   { font-size: 12px; font-weight: 700; color: var(--text-primary); }
-.intern-card__company { font-size: 11px; color: var(--text-secondary); margin-top: 2px; }
+.intern-card__title   { font-size: 16px; font-weight: 300; color: var(--text-primary); }
+.intern-card__company { font-size: 14px; color: var(--text-secondary); margin-top: 2px; }
 
 .intern-card__art {
   position: absolute;

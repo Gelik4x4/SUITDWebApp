@@ -26,8 +26,8 @@
 }
 
 .lesson__time {
-  font-size: 15px;
-  font-weight: 600;
+  font-size: 16px;
+  font-weight: 400;
   color: var(--text-primary);
 }
 
@@ -54,14 +54,8 @@
   top: 0;
   bottom: 0;
   left: 0;
-  width: 4px;
-  background: var(--accent);
-}
-/* полоска на всю высоту карточки */
-.lesson__accent {
-  width: 4px;
-  flex-shrink: 0;
-  background: var(--accent);
+  width: 8px;
+  background: var(--subject-purple);
 }
 
 .lesson__body {
@@ -72,21 +66,21 @@
 }
 
 .lesson__subject {
-  font-size: 15px;
-  font-weight: 600;
+  font-size: 18px;
+  font-weight: 400;
   color: var(--text-primary);
 }
 
 .lesson__teacher,
 .lesson__room {
-  font-size: 13px;
+  font-size: 16px;
   color: var(--text-secondary);
 }
 
 .lesson__tag {
   align-self: flex-start;
-  font-size: 11px;
-  font-weight: 700;
+  font-size: 16px;
+  font-weight: 400;
   padding: 3px 10px;
   border-radius: 7px;
   letter-spacing: 0.2px;

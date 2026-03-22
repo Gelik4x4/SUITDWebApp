@@ -11,19 +11,7 @@ function InternCard({ color }) {
         </div>
         <button className="icon-btn icon-btn--sm"><IconHeart /></button>
       </div>
-      <div className="intern-card__art">
-        {color === 'pink' ? (
-          <>
-            <div className="blob blob--pink blob--lg" style={{ bottom: 8, left: 20 }} />
-            <div className="blob blob--pink blob--sm" style={{ bottom: 8, left: 56 }} />
-          </>
-        ) : (
-          <>
-            <div className="blob blob--yellow blob--lg" style={{ bottom: 8, left: 20 }} />
-            <div className="blob blob--yellow blob--sm" style={{ bottom: 8, left: 56 }} />
-          </>
-        )}
-      </div>
+
     </div>
   );
 }
@@ -33,7 +21,7 @@ export default function InternshipsWidget() {
     <div className="card">
       <div className="card__header">
         <span className="card__title">Стажировки</span>
-        <button className="icon-btn"><IconArrow /></button>
+        <button className="icon-btn"><img src="/src/components/icons/arrow-btn.svg"/></button>
       </div>
       <div className="two-col-grid">
         <InternCard color="pink" />

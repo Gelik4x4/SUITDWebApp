@@ -78,7 +78,7 @@ export default function ScheduleWidget() {
           <span className="card__title">Расписание</span>
           <span className="card__subtitle"> · {capitalizedWeekday}, {dateFormatted}</span>
         </div>
-        <button className="icon-btn"><IconArrow /></button>
+        <button className="icon-btn"><img src="/src/components/icons/arrow-btn.svg"/></button>
       </div>
       <div className="schedule-list">
         {scheduleData.map((item, i) => (
