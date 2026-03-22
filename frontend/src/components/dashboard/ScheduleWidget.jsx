@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useQuery } from '@tanstack/react-query';
 import './ScheduleWidget.css';
 import { IconArrow } from '../icons/Icons';
 import { supabase } from '../../supabaseClient'
@@ -31,50 +31,43 @@ function ScheduleItem({
   );
 }
 
+const fetchScheduleData = async (group, capitalizedWeekday) => {
+  const { data, error } = await supabase
+    .from('schedule')
+    .select('*')
+    .eq('Группа', group)
+    .eq('День недели', capitalizedWeekday);
+  if (error) throw error;
+  return data;
+};
+
+
 export default function ScheduleWidget() {
   const group = "1-МГ-2";
   // const group = "1-МГ-46";
   
-  // день недели
   const now = new Date();
-  const weekdayName = now.toLocaleDateString('ru-RU', { weekday: 'long' });
-  const capitalizedWeekday = weekdayName.charAt(0).toUpperCase() + weekdayName.slice(1).toLowerCase();
   const dateFormatted = now.toLocaleDateString('ru-RU', {
     day: 'numeric',
     month: 'long'
-  });  
+  });
+  // день недели
+  const weekday = now.toLocaleDateString('ru-RU', { weekday: 'long' });
+  // const capitalizedWeekday = weekday.charAt(0).toUpperCase() + weekday.slice(1).toLowerCase();
   // const capitalizedWeekday = "Понедельник";
-  // const capitalizedWeekday = "Вторник";
+  const capitalizedWeekday = "Вторник";
   // const capitalizedWeekday = "Среда";
   // const capitalizedWeekday = "Четверг";
 
-  const [scheduleData, setScheduleData] = useState(null);
-  const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const { data: scheduleData, isLoading, error } = useQuery({
+    queryKey: ['schedule', group, capitalizedWeekday],
+    queryFn: () => fetchScheduleData(group, capitalizedWeekday),
+    staleTime: 5 * 60 * 1000,
+    cacheTime: 10 * 60 * 1000,
+  });
 
-  useEffect(() => {
-    async function fetchScheduleData() {
-      try {
-        const { data, error } = await supabase
-          .from('schedule')
-          .select('*')
-          .eq('Группа', group)
-          .eq('День недели', capitalizedWeekday);
-        if (error)
-          throw error;
-        setScheduleData(data);
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    fetchScheduleData();
-  }, []);
-
-  if (loading) return <div>Проверка подключения...</div>;
-  if (error) return <div style={{ color: 'red' }}>Ошибка: {error}</div>;
+  if (isLoading) return <div>Загрузка расписания...</div>;
+  if (error) return <div style={{ color: 'red' }}>Ошибка: {error.message}</div>;
 
   console.log(scheduleData)
 
