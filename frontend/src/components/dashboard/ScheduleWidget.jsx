@@ -43,8 +43,8 @@ const fetchScheduleData = async (group, capitalizedWeekday) => {
 
 
 export default function ScheduleWidget() {
-  const group = "1-МГ-2";
-  // const group = "1-МГ-46";
+  // const group = "1-МГ-2";
+  const group = "3-МД-4";
   
   const now = new Date();
   const dateFormatted = now.toLocaleDateString('ru-RU', {
@@ -53,9 +53,9 @@ export default function ScheduleWidget() {
   });
   // день недели
   const weekday = now.toLocaleDateString('ru-RU', { weekday: 'long' });
-  // const capitalizedWeekday = weekday.charAt(0).toUpperCase() + weekday.slice(1).toLowerCase();
+  const capitalizedWeekday = weekday.charAt(0).toUpperCase() + weekday.slice(1).toLowerCase();
   // const capitalizedWeekday = "Понедельник";
-  const capitalizedWeekday = "Вторник";
+  // const capitalizedWeekday = "Вторник";
   // const capitalizedWeekday = "Среда";
   // const capitalizedWeekday = "Четверг";
 
