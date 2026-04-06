@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import { useState, useCallback } from 'react';
 import SplashScreen    from './SplashScreen';
 import OnboardingSlide from './OnboardingSlide';
 import LoginScreen     from '../auth/LoginScreen';
@@ -66,24 +66,24 @@ export default function OnboardingFlow({ onDone }) {
 
   if (step === S.LOGIN) return (
     <LoginScreen
-      onLogin={() => go(S.ACCESS)}
-      onGoRegister={() => go(S.REGISTER)}
+      onLogin={onDone}
+      // onGoRegister={() => go(S.REGISTER)}
     />
   );
 
-  if (step === S.REGISTER) return (
-    <RegisterScreen
-      onRegister={() => go(S.ACCESS)}
-      onGoLogin={() => go(S.LOGIN)}
-    />
-  );
+  // if (step === S.REGISTER) return (
+  //   <RegisterScreen
+  //     onRegister={() => go(S.ACCESS)}
+  //     onGoLogin={() => go(S.LOGIN)}
+  //   />
+  // );
 
-  if (step === S.ACCESS) return (
-    <AccessScreen
-      onConfirm={onDone}
-      onCancel={onDone}
-    />
-  );
+  // if (step === S.ACCESS) return (
+  //   <AccessScreen
+  //     onConfirm={onDone}
+  //     onCancel={onDone}
+  //   />
+  // );
 
   return null;
 }

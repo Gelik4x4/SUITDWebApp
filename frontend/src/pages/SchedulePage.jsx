@@ -1,4 +1,5 @@
 import  { useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import './SchedulePage.css';
 import GroupSelector  from '../components/schedule/GroupSelector';
 import ViewToggle     from '../components/schedule/ViewToggle';
@@ -6,6 +7,8 @@ import DayStrip       from '../components/schedule/DayStrip';
 import LessonCard     from '../components/schedule/LessonCard';
 import BreakRow       from '../components/schedule/BreakRow';
 import CalendarModal  from '../components/schedule/CalendarModal';
+
+import { supabase } from '@supabaseClient';
 
 // ── Calendar icon ────────────────────────────────────────────────────────────
 const IconCalendar = () => (
@@ -18,50 +21,154 @@ const IconCalendar = () => (
   </svg>
 );
 
-// ── Schedule data ─────────────────────────────────────────────────────────────
-function getWeekDays(weekOffset) {
-  // Anchor: Monday of current week + offset
+// Функция для генерации массива дней недели (Пн-Вс)
+function getWeekDays(weekOffset = 0) {
   const now = new Date();
-  const dow = (now.getDay() + 6) % 7; // Mon=0
-  const mon = new Date(now);
-  mon.setDate(now.getDate() - dow + weekOffset * 7);
+  
+  // Определяем текущий день недели (0 - Вс, 1 - Пн ...)
+  const currentDay = now.getDay();
+  
+  // Находим разницу, чтобы откатиться к понедельнику текущей недели
+  // (В JS: Пн=1...Сб=6, Вс=0. Делаем так, чтобы Пн стал 0)
+  const diffToMonday = currentDay === 0 ? 6 : currentDay - 1;
+  
+  const monday = new Date(now);
+  monday.setDate(now.getDate() - diffToMonday + (weekOffset * 7));
+  monday.setHours(0, 0, 0, 0); // Обнуляем время для точности
 
+  // Создаем массив из 7 дней
   return Array.from({ length: 7 }, (_, i) => {
-    const d = new Date(mon);
-    d.setDate(mon.getDate() + i);
-    return { num: d.getDate() };
+    const day = new Date(monday);
+    day.setDate(monday.getDate() + i);
+    
+    return {
+      num: day.getDate(),           // Число (напр. 15)
+      fullDate: day,                // Объект даты целиком
+      isToday: day.toDateString() === new Date().toDateString() // Флаг "сегодня"
+    };
   });
 }
 
-const SCHEDULE_DATA = {
-  0: [
-    { type: 'lesson', num: 1, time: '10:05 – 11:30', subject: 'Прикладной дизайн', teacher: 'Сошникова И.А.', room: 'В 484', tag: 'Лек', tagColor: 'purple' },
-    { type: 'lesson', num: 2, time: '11:40 – 13:05', subject: 'Прикладной дизайн', teacher: 'Сошникова И.А.', room: 'В 484', tag: 'Лек', tagColor: 'purple' },
-    { type: 'break',  time: '13:05 – 13:45', label: 'Обед' },
-    { type: 'lesson', num: 3, time: '13:45 – 15:10', subject: 'Прикладной дизайн', teacher: 'Сошникова И.А.', room: 'В 484', tag: 'Лек', tagColor: 'purple' },
-  ],
-  1: [
-    { type: 'lesson', num: 1, time: '09:00 – 10:30', subject: 'Типографика', teacher: 'Иванов В.С.', room: 'А 201', tag: 'Пр', tagColor: 'blue' },
-  ],
-  2: [], 3: [], 4: [], 5: [], 6: [],
+// Получения текущего дня (0-6)
+const getCurrentDay = () => {
+  const day = new Date().getDay();
+  return day === 0 ? 6 : day - 1; // Превращаем Sun=0 в 6, Mon=1 в 0
 };
 
-// ── Page ──────────────────────────────────────────────────────────────────────
+// // Получаем четную или нечетную неделю
+// const getWeekType = (weekOffset = 0) => {
+//   const now = new Date();
+//   // Учитываем смещение недель, если пользователь листает календарь
+//   const targetDate = new Date(now.setDate(now.getDate() + (weekOffset * 7)));
+  
+//   const dayOfMonth = targetDate.getDate();
+//   // Вычисляем номер недели в месяце (1, 2, 3, 4...)
+//   const weekOfMonth = Math.ceil(dayOfMonth / 7);
+  
+//   // Нечетная (1, 3, 5) — числ, четная (2, 4) — знам
+//   return weekOfMonth % 2 !== 0 ? 'числ' : 'знам';
+// };
+
+const fetchFullSchedule = async () => {
+  // Словарь для перевода строк из БД в индексы объекта
+  const dayToKey = {
+    'понедельник': 0,
+    'вторник':     1,
+    'среда':       2,
+    'четверг':     3,
+    'пятница':     4,
+    'суббота':     5,
+    'воскресенье': 6
+  };
+
+  // 1. Получаем ID текущего пользователя
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) throw new Error("Пользователь не авторизован");
+
+  // 2. Узнаем id_group пользователя
+  const { data: userData } = await supabase
+    .from('users')
+    .select('group_id, groups(name)') // Берем id и имя группы для селектора
+    .eq('id', user.id)
+    .single();
+  
+  if (!userData?.group_id) return { schedule: {}, groupName: 'Нет группы' };
+
+  // 3. Получаем всё расписание для этой группы
+  const { data, error } = await supabase
+    .from('schedule')
+    .select('*')
+    .eq('group_id', userData.group_id)
+    .order('time', { ascending: true });        // Сортируем по времени пары
+
+  if (error) throw error;
+  console.log(data);
+  const initialSchedule = { 0: [], 1: [], 2: [], 3: [], 4: [], 5: [], 6: [] };
+
+  // const currentType = getWeekType(weekOffset);  // числитель или знаменатель
+  
+  const schedule = data.reduce((acc, item) => {
+    // const dbType = item.week_type?.toLowerCase().trim();
+    // console.log(dbType);
+    // Пропускаем, если типы не совпадают
+    // (но оставляем, если в базе "числ/знам" или поле пустое)
+    // if (dbType === 'числ' && currentType !== 'числ') return acc;
+    // if (dbType === 'знам' && currentType !== 'знам') return acc;
+    const dayName = item.day_of_week.toLowerCase().trim();
+    const dayIndex = dayToKey[dayName];
+
+    if (dayIndex !== undefined) {
+      acc[dayIndex].push({
+        type: 'lesson',
+        time: item.time,
+        subject: item.subject,
+        teacher: item.teacher,
+        room: item.room,
+        class_type: item.class_type,
+        tagColor: item.class_type === 'Лек' ? 'purple' : 'blue'
+      });
+
+      // Пример логики обеда
+      if (item.time.includes('13:05')) {
+        acc[dayIndex].push({ type: 'break', time: '13:05 – 13:45', label: 'Обед' });
+      }
+    }
+    return acc;
+  }, initialSchedule);
+
+  return { schedule, groupName: userData.groups?.name };
+};
+
+
 export default function SchedulePage() {
-  const [activeDay,    setActiveDay]    = useState(0);
+  // Инициализируем активный день текущим днем недели
+  const [activeDay,    setActiveDay]    = useState(getCurrentDay());
   const [viewMode,     setViewMode]     = useState('day');
   const [weekOffset,   setWeekOffset]   = useState(0);
   const [calendarOpen, setCalendarOpen] = useState(false);
 
-  const days  = getWeekDays(weekOffset);
-  const items = SCHEDULE_DATA[activeDay] ?? [];
+  // 1. Получаем данные через React Query
+  const { data, isLoading, error } = useQuery({
+    queryKey: ['fullSchedule'],
+    queryFn: fetchFullSchedule,
+    staleTime: 5 * 60 * 1000,
+    cacheTime: 10 * 60 * 1000,
+  });
+
+  if (isLoading) return <div>Загрузка профиля...</div>;
+  if (error) return <div style={{ color: 'red' }}>Ошибка: {error.message}</div>;
+  console.log(data)
+  const schedule = data?.schedule || {};
+  const groupName = data?.groupName || "Группа";
+  const days = getWeekDays(weekOffset);
+  const items = schedule[activeDay] ?? []; 
 
   return (
     <>
       <div className="sched-page">
         {/* ── Controls ── */}
         <div className="sched-controls">
-          <GroupSelector group="4-МД-5" />
+          <GroupSelector group={groupName} />
           <div className="sched-controls__right">
             <ViewToggle value={viewMode} onChange={setViewMode} />
             <button className="sched-icon-btn" onClick={() => setCalendarOpen(true)}>
@@ -87,7 +194,7 @@ export default function SchedulePage() {
             items.map((item, i) =>
               item.type === 'break'
                 ? <BreakRow  key={i} time={item.time} label={item.label} />
-                : <LessonCard key={i} {...item} />
+                : <LessonCard key={i} {...item} num={i + 1} />
             )
           )}
         </div>

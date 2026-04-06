@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import AuthLayout from './AuthLayout';
 import './AuthLayout.css';
 
@@ -10,15 +10,16 @@ const GROUPS = [
 ];
 
 export default function RegisterScreen({ onRegister, onGoLogin }) {
-  const [name,     setName]     = useState('');
-  const [group,    setGroup]    = useState('');
+  const [firstName,     setFirstName]     = useState('');
+  const [groupNumber,    setGroupNumber]    = useState('');
   const [email,    setEmail]    = useState('');
   const [password, setPassword] = useState('');
+  const [passwordHash, setPasswordHash] = useState('');
   const [agreed,   setAgreed]   = useState(false);
   const [error,    setError]    = useState('');
 
   const handleSubmit = () => {
-    if (!name || !group || !email || !password) {
+    if (!firstName || !groupNumber || !email || !password) {
       setError('Заполните все поля'); return;
     }
     if (password.length < 8) {
@@ -28,7 +29,9 @@ export default function RegisterScreen({ onRegister, onGoLogin }) {
       setError('Примите условия пользовательского соглашения'); return;
     }
     setError('');
-    onRegister({ name, group, email, password });
+    // setPasswordHash(password); // НАДО СДЕЛАТЬ ХЕШ
+    console.log(firstName, groupNumber, email, password);
+    onRegister({ firstName, groupNumber, email, password });
   };
 
   return (
@@ -40,8 +43,8 @@ export default function RegisterScreen({ onRegister, onGoLogin }) {
         <input
           className="auth-input"
           placeholder="Иван"
-          value={name}
-          onChange={e => setName(e.target.value)}
+          value={firstName}
+          onChange={e => setFirstName(e.target.value)}
         />
       </div>
 
@@ -49,8 +52,8 @@ export default function RegisterScreen({ onRegister, onGoLogin }) {
         <label className="auth-field__label">Номер группы</label>
         <select
           className="auth-select"
-          value={group}
-          onChange={e => setGroup(e.target.value)}
+          value={groupNumber}
+          onChange={e => setGroupNumber(e.target.value)}
         >
           <option value="">Номер группы</option>
           {GROUPS.map(g => <option key={g} value={g}>{g}</option>)}
@@ -62,7 +65,7 @@ export default function RegisterScreen({ onRegister, onGoLogin }) {
         <input
           className="auth-input"
           type="email"
-          placeholder="petrovich@gmail.com"
+          placeholder="petrov@yandex.ru"
           value={email}
           onChange={e => setEmail(e.target.value)}
         />

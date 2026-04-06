@@ -1,6 +1,35 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import AuthLayout from './AuthLayout';
 import './AuthLayout.css';
+
+import { supabase } from '@supabaseClient'
+
+
+async function handleRegister(email, password) {
+  const { data, error } = await supabase.auth.signUp({
+    email: email,
+    password: password,
+    options: {
+      // Дополнительные данные (имя, ID группы), которые попадут в профиль
+      data: {
+        first_name: "Артем",
+        middle_name: "Владиславович",
+        last_name: "Кузнецов",
+        group_name: "3-МД-4",
+        // is_temp_password: 
+      },
+    },
+  });
+
+  if (error) {
+    console.error("Ошибка регистрации:", error.message);
+    return { success: false, error: error.message };
+  }
+
+  console.log("Пользователь создан:", data.user);
+  return { success: true, user: data.user };
+}
+
 
 export default function LoginScreen({ onLogin, onGoRegister }) {
   const [email,    setEmail]    = useState('');
@@ -8,13 +37,49 @@ export default function LoginScreen({ onLogin, onGoRegister }) {
   const [remember, setRemember] = useState(false);
   const [error,    setError]    = useState('');
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!email || !password) {
       setError('Заполните все поля');
       return;
     }
     setError('');
-    onLogin({ email, password, remember });
+    
+    try {
+      // handleRegister(email, password); // Регистрация пользователей
+      // 1. Пытаемся войти через Supabase
+      const { data, error: authError } = await supabase.auth.signInWithPassword({
+        email: email,
+        password: password,
+      });
+
+      if (authError) {
+        // Если пароль неверный или юзера нет, Supabase вернет ошибку
+        setError('Неверный email или пароль');
+        return;
+      }
+
+      // 2. Если вход успешен, получаем дополнительные данные из таблицы users
+      const { data: profile, error: profileError } = await supabase
+        .from('users')
+        .select('*')
+        .eq('id', data.user.id)
+        .single();
+
+      if (profile) {
+        console.log("Пользователь найден и профиль загружен:", profile);
+        
+        // 3. Передаем объединенный объект в функцию входа вашего приложения
+        onLogin({ 
+          ...data.user,    // системные данные (email, id)
+          ...profile,      // ваши данные (имя, аватар и т.д.)
+          remember 
+        }); 
+      }
+      
+    } catch (err) {
+      setError('Ошибка при подключении к базе данных');
+      console.error(err);
+    }
   };
 
   return (
@@ -26,7 +91,8 @@ export default function LoginScreen({ onLogin, onGoRegister }) {
         <input
           className="auth-input"
           type="email"
-          placeholder="petrovich@gmail.com"
+          autoComplete="username"
+          placeholder="petrov@yandex.ru"
           value={email}
           onChange={e => setEmail(e.target.value)}
         />
@@ -40,6 +106,7 @@ export default function LoginScreen({ onLogin, onGoRegister }) {
         <input
           className="auth-input"
           type="password"
+          autoComplete="current-password"
           placeholder="Пароль"
           value={password}
           onChange={e => setPassword(e.target.value)}
@@ -67,9 +134,9 @@ export default function LoginScreen({ onLogin, onGoRegister }) {
         Войти
       </button>
 
-      <div className="auth-bottom">
+      {/* <div className="auth-bottom">
         Нет аккаунта?<span onClick={onGoRegister}>Зарегистрироваться</span>
-      </div>
+      </div> */}
     </AuthLayout>
   );
 }

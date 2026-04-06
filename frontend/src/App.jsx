@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import Home from "./pages/Home";
 import Sidebar from "./components/layout/Sidebar";
@@ -18,6 +18,7 @@ import TeachersPage from "./pages/TeachersPage";
 import StudentCardPage from "./pages/StudentCardPage";
 import AskQuestionPage from "./pages/AskQuestionPage";
 import PodcastsPage from "./pages/PodcastsPage";
+import ChangePassword from "./pages/ChangePassword";
 import LoginScreen from "./components/auth/LoginScreen";
 import RegisterScreen from "./components/auth/RegisterScreen";
 import AccessScreen from "./components/auth/AccessScreen";
@@ -25,96 +26,95 @@ import AccessScreen from "./components/auth/AccessScreen";
 // Импорт онбординга
 import OnboardingFlow from "./components/onboarding/OnboardingFlow";
 
+import { supabase } from './supabaseClient'; 
+
+
 export default function App() {
-  const [onboardingComplete, setOnboardingComplete] = useState(() => {
-    // опционально: проверяем localStorage, чтобы не показывать онбординг повторно
-    return localStorage.getItem("onboarding_done") === "true";
-  });
+  const [session, setSession] = useState(null);
+  const [loading, setLoading] = useState(true); // Состояние загрузки, пока проверяем сессию
 
-  const handleOnboardingDone = () => {
-    localStorage.setItem("onboarding_done", "true");
-    setOnboardingComplete(true);
-  };
+  useEffect(() => {
+    // 1. Проверяем текущую сессию при первом запуске
+    const getInitialSession = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      setSession(session);
+      setLoading(false);
+    };
 
-  if (!onboardingComplete) {
-    return <OnboardingFlow onDone={handleOnboardingDone} />;
+    getInitialSession();
+
+    // 2. Слушаем изменения (Login / Logout)
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
+
+  // Пока база данных отвечает
+  if (loading) return <div>Загрузка...</div>;
+
+  // Если сессии нет — показываем экран входа/онбординга
+  if (!session) {
+    return <OnboardingFlow onDone={() => {}} />; 
   }
 
+  // Если сессия есть — показываем основное приложение
   return (
     <BrowserRouter>
-    <Routes>
-    <Route
-      path="/login"
-      element={
-        <LoginScreen
-          onLogin={(data) => {
-            localStorage.setItem("token", "123"); // фейковый логин
-            window.location.href = "/home"; // или navigate
-          }}
-          onGoRegister={() => window.location.href = "/register"}
+      <Routes>
+        {/* Логин, если залогинин (типа перелогин). Нужна ли такая фича?*/}
+        {/* <Route
+          path="/login"
+          element={
+            <LoginScreen
+              onLogin={(data) => {
+                localStorage.setItem("token", "123"); // фейковый логин
+                window.location.href = "/home"; // или navigate
+              }}
+              onGoRegister={() => window.location.href = "/register"}
+            />
+          }
+        /> */}
+        <Route
+          path="/change-password"
+          element={<ChangePassword/>}
         />
-      }
-    />
+        <Route
+          path="/*"
+          element={
+            <div className="layout">
+              <Sidebar />
+              <main className="main">
+                <Header />
+                <Routes>
+                  <Route path="/"              element={<Navigate to="/home" replace />} />
+                  <Route path="/home"          element={<Home />} />
+                  <Route path="/schedule"      element={<SchedulePage />} />
+                  <Route path="/services"      element={<ServicesPage />} />
+                  <Route path="/profile"       element={<ProfilePage />} />
+                  
+                  <Route path="/services/studentcard"    element={<StudentCardPage />} />
+                  <Route path="/services/news"           element={<NewsPage />} />
+                  <Route path="/services/teachers"       element={<TeachersPage />} />
 
-    <Route
-      path="/register"
-      element={
-        <RegisterScreen
-          onRegister={(data) => {
-            localStorage.setItem("token", "123");
-            window.location.href = "/home";
-          }}
-          onGoLogin={() => window.location.href = "/login"}
+                  {/* <Route path="/services/sport"       element={< />} /> */}
+                  <Route path="/services/events"         element={<EventsPage />} />
+                  <Route path="/services/askquestion"    element={<AskQuestionPage />} />
+
+                  <Route path="/services/contests"       element={<ContestsPage />} />
+                  <Route path="/services/vacancies"      element={<VacanciesPage />} />
+                  <Route path="/services/internships"    element={<InternshipsPage />} />
+                  <Route path="/services/specialoffers"  element={<SpecialOffersPage />} />
+
+                  <Route path="/services/podcasts"  element={<PodcastsPage />} />
+                  <Route path="/services/articles"  element={<ArticlesPage />} />
+                </Routes>
+              </main>
+            </div>
+          }
         />
-      }
-    />
-
-    {/* <Route
-      path="/access"
-      element={
-        <AccessScreen
-          onConfirm={() => {
-            localStorage.setItem("onboarded", "true");
-            window.location.href = "/home";
-          }}
-          onCancel={() => window.location.href = "/home"}
-        />
-      }
-    /> */}
-
-    {/* 📱 ОСНОВНОЕ ПРИЛОЖЕНИЕ */}
-    <Route
-      path="/*"
-      element={
-        <div className="layout">
-          <Sidebar />
-          <main className="main">
-            <Header />
-            <Routes>
-            <Route path="/" element={<Navigate to="/home" replace />} />
-            <Route path="/home" element={<Home />} />
-            <Route path="/schedule" element={<SchedulePage />} />
-            <Route path="/services" element={<ServicesPage />} />
-            <Route path="/profile" element={<ProfilePage />} />
-
-            <Route path="/services/studentcard" element={<StudentCardPage />} />
-            <Route path="/services/news" element={<NewsPage />} />
-            <Route path="/services/teachers" element={<TeachersPage />} />
-            <Route path="/services/events" element={<EventsPage />} />
-            <Route path="/services/askquestion" element={<AskQuestionPage />} />
-            <Route path="/services/contests" element={<ContestsPage />} />
-            <Route path="/services/vacancies" element={<VacanciesPage />} />
-            <Route path="/services/internships" element={<InternshipsPage />} />
-            <Route path="/services/specialoffers" element={<SpecialOffersPage />} />
-            <Route path="/services/podcasts" element={<PodcastsPage />} />
-            <Route path="/services/articles" element={<ArticlesPage />} />
-          </Routes>
-          </main>
-        </div>
-      }
-    />
-
-  </Routes>
+      </Routes>
     </BrowserRouter>
   );
 }

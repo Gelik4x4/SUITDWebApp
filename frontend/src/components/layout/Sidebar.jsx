@@ -1,9 +1,14 @@
 import { useLocation, useNavigate, NavLink } from 'react-router-dom';
+import { useQueryClient } from '@tanstack/react-query';
 import './Sidebar.css';
 import { IconHome, IconSchedule, IconServices, IconProfile, IconLogout } from '../icons/Icons';
 
+import { supabase } from '@supabaseClient';
+
+
 export default function Sidebar() {
   const { pathname } = useLocation();
+  const queryClient = useQueryClient();
   const navigate = useNavigate();
   const activePage = '/' + pathname.split('/')[1];
 
@@ -14,14 +19,28 @@ export default function Sidebar() {
     '/profile':  { label: 'профиль',    Icon: IconProfile },
   };
 
-  const handleLogout = () => {
-    /* Очищаем токен / флаг авторизации если есть */
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
-    localStorage.removeItem('onboarded');
-    /* Переходим на страницу входа */
-    navigate('/login');
+  const handleLogout = async () => {
+
+    const { error } = await supabase.auth.signOut();
+    queryClient.clear();
+    
+    if (error) {
+      console.error('Ошибка при выходе:', error.message);
+    } else {
+      navigate('/');
+      console.log('Вы вышли из системы, localStorage очищен');
+    }
   };
+
+  // const handleLogout = () => {
+  //   /* Очищаем токен / флаг авторизации если есть */
+  //   localStorage.removeItem('token');
+  //   localStorage.removeItem('user');
+  //   localStorage.removeItem('onboarded');
+  //   localStorage.removeItem('onboarding_done');
+  //   /* Переходим на страницу входа */
+  //   navigate('/login');
+  // };
 
   return (
     <aside className="sidebar">
