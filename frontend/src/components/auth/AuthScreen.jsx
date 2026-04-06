@@ -1,4 +1,3 @@
-import React from 'react';
 import './AuthScreen.css';
 
 export default function AuthScreen({ onLogin, onRegister }) {

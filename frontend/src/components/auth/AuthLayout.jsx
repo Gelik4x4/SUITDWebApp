@@ -1,4 +1,3 @@
-import React from 'react';
 import './AuthLayout.css';
 
 export default function AuthLayout({ imageSrc, children }) {
