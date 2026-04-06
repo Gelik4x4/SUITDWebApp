@@ -93,6 +93,7 @@ function ChangePassword() {
       setError("Произошла ошибка. Попробуйте позже.");
     } finally {
       setIsLoading(false);
+      navigate('/success-change');
     }
   };
 
