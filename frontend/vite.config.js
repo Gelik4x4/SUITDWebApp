@@ -13,6 +13,7 @@ export default defineConfig({
       '@icons': path.resolve(__dirname, './src/components/icons'),
       '@pages': path.resolve(__dirname, './src/pages'),
       '@styles': path.resolve(__dirname, './src/styles'),
+      '@supabaseClient': path.resolve(__dirname, './src/supabaseClient'),
     },
   },
 });
