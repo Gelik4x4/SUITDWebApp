@@ -7,6 +7,6 @@ export const STUDENT_DATA = {
   studentId: '222-22-22',
   birthDate: '19.07.2003',
   department: 'Цифровых и аддитивных технологий',
-  photo: '/src/components/img/student.jpg',
+  photo: '/src/assets/img/student.jpg',
   barcode: '2222222222222',
 };
