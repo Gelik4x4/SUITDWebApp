@@ -12,5 +12,5 @@
 
 .topbar__actions {
   display: flex;
-  gap: 0px;
+  gap: 8px;
 }
