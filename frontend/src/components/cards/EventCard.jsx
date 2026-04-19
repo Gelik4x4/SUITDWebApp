@@ -1,4 +1,4 @@
-import { IconHeart, IconPin } from '../icons/Icons';
+import Icon from '@icon/Icon';
 
 
 function EventCard({ img, date, location, title }) {
@@ -8,7 +8,7 @@ function EventCard({ img, date, location, title }) {
       <div className="event-card__img-wrap">
         <img src={img} alt={title} className="event-card__photo" />
         <button className="event-card__fav">
-          <IconHeart />
+          <Icon name="Heart" color="red" />
         </button>
       </div>
 
@@ -17,7 +17,7 @@ function EventCard({ img, date, location, title }) {
         <div className="event-card__meta">
           <span>{date}</span>
           <span className="event-card__location">
-            <IconPin /> {location}
+            <Icon name="Location" /> {location}
           </span>
         </div>
         <div className="event-card__title">{title}</div>
@@ -26,4 +26,4 @@ function EventCard({ img, date, location, title }) {
   );
 }
 
-export default EventCard
+export default EventCard;

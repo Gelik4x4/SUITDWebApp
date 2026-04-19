@@ -1,13 +1,12 @@
 import  { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { IconBack } from '../components/icons/Icons';
 import './ContestsPage.css';
 import SearchBar      from '../components/searchbar/SearchBar';
 import ContestCard    from '../components/contests/ContestCard';
 import ContestFilters from '../components/contests/ContestFilters';
 import ContestDetail  from '../components/contests/ContestDetail';
-import { CONTESTS }   from '../components/contests/contestsData';
-
+import { CONTESTS }   from '@constants/contestsData';
+import Icon from '@icon/Icon';
 
 const EMPTY_FILTERS = { directions: [], status: null };
 
@@ -38,7 +37,7 @@ function ContestsPage() {
     <div className="con-page">
       <div className="con-page__left">
         <button className="icon-btn aq-page__back" onClick={() => navigate('/services')}>
-          <IconBack />
+          <Icon name="ArrowLeft"/>
         </button>
         <SearchBar value={search} onChange={setSearch} />
         <div className="con-grid-wrap">

@@ -1,12 +1,12 @@
 import { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './InternshipsPage.css';
-import { IconBack } from '../components/icons/Icons';
 import SearchBar      from '../components/searchbar/SearchBar';
 import InternshipCard    from '../components/internships/InternshipCard';
 import InternshipFilters from '../components/internships/InternshipFilters';
 import InternshipDetail  from '../components/internships/InternshipDetail';
-import { INTERNSHIPS }   from '../components/internships/internshipsData';
+import { INTERNSHIPS }   from '@constants/internshipsData';
+import Icon from '@icon/Icon';
 
 const EMPTY_FILTERS = { directions: [], employment: [], format: [] };
 
@@ -38,7 +38,7 @@ function InternshipsPage() {
     <div className="intp-page">
       <div className="intp-page__left">
         <button className="icon-btn aq-page__back" onClick={() => navigate('/services')}>
-          <IconBack />
+          <Icon name="ArrowLeft"/>
         </button>        
         <SearchBar value={search} onChange={setSearch} />
         <div className="intp-list">

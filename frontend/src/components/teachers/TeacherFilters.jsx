@@ -1,6 +1,5 @@
-import React from 'react';
 import './TeacherFilters.css';
-import { INSTITUTES } from './teachersData';
+import { INSTITUTES } from '@constants/teachersData';
 
 function Checkbox({ label, checked, onChange }) {
   return (
