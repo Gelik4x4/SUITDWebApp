@@ -1,5 +1,5 @@
 import './VacanciesWidget.css';
-import Icon from '@icon/Icon';
+import { IconArrow, IconHeart } from '../icons/Icons';
 
 function JobCard({ size = 'sm' }) {
   return (
@@ -9,7 +9,7 @@ function JobCard({ size = 'sm' }) {
           <div className="job-card__title">UI/UX Дизайнер</div>
           <div className="job-card__company">Альфа-банк</div>
         </div>
-        <button className="icon-btn icon-btn--sm"><Icon name="Heart"/></button>
+        <button className="icon-btn icon-btn--sm"><IconHeart /></button>
       </div>
       <div className={`job-card__art job-card__art--${size}`}>
         {size === 'sm' ? (
@@ -34,7 +34,7 @@ export default function VacanciesWidget() {
     <div className="card">
       <div className="card__header">
         <span className="card__title">Популярные вакансии</span>
-        <button className="icon-btn"><Icon name="ArrowUp"/></button>
+        <button className="icon-btn"><img src="/src/components/icons/arrow-btn.svg"/></button>
       </div>
       <div className="vacancies-grid">
         <div className="vacancies-grid__left">

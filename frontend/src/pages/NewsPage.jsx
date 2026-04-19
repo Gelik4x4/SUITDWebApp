@@ -5,8 +5,8 @@ import SearchBar   from '../components/searchbar/SearchBar';
 import NewsCard    from '../components/news/NewsCard';
 import NewsFilters from '../components/news/NewsFilters';
 import NewsDetail  from '../components/news/NewsDetail';
-import { NEWS }    from '@constants/newsData';
-import Icon from '@icon/Icon';
+import { NEWS }    from '../components/news/newsData';
+import { IconBack } from '../components/icons/Icons';
 
 const EMPTY_FILTERS = { directions: [] };
 
@@ -36,7 +36,7 @@ function NewsPage() {
     <div className="news-page">
       <div className="news-page__left">
         <button className="icon-btn aq-page__back" onClick={() => navigate('/services')}>
-          <Icon name="ArrowLeft"/>
+          <IconBack />
         </button>
         <SearchBar value={search} onChange={setSearch} />
         <div className="news-list">

@@ -1,5 +1,5 @@
 import './OffersWidget.css';
-import Icon from '@icon/Icon';
+import { IconArrow } from '../icons/Icons';
 
 function OfferCard({ color }) {
   return (
@@ -16,7 +16,7 @@ export default function OffersWidget() {
     <div className="card">
       <div className="card__header">
         <span className="card__title">Спецпредложения</span>
-        <button className="icon-btn"><Icon name="ArrowUp"/></button>
+        <button className="icon-btn"><img src="/src/components/icons/arrow-btn.svg"/></button>
       </div>
       <div className="offers-grid">
         <OfferCard color="gray" />
