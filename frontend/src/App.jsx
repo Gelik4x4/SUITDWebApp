@@ -20,9 +20,7 @@ import AskQuestionPage from "./pages/AskQuestionPage";
 import PodcastsPage from "./pages/PodcastsPage";
 import ChangePassword from "./pages/ChangePassword";
 import SuccessPopup from "./components/auth/SuccessPopup"
-import LoginScreen from "./components/auth/LoginScreen";
-import RegisterScreen from "./components/auth/RegisterScreen";
-import AccessScreen from "./components/auth/AccessScreen";
+
 
 // Импорт онбординга
 import OnboardingFlow from "./components/onboarding/OnboardingFlow";

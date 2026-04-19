@@ -2,8 +2,7 @@ import { useState, useCallback } from 'react';
 import SplashScreen    from './SplashScreen';
 import OnboardingSlide from './OnboardingSlide';
 import LoginScreen     from '../auth/LoginScreen';
-import RegisterScreen  from '../auth/RegisterScreen';
-import AccessScreen    from '../auth/AccessScreen';
+
 
 
 const S = {
