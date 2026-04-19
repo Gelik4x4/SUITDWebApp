@@ -1,12 +1,12 @@
 import { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './TeachersPage.css';
-import { IconBack } from '../components/icons/Icons';
 import SearchBar      from '../components/searchbar/SearchBar';
 import TeacherListItem  from '../components/teachers/TeacherListItem';
 import TeacherFilters   from '../components/teachers/TeacherFilters';
 import TeacherDetail    from '../components/teachers/TeacherDetail';
-import { TEACHERS }     from '../components/teachers/teachersData';
+import { TEACHERS }     from '@constants/teachersData';
+import Icon from '@icon/Icon';
 
 const EMPTY_FILTERS = { institutes: [] };
 
@@ -39,7 +39,7 @@ function TeachersPage() {
       {/* Left: search + list */}
       <div className="tp-page__left">
         <button className="icon-btn aq-page__back" onClick={() => navigate('/services')}>
-          <IconBack />
+          <Icon name="ArrowLeft"/>
         </button>
         <SearchBar
           value={search}

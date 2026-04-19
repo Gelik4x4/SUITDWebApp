@@ -1,0 +1,71 @@
+.splash {
+  position: fixed;
+  inset: 0;
+  background: #18a0fb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  animation: splash-fadein 0.3s ease;
+}
+
+@keyframes splash-fadein {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.splash__content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 28px;
+}
+
+/* Wordmark */
+.splash__wordmark {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  line-height: 1;
+}
+
+.splash__suitd {
+  font-family: 'Onest', 'Segoe UI', sans-serif;
+  font-size: clamp(40px, 5vw, 64px);
+  font-weight: 800;
+  color: #ffffff;
+  letter-spacing: -1px;
+}
+
+.splash__students {
+  font-family: 'Caveat', 'Segoe Script', cursive;
+  font-size: clamp(26px, 3.2vw, 42px);
+  font-weight: 600;
+  color: #ffffff;
+  letter-spacing: 1px;
+  margin-top: -4px;
+}
+
+/* Logo */
+.splash__logo {
+  filter: drop-shadow(0 12px 32px rgba(0,0,0,0.18));
+}
+
+/* Progress bar */
+.splash__bar-wrap {
+  width: clamp(180px, 24vw, 300px);
+}
+
+.splash__bar {
+  height: 8px;
+  background: rgba(255,255,255,0.28);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.splash__bar-fill {
+  height: 100%;
+  background: #ffffff;
+  border-radius: 4px;
+  transition: width 0.05s linear;
+}

@@ -1,12 +1,13 @@
 import { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './PodcastsPage.css';
-import { IconBack } from '../components/icons/Icons';
 import SearchBar      from '../components/searchbar/SearchBar';
 import PodcastCard    from '../components/podcasts/PodcastCard';
 import PodcastFilters from '../components/podcasts/PodcastFilters';
 import PodcastDetail  from '../components/podcasts/PodcastDetail';
-import { PODCASTS }   from '../components/podcasts/podcastsData';
+import { PODCASTS }   from '@constants/podcastsData';
+import Icon from '@icon/Icon';
+
 
 const EMPTY_FILTERS = { directions: [] };
 
@@ -37,7 +38,7 @@ function PodcastsPage() {
       {/* Left: search + 3-col grid */}
       <div className="podp-page__left">
         <button className="icon-btn aq-page__back" onClick={() => navigate('/services')}>
-          <IconBack />
+          <Icon name="ArrowLeft"/>
         </button>
         <SearchBar value={search} onChange={setSearch} />
         <div className="podp-grid-wrap">

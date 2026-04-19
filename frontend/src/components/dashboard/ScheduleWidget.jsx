@@ -1,15 +1,15 @@
 import { useQuery } from '@tanstack/react-query';
 import './ScheduleWidget.css';
-import { IconArrow } from '../icons/Icons';
-import { supabase } from '../../supabaseClient'
+import Icon from '@icon/Icon';
+import { supabase } from '@supabaseClient'
 
 
 function ScheduleItem({ 
-  "Время": time,
-  "Вид занятий": lessonType, 
-  "Дисциплина": subject, 
-  "Преподаватель": teacher, 
-  "Аудитория": room
+  time, 
+  class_type: classType, 
+  subject, 
+  teacher, 
+  room 
 }) {
   return (
     <div className="schedule-item">
@@ -22,7 +22,7 @@ function ScheduleItem({
             <a href="#" className="schedule-item__teacher">{teacher}</a>
           </div>
           <div className="schedule-item__right">
-            <span className="badge">{lessonType}</span>
+            <span className="badge">{classType}</span>
             <span className="schedule-item__room">{room}</span>
           </div>
         </div>
@@ -31,21 +31,33 @@ function ScheduleItem({
   );
 }
 
-const fetchScheduleData = async (group, capitalizedWeekday) => {
+const fetchMySchedule = async (capitalizedWeekday) => {
+  // 1. Получаем ID текущего пользователя
+  const { data: { user } } = await supabase.auth.getUser();
+
+  // 2. Достаем id_group из вашей таблицы профилей
+  const { data: userData } = await supabase
+    .from('users')
+    .select('group_id')
+    .eq('id', user.id)
+    .single();
+
+    if (!userData?.group_id) return [];
+
+  // 3. Запрашиваем расписание по ID группы
   const { data, error } = await supabase
     .from('schedule')
     .select('*')
-    .eq('Группа', group)
-    .eq('День недели', capitalizedWeekday);
+    .eq('group_id', userData.group_id) // Фильтруем по ID
+    .eq('day_of_week', capitalizedWeekday)
+    .order('time', { ascending: true }); // Сразу сортируем по времени
+
   if (error) throw error;
   return data;
 };
 
 
 export default function ScheduleWidget() {
-  const group = "1-МГ-2";
-  // const group = "1-МГ-46";
-  
   const now = new Date();
   const dateFormatted = now.toLocaleDateString('ru-RU', {
     day: 'numeric',
@@ -53,15 +65,15 @@ export default function ScheduleWidget() {
   });
   // день недели
   const weekday = now.toLocaleDateString('ru-RU', { weekday: 'long' });
-  // const capitalizedWeekday = weekday.charAt(0).toUpperCase() + weekday.slice(1).toLowerCase();
+  const capitalizedWeekday = weekday.charAt(0).toUpperCase() + weekday.slice(1).toLowerCase();
   // const capitalizedWeekday = "Понедельник";
-  const capitalizedWeekday = "Вторник";
+  // const capitalizedWeekday = "Вторник";
   // const capitalizedWeekday = "Среда";
   // const capitalizedWeekday = "Четверг";
 
   const { data: scheduleData, isLoading, error } = useQuery({
-    queryKey: ['schedule', group, capitalizedWeekday],
-    queryFn: () => fetchScheduleData(group, capitalizedWeekday),
+    queryKey: ['schedule', capitalizedWeekday],
+    queryFn: () => fetchMySchedule(capitalizedWeekday),
     staleTime: 5 * 60 * 1000,
     cacheTime: 10 * 60 * 1000,
   });
@@ -78,7 +90,7 @@ export default function ScheduleWidget() {
           <span className="card__title">Расписание</span>
           <span className="card__subtitle"> · {capitalizedWeekday}, {dateFormatted}</span>
         </div>
-        <button className="icon-btn"><img src="/src/components/icons/arrow-btn.svg"/></button>
+        <button className="icon-btn"><Icon name="ArrowUp"/></button>
       </div>
       <div className="schedule-list">
         {scheduleData.map((item, i) => (
