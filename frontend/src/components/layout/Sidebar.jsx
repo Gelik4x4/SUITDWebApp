@@ -1,7 +1,7 @@
 import { useLocation, useNavigate, NavLink } from 'react-router-dom';
 import { useQueryClient } from '@tanstack/react-query';
 import './Sidebar.css';
-import { IconHome, IconSchedule, IconServices, IconProfile, IconLogout } from '../icons/Icons';
+import Icon from '@icon/Icon';
 
 import { supabase } from '@supabaseClient';
 
@@ -13,10 +13,10 @@ export default function Sidebar() {
   const activePage = '/' + pathname.split('/')[1];
 
   const pages = {
-    '/home':     { label: 'главная',    Icon: IconHome },
-    '/schedule': { label: 'расписание', Icon: IconSchedule },
-    '/services': { label: 'сервисы',    Icon: IconServices },
-    '/profile':  { label: 'профиль',    Icon: IconProfile },
+    '/home':     { label: 'главная',    name: 'Home' },
+    '/schedule': { label: 'расписание', name: 'Schedule' },
+    '/services': { label: 'сервисы',    name: 'Services' },
+    '/profile':  { label: 'профиль',    name: 'Profile' },
   };
 
   const handleLogout = async () => {
@@ -46,7 +46,7 @@ export default function Sidebar() {
     <aside className="sidebar">
       <div className="sidebar__logo">
         <div className="sidebar__logo-icon">
-          <img src="/src/components/img/favicon.svg" alt="SUITD" />
+          <img src="/src/assets/img/favicon.svg" alt="SUITD" />
         </div>
         <div>
           <div className="sidebar__logo-title">SUITD</div>
@@ -55,19 +55,19 @@ export default function Sidebar() {
       </div>
 
       <nav className="sidebar__nav">
-        {Object.entries(pages).map(([page, { label, Icon }]) => (
+        {Object.entries(pages).map(([page, { label, name }]) => (
           <NavLink
             key={page}
             className={`sidebar__link${page === activePage ? ' sidebar__link--active' : ''}`}
             to={page}
           >
-            <Icon /> {label}
+            <Icon name={name} /> {label}
           </NavLink>
         ))}
       </nav>
 
       <button className="sidebar__logout" onClick={handleLogout}>
-        <IconLogout /> выход
+        <Icon name="LogOut"/> выход
       </button>
     </aside>
   );

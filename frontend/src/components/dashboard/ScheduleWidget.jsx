@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import './ScheduleWidget.css';
-import { IconArrow } from '../icons/Icons';
+import Icon from '@icon/Icon';
 import { supabase } from '@supabaseClient'
 
 
@@ -90,7 +90,7 @@ export default function ScheduleWidget() {
           <span className="card__title">Расписание</span>
           <span className="card__subtitle"> · {capitalizedWeekday}, {dateFormatted}</span>
         </div>
-        <button className="icon-btn"><img src="/src/components/icons/arrow-btn.svg"/></button>
+        <button className="icon-btn"><Icon name="ArrowUp"/></button>
       </div>
       <div className="schedule-list">
         {scheduleData.map((item, i) => (
