@@ -11,7 +11,7 @@ function SuccessPopup() {
     <div className="popup-overlay">
       <div className="popup-container">
         <h2 className="popup-title">Пароль успешно изменен!</h2>
-        <img src="/src/components/img/auth/login.png" alt="Success" className="popup-image" />
+        <img src="/src/assets/img/auth/login.png" alt="Success" className="popup-image" />
         <button className="popup-button" onClick={handleFinish}>
           Хорошо
         </button>

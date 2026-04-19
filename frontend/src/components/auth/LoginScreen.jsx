@@ -83,7 +83,7 @@ export default function LoginScreen({ onLogin, onGoRegister }) {
   };
 
   return (
-    <AuthLayout imageSrc="/src/components/img/auth/login.png">
+    <AuthLayout imageSrc="/src/assets/img/auth/login.png">
       <h1 className="auth-title">Вход</h1>
 
       <div className="auth-field">

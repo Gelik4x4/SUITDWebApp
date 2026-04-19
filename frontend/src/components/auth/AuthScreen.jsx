@@ -7,7 +7,7 @@ export default function AuthScreen({ onLogin, onRegister }) {
       <div className="auth-screen__left">
         <div className="auth-screen__illus-wrap">
           <img 
-            src="/src/components/img/auth/on-boarding-4.png" 
+            src="/src/assets/img/auth/on-boarding-4.png" 
             alt="auth" 
             className="auth-screen__image" 
           />

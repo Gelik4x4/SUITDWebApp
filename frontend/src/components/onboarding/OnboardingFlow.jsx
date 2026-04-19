@@ -29,7 +29,7 @@ export default function OnboardingFlow({ onDone }) {
 
   if (step === S.WELCOME)  return (
     <OnboardingSlide
-      imageSrc="/src/components/img/auth/welcome.png"          
+      imageSrc="/src/assets/img/auth/welcome.png"          
       title="Добро пожаловать<br/>в SUITD students!"
       subtitle="Расписание, уведомления, новости, конкурсы и полезные сервисы в одном приложении."
       step={null} isWelcome
@@ -39,7 +39,7 @@ export default function OnboardingFlow({ onDone }) {
 
   if (step === S.OB1)  return (
     <OnboardingSlide
-      imageSrc="/src/components/img/auth/on-boarding-1.png"         
+      imageSrc="/src/assets/img/auth/on-boarding-1.png"         
       title="Расписание —<br/>всегда под рукой"
       subtitle="Актуальное расписание занятий, аудитории и преподавателей."
       step={0} totalSteps={3} onBack={back} onNext={next}
@@ -48,7 +48,7 @@ export default function OnboardingFlow({ onDone }) {
 
   if (step === S.OB2)  return (
     <OnboardingSlide
-      imageSrc="/src/components/img/auth/on-boarding-2.png"  
+      imageSrc="/src/assets/img/auth/on-boarding-2.png"  
       title="Не пропустите важное"
       subtitle="Приложение напомнит о парах, дедлайнах, экзаменах и событиях кафедры."
       step={1} totalSteps={3} onBack={back} onNext={next}
@@ -57,7 +57,7 @@ export default function OnboardingFlow({ onDone }) {
 
   if (step === S.OB3)  return (
     <OnboardingSlide
-      imageSrc="/src/components/img/auth/on-boarding-3.png"        
+      imageSrc="/src/assets/img/auth/on-boarding-3.png"        
       title="Полезные сервисы<br/>для эффективности"
       subtitle="Мероприятия, стажировки, конкурсы и многое другое всегда рядом."
       step={2} totalSteps={3} onBack={back} onNext={next}
