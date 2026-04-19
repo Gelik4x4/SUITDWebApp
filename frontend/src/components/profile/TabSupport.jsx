@@ -1,17 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import './TabSupport.css';
-
-const IconPaperclip = () => (
-  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-    <path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48" />
-  </svg>
-);
-const IconSend = () => (
-  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-    <line x1="22" y1="2" x2="11" y2="13" />
-    <polygon points="22 2 15 22 11 13 2 9 22 2" />
-  </svg>
-);
+import Icon from '@icon/Icon';
 
 const INITIAL_MESSAGES = [
   {
@@ -38,7 +27,7 @@ function ChatMessage({ msg }) {
       <div className="chat-msg__meta">
         {msg.time}
         {isUser && (
-          <span className={`chat-msg__read${msg.read ? ' chat-msg__read--done' : ''}`}>✓</span>
+          <span className={`chat-msg__read${msg.read ? ' chat-msg__read--done' : ''}`}><Icon name="Tick" size={16}/></span>
         )}
       </div>
     </div>
@@ -78,9 +67,6 @@ export default function TabSupport() {
 
       {/* Input bar */}
       <div className="chat-input-bar">
-        <button className="chat-input-bar__attach icon-btn">
-          <IconPaperclip />
-        </button>
         <input
           className="chat-input-bar__input"
           placeholder="Ваш вопрос..."
@@ -88,8 +74,11 @@ export default function TabSupport() {
           onChange={e => setInput(e.target.value)}
           onKeyDown={onKey}
         />
+        <button className="chat-input-bar__attach icon-btn">
+          <Icon name="Attachment"/>
+        </button>
         <button className="chat-input-bar__send icon-btn" onClick={send}>
-          <IconSend />
+          <Icon name="Send"/>
         </button>
       </div>
     </div>

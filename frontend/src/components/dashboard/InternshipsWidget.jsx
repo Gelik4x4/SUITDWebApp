@@ -1,5 +1,5 @@
 import './InternshipsWidget.css';
-import { IconArrow, IconHeart } from '../icons/Icons';
+import Icon from '@icon/Icon';
 
 function InternCard({ color }) {
   return (
@@ -9,7 +9,7 @@ function InternCard({ color }) {
           <div className="intern-card__title">UI/UX Дизайнер</div>
           <div className="intern-card__company">Альфа-банк</div>
         </div>
-        <button className="icon-btn icon-btn--sm"><IconHeart /></button>
+        <button className="icon-btn icon-btn--sm"><Icon name="Heart"/></button>
       </div>
 
     </div>
@@ -21,7 +21,7 @@ export default function InternshipsWidget() {
     <div className="card">
       <div className="card__header">
         <span className="card__title">Стажировки</span>
-        <button className="icon-btn"><img src="/src/components/icons/arrow-btn.svg"/></button>
+        <button className="icon-btn"><Icon name="ArrowUp"/></button>
       </div>
       <div className="two-col-grid">
         <InternCard color="pink" />

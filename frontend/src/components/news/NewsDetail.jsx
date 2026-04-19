@@ -1,10 +1,6 @@
 import './NewsDetail.css';
+import Icon from '@icon/Icon';
 
-const IconBack = () => (
-  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-    <polyline points="15 18 9 12 15 6" />
-  </svg>
-);
 
 export default function NewsDetail({ item, onBack }) {
   return (
@@ -12,7 +8,7 @@ export default function NewsDetail({ item, onBack }) {
       {/* Title row with back button */}
       <div className="news-detail__titlerow">
         <button className="icon-btn news-detail__back" onClick={onBack}>
-          <IconBack />
+          <Icon name="ArrowLeft"/>
         </button>
         <h2 className="news-detail__title">{item.title}</h2>
       </div>

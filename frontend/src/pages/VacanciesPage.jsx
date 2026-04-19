@@ -1,12 +1,12 @@
 import { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './VacanciesPage.css';
-import { IconBack } from '../components/icons/Icons';
 import SearchBar      from '../components/searchbar/SearchBar';
 import VacancyCard    from '../components/vacancies/VacancyCard';
 import VacancyFilters from '../components/vacancies/VacancyFilters';
 import VacancyDetail  from '../components/vacancies/VacancyDetail';
-import { VACANCIES }  from '../components/vacancies/vacanciesData';
+import { VACANCIES }  from '@constants/vacanciesData';
+import Icon from '@icon/Icon';
 
 const EMPTY_FILTERS = { directions: [], experience: [], employment: [], format: [] };
 
@@ -39,7 +39,7 @@ function VacanciesPage() {
     <div className="vac-page">
       <div className="vac-page__left">
         <button className="icon-btn aq-page__back" onClick={() => navigate('/services')}>
-          <IconBack />
+          <Icon name="ArrowLeft"/>
         </button>
         <SearchBar value={search} onChange={setSearch} />
         <div className="vac-list">
