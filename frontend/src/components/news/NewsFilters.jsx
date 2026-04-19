@@ -1,5 +1,6 @@
+import React from 'react';
 import './NewsFilters.css';
-import { NEWS_DIRECTIONS } from '@constants/newsData';
+import { NEWS_DIRECTIONS } from './newsData';
 
 function Checkbox({ label, checked, onChange }) {
   return (

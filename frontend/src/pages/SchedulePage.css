@@ -33,9 +33,7 @@
   padding: 6px;
   border-radius: 8px;
   transition: background 0.15s, color 0.15s;
-  font-size: 14px;
 }
-
 .sched-icon-btn:hover {
   background: var(--border);
   color: var(--text-primary);
@@ -59,27 +57,3 @@
   background: var(--card-bg);
   border-radius: var(--radius);
 }
-
-.sched-controls__right {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.sched-nav-group {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  border: 1.5px solid var(--border, #e0e0e0);
-  border-radius: 12px;
-  background: transparent;
-  padding: 0px;
-}
-
-/* SchedulePage.css — дополнение */
-.sched-controls__right {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-

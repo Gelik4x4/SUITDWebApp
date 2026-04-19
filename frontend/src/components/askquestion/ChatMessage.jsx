@@ -1,7 +1,7 @@
-import Icon from '@icon/Icon';
+import React from 'react';
 import './ChatMessage.css';
 
-function ChatMessage({ msg }) {
+export default function ChatMessage({ msg }) {
   const isUser = msg.side === 'user';
   return (
     <div className={`chat-msg chat-msg--${msg.side}`}>
@@ -16,13 +16,9 @@ function ChatMessage({ msg }) {
       <div className="chat-msg__meta">
         {msg.time}
         {isUser && (
-          <span className={`chat-msg__tick${msg.read ? ' chat-msg__tick--read' : ''}`}>
-            <Icon name="Tick"/>
-          </span>
+          <span className={`chat-msg__tick${msg.read ? ' chat-msg__tick--read' : ''}`}>✓</span>
         )}
       </div>
     </div>
   );
 }
-
-export default ChatMessage;

@@ -1,12 +1,12 @@
 import { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './EventsPage.css';
+import { IconBack } from '../components/icons/Icons';
 import SearchBar      from '../components/searchbar/SearchBar';
 import EventCard    from '../components/events/EventCard';
 import EventFilters from '../components/events/EventFilters';
 import EventDetail  from '../components/events/EventDetail';
-import { EVENTS }   from '@constants/eventsData';
-import Icon from '@icon/Icon';
+import { EVENTS }   from '../components/events/eventsData';
 
 const EMPTY_FILTERS = { directions: [] };
 
@@ -37,7 +37,7 @@ function EventsPage() {
       {/* Left: search + 3-col grid */}
       <div className="evp-page__left">
         <button className="icon-btn aq-page__back" onClick={() => navigate('/services')}>
-          <Icon name="ArrowLeft"/>
+          <IconBack />
         </button>
         <SearchBar value={search} onChange={setSearch} />
         <div className="evp-grid-wrap">

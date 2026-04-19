@@ -1,10 +1,9 @@
 import { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { IconBack } from '../components/icons/Icons';
 import './AskQuestionPage.css';
 import ChatMessage from '../components/askquestion/ChatMessage';
 import ChatInput   from '../components/askquestion/ChatInput';
-import Icon from '@icon/Icon';
-
 
 const INITIAL_MESSAGES = [
   {
@@ -91,7 +90,7 @@ export default function AskQuestionPage({ onBack }) {
       {/* Sub-header: back + subtitle */}
       <div className="aq-page__header">
         <button className="icon-btn aq-page__back" onClick={() => navigate('/services')}>
-          <Icon name="ArrowLeft"/>
+          <IconBack />
         </button>
         <span className="aq-page__subtitle">
           Здесь вы можете задать интересующий вас вопрос

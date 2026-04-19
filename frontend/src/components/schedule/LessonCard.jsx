@@ -1,3 +1,4 @@
+import React from 'react';
 import './LessonCard.css';
 
 const TAG_COLORS = {
@@ -7,8 +8,9 @@ const TAG_COLORS = {
   orange: { bg: '#fff0e0', text: '#e07b00' },
 };
 
-export default function LessonCard({ num, time, subject, teacher, room, class_type, tagColor = 'purple' }) {
+export default function LessonCard({ num, time, subject, teacher, room, tag, tagColor = 'purple' }) {
   const colors = TAG_COLORS[tagColor] ?? TAG_COLORS.purple;
+
   return (
     <div className="lesson">
       {/* Numbered time header */}
@@ -25,7 +27,7 @@ export default function LessonCard({ num, time, subject, teacher, room, class_ty
           <div className="lesson__room">{room}</div>
         </div>
         <span className="lesson__tag" style={{ background: colors.bg, color: colors.text }}>
-          {class_type}
+          {tag}
         </span>
       </div>
     </div>

@@ -1,5 +1,6 @@
-import './OfferFilters.css';
-import { OFFER_DIRECTIONS } from './specialOffersData';
+import React from 'react';
+import './ArticleFilters.css';
+import { ARTICLE_DIRECTIONS } from './articlesData';
 
 const IconHeart = () => (
   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -9,16 +10,16 @@ const IconHeart = () => (
 
 function Checkbox({ label, checked, onChange }) {
   return (
-    <label className="of-checkbox">
-      <input type="checkbox" className="of-checkbox__input"
+    <label className="artf-checkbox">
+      <input type="checkbox" className="artf-checkbox__input"
         checked={checked} onChange={e => onChange(e.target.checked)} />
-      <span className="of-checkbox__box" />
-      <span className="of-checkbox__label">{label}</span>
+      <span className="artf-checkbox__box" />
+      <span className="artf-checkbox__label">{label}</span>
     </label>
   );
 }
 
-export default function OfferFilters({ filters, onChange, onClear }) {
+export default function ArticleFilters({ filters, onChange, onClear }) {
   const toggle = (dir) => {
     const cur = filters.directions || [];
     const next = cur.includes(dir) ? cur.filter(d => d !== dir) : [...cur, dir];
@@ -26,15 +27,15 @@ export default function OfferFilters({ filters, onChange, onClear }) {
   };
 
   return (
-    <div className="of-filters">
-      <button className="of-filters__favorites">
+    <div className="artf-filters">
+      <button className="artf-filters__favorites">
         Избранные <IconHeart />
       </button>
 
-      <div className="of-group">
-        <div className="of-group__title">Направление</div>
-        <div className="of-group__grid">
-          {OFFER_DIRECTIONS.map(d => (
+      <div className="artf-group">
+        <div className="artf-group__title">Направление</div>
+        <div className="artf-group__grid">
+          {ARTICLE_DIRECTIONS.map(d => (
             <Checkbox key={d} label={d}
               checked={(filters.directions || []).includes(d)}
               onChange={() => toggle(d)} />
@@ -42,7 +43,7 @@ export default function OfferFilters({ filters, onChange, onClear }) {
         </div>
       </div>
 
-      <button className="of-filters__clear" onClick={onClear}>
+      <button className="artf-filters__clear" onClick={onClear}>
         Очистить фильтры
       </button>
     </div>

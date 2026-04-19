@@ -1,12 +1,12 @@
 import { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './ArticlesPage.css';
+import { IconBack } from '../components/icons/Icons';
 import SearchBar      from '../components/searchbar/SearchBar';
 import ArticleCard    from '../components/articles/ArticleCard';
-import ArticleFilters from '../components/articles/ArticleFilters/ArticleFilters';
+import ArticleFilters from '../components/articles/ArticleFilters';
 import ArticleDetail  from '../components/articles/ArticleDetail';
-import { ARTICLES } from '@constants/articlesData';
-import Icon from '@icon/Icon';
+import { ARTICLES }   from '../components/articles/articlesData';
 
 const EMPTY_FILTERS = { directions: [] };
 
@@ -38,7 +38,7 @@ function ArticlesPage() {
     <div className="art-page">
       <div className="art-page__left">
         <button className="icon-btn aq-page__back" onClick={() => navigate('/services')}>
-          <Icon name="ArrowLeft"/>
+          <IconBack />
         </button>
         <SearchBar value={search} onChange={setSearch} />
         <div className="art-list">

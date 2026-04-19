@@ -1,12 +1,12 @@
 import { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './SpecialOffersPage.css';
+import { IconBack } from '../components/icons/Icons';
 import SearchBar     from '../components/searchbar/SearchBar';
 import OfferCard     from '../components/specialoffers/OfferCard';
 import OfferFilters  from '../components/specialoffers/OfferFilters';
 import OfferModal    from '../components/specialoffers/OfferModal';
-import { SPECIAL_OFFERS } from '@constants/specialOffersData';
-import Icon from '@icon/Icon';
+import { SPECIAL_OFFERS } from '../components/specialoffers/specialOffersData';
 
 const EMPTY_FILTERS = { directions: [] };
 
@@ -30,7 +30,7 @@ export default function SpecialOffersPage() {
         {/* Left: search + grid */}
         <div className="sop-page__left">
           <button className="icon-btn aq-page__back" onClick={() => navigate('/services')}>
-            <Icon name="ArrowLeft"/>
+            <IconBack />
           </button>
           <SearchBar
             value={search}

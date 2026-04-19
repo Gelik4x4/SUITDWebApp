@@ -2,7 +2,6 @@ import './Header.css';
 import { useLocation } from 'react-router-dom';
 // import { IconMoon, IconBell } from '../icons/Icons';
 import { PAGE_TITLES } from '@constants/navigation';
-import Icon from '@icon/Icon';
 
 export default function Header() {
   const { pathname } = useLocation();
@@ -11,8 +10,8 @@ export default function Header() {
     <header className="topbar">
       <h1 className="topbar__greeting">{PAGE_TITLES[activePage] ?? 'SUITD'}</h1>
       <div className="topbar__actions">
-        <button className="icon-btn"><Icon name="Moon"/></button>
-        <button className="icon-btn"><Icon name="Bell"/></button>
+        <button className="icon-btn"><img src="/src/components/icons/dark.svg"/></button>
+        <button className="icon-btn"><img src="/src/components/icons/bell.svg"/></button>
       </div>
     </header>
   );
