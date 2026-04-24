@@ -20,6 +20,38 @@ export default defineConfig({
       }
     }),
   ],
+  server: {
+    proxy: {
+      '/rss-proxy': {
+        target: 'https://sutd.ru',
+        changeOrigin: true,
+        rewrite: () => '/rss.php',
+        secure: false,
+      },
+      '/trudvsem-proxy': {
+        target: 'https://opendata.trudvsem.ru',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/trudvsem-proxy/, ''),
+        secure: false,
+        headers: {
+          'Accept': 'application/json',
+          'User-Agent': 'Mozilla/5.0 (compatible; StudentPortal/1.0)',
+        },
+      },
+      '/leader-proxy': {
+        target: 'https://leader-id.ru',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/leader-proxy/, ''),
+        secure: false,
+      },
+      '/teachers-proxy': {
+        target: 'https://sutd.ru',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/teachers-proxy/, ''),
+        secure: false,
+      },
+    },
+  },
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
