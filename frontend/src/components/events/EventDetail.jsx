@@ -1,54 +1,97 @@
-import React from 'react';
+import { useQuery } from '@tanstack/react-query';
 import './EventDetail.css';
-import EventIllustration from './EventIllustration';
+import Breadcrumbs from '../breadcrumbs/Breadcrumbs';
+import FavButton   from '../buttons/FavButton';
 import Icon from '@icon/Icon';
 
+export default function EventDetail({ event, onBack, isFav, onToggleFav, fetchDetail }) {
+  const { data: detail, isLoading } = useQuery({
+    queryKey: ['event-detail', event.id],
+    queryFn: () => fetchDetail(event.id),
+    staleTime: 10 * 60 * 1000,
+    enabled: Boolean(fetchDetail && event.id),
+  });
 
-export default function EventDetail({ event, onBack }) {
+  const image       = detail?.image       || event.image;
+  const date        = detail?.date        || event.date;
+  const location    = detail?.location    || event.location;
+  const address     = detail?.address     ?? '';
+  const description = detail?.description || event.description || '';
+  const regDeadline = detail?.regDeadline ?? '';
+
   return (
     <div className="evd">
-      {/* Title row */}
-      <div className="evd__titlerow">
-        <button className="icon-btn evd__back" onClick={onBack}><Icon name="ArrowLeft"/></button>
-        <h2 className="evd__title">{event.title}</h2>
-        <div className="evd__actions">
-          <button className="icon-btn"><Icon name="Share"/></button>
-          <button className="icon-btn"><Icon name="Heart"/></button>
-        </div>
-      </div>
+      <Breadcrumbs items={[
+        { label: 'Сервисы',     onClick: () => window.history.go(-2) },
+        { label: 'Мероприятия', onClick: onBack },
+        { label: 'Информация о мероприятии' },
+      ]} />
 
-      {/* Main content + meta sidebar */}
       <div className="evd__body">
+
+        {/* Left: обёрнуто в карточку */}
         <div className="evd__main">
-          {/* Wide banner illustration */}
-          <div className="evd__banner">
-            <EventIllustration wide />
+          <div className="evd__titlerow">
+            <h2 className="evd__title">{event.title}</h2>
+            <div className="evd__actions">
+              <FavButton active={isFav} onClick={onToggleFav} />
+              <a href={event.link} target="_blank" rel="noopener noreferrer"
+                className="icon-btn" title="Открыть на сайте">
+                <Icon name="Share" />
+              </a>
+            </div>
           </div>
 
-          {/* Description */}
-          <p className="evd__desc">{event.description}</p>
+          {image && (
+            <div className="evd__banner">
+              <img src={image} alt={event.title} className="evd__banner-img" />
+            </div>
+          )}
 
-          {/* Register CTA */}
-          <button className="evd__register btn btn--primary">
-            Зарегистрироваться
-          </button>
+          {isLoading ? (
+            <div className="evd__loading">Загрузка информации...</div>
+          ) : description ? (
+            <>
+              <div className="evd__section-title">О мероприятии</div>
+              <p className="evd__desc">{description}</p>
+            </>
+          ) : null}
         </div>
 
-        {/* Meta sidebar */}
+        {/* Right: meta sidebar */}
         <aside className="evd__meta">
-          <div className="evd-meta-item">
-            <Icon name="Clock"/>
-            <span>{event.date}</span>
-          </div>
-          <div className="evd-meta-item">
-            <Icon name="Tag"/>
-            <span>{event.price}</span>
-          </div>
-          <div className="evd-meta-item">
-            <Icon name="Location"/>
-            <span>{event.location}</span>
-          </div>
+          {location && (
+            <div className="evd-meta-item">
+              <Icon name="Location" size={24} />
+              <div>
+                <div>{location}</div>
+                {address && <div className="evd-meta-item__sub">{address}</div>}
+              </div>
+            </div>
+          )}
+          {date && (
+            <div className="evd-meta-item">
+              <Icon name="Clock" size={24} />
+              <span>{date}</span>
+            </div>
+          )}
+          {regDeadline && (
+            <div className="evd-meta-item">
+              <Icon name="Info" size={24} />
+              <span>{regDeadline}</span>
+            </div>
+          )}
+
+          <a
+            href={event.link}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="evd__register btn btn--primary"
+          >
+            Записаться
+          </a>
         </aside>
+
       </div>
     </div>
   );
