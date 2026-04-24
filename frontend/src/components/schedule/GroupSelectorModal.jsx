@@ -1,71 +1,62 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import './GroupSelectorModal.css';
 import Icon from '@icon/Icon';
+import { supabase } from '@supabaseClient';
 
-/* ── Данные групп ── */
-const GROUPS = [
-  '1-МД-1','1-МД-2','1-МД-3','1-МД-4','1-МД-5',
-  '2-МД-1','2-МД-2','2-МД-3','2-МД-4','2-МД-5',
-  '3-МД-1','3-МД-2','3-МД-3','3-МД-4','3-МД-5',
-  '4-МД-1','4-МД-2','4-МД-3','4-МД-4','4-МД-5',
-  '1-ИТ-1','1-ИТ-2','2-ИТ-1','2-ИТ-2','3-ИТ-1','3-ИТ-2',
-  '1-ДГ-1','1-ДГ-2','2-ДГ-1','2-ДГ-2','3-ДГ-1',
-  '1-ДК-1','2-ДК-1','3-ДК-1',
-  '1-ЭК-1','2-ЭК-1','3-ЭК-1',
-];
+/* ── Fetch groups and teachers from DB ── */
+const fetchGroups = async () => {
+  const { data, error } = await supabase
+    .from('groups')
+    .select('id, name')
+    .order('name', { ascending: true });
+  if (error) throw error;
+  return data.map(g => g.name);
+};
 
-/* ── Данные преподавателей (имена) ── */
-const TEACHERS = [
-  'Дроботун Нина Владимировна',
-  'Волков Андрей Игоревич',
-  'Волкова Галина Константиновна',
-  'Калугина Наталья Ильинична',
-  'Князева Ирина Константиновна',
-  'Кокорин Евгений Сергеевич',
-  'Колмыкова Маргарита Михайловна',
-  'Косарева Анастасия Николаевна',
-  'Костюк Инна Сергеевна',
-  'Лебедева Светлана Викторовна',
-  'Медведева Анна Александровна',
-  'Моргоева Ирма Юрьевна',
-  'Николаева Лали Гочевна',
-  'Сухарева Алина Михайловна',
-  'Дворко Нина Ивановна',
-  'Аврамова Ксения Борисовна',
-  'Алатырцева Елизавета Олеговна',
-  'Алексеева Анна Сергеевна',
-  'Борисова Татьяна Петровна',
-  'Викулина Екатерина Андреевна',
-  'Гурьев Ярослав Олегович',
-  'Епанян Виктория Викторовна',
-  'Кузнецова Марина Рудольфовна',
-];
-
+const fetchTeachers = async () => {
+  const { data, error } = await supabase
+    .from('schedule')
+    .select('teacher')
+    .not('teacher', 'is', null);
+  if (error) throw error;
+  /* Уникальные преподаватели, отсортированные */
+  const unique = [...new Set(data.map(r => r.teacher).filter(Boolean))].sort();
+  return unique;
+};
 
 export default function GroupSelectorModal({ onClose, onSelectGroup, onSelectTeacher }) {
-  const [tab,    setTab]    = useState('groups');   // 'groups' | 'teachers'
+  const [tab, setTab] = useState('groups');
   const [search, setSearch] = useState('');
   const inputRef = useRef(null);
 
-  /* Фокус на поиск при открытии */
+  const { data: groups = [], isLoading: loadingGroups } = useQuery({
+    queryKey: ['groups'],
+    queryFn: fetchGroups,
+    staleTime: 10 * 60 * 1000,
+  });
+
+  const { data: teachers = [], isLoading: loadingTeachers } = useQuery({
+    queryKey: ['teachers'],
+    queryFn: fetchTeachers,
+    staleTime: 10 * 60 * 1000,
+  });
+
   useEffect(() => {
     setTimeout(() => inputRef.current?.focus(), 80);
   }, [tab]);
 
-  /* Сбрасываем поиск при смене таба */
-  const switchTab = (t) => {
-    setTab(t);
-    setSearch('');
-  };
+  const switchTab = (t) => { setTab(t); setSearch(''); };
 
-  const isGroups   = tab === 'groups';
-  const items      = isGroups ? GROUPS : TEACHERS;
-  const q          = search.toLowerCase();
-  const filtered   = q ? items.filter(i => i.toLowerCase().includes(q)) : items;
+  const isGroups = tab === 'groups';
+  const items = isGroups ? groups : teachers;
+  const loading = isGroups ? loadingGroups : loadingTeachers;
+  const q = search.toLowerCase();
+  const filtered = q ? items.filter(i => i.toLowerCase().includes(q)) : items;
 
   const handleSelect = (item) => {
     if (isGroups) onSelectGroup?.(item);
-    else          onSelectTeacher?.(item);
+    else onSelectTeacher?.(item);
     onClose();
   };
 
@@ -73,17 +64,17 @@ export default function GroupSelectorModal({ onClose, onSelectGroup, onSelectTea
     <div className="gsm-overlay" onClick={onClose}>
       <div className="gsm-modal" onClick={e => e.stopPropagation()}>
 
-        {/* ── Header ── */}
+        {/* Header */}
         <div className="gsm-header">
           <h2 className="gsm-title">
             {isGroups ? 'Выбор группы' : 'Выбор преподавателя'}
           </h2>
-            <button className="cal-close-btn" onClick={onClose}>
-              <Icon name="Cross" size={32} />
-            </button>
+          <button className="gsm-close" onClick={onClose}>
+            <Icon name="Cross" size={24} />
+          </button>
         </div>
 
-        {/* ── Tabs ── */}
+        {/* Tabs */}
         <div className="gsm-tabs">
           <button
             className={`gsm-tab${tab === 'groups' ? ' gsm-tab--active' : ''}`}
@@ -99,9 +90,9 @@ export default function GroupSelectorModal({ onClose, onSelectGroup, onSelectTea
           </button>
         </div>
 
-        {/* ── Search ── */}
+        {/* Search */}
         <div className="gsm-search">
-          <Icon name="Search"/>
+          <Icon name="Search" />
           <input
             ref={inputRef}
             className="gsm-search__input"
@@ -111,17 +102,15 @@ export default function GroupSelectorModal({ onClose, onSelectGroup, onSelectTea
           />
         </div>
 
-        {/* ── List ── */}
+        {/* List */}
         <div className="gsm-list">
-          {filtered.length === 0 ? (
+          {loading ? (
+            <div className="gsm-empty">Загрузка...</div>
+          ) : filtered.length === 0 ? (
             <div className="gsm-empty">Ничего не найдено</div>
           ) : (
             filtered.map((item, i) => (
-              <button
-                key={i}
-                className="gsm-item"
-                onClick={() => handleSelect(item)}
-              >
+              <button key={i} className="gsm-item" onClick={() => handleSelect(item)}>
                 {item}
               </button>
             ))
