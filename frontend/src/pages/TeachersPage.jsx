@@ -1,30 +1,67 @@
 import { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
 import './TeachersPage.css';
-import SearchBar      from '../components/searchbar/SearchBar';
-import TeacherListItem  from '../components/teachers/TeacherListItem';
-import TeacherFilters   from '../components/teachers/TeacherFilters';
-import TeacherDetail    from '../components/teachers/TeacherDetail';
-import { TEACHERS }     from '@constants/teachersData';
+import TeacherListItem from '../components/teachers/TeacherListItem';
+import TeacherDetail   from '../components/teachers/TeacherDetail';
+import Breadcrumbs     from '../components/breadcrumbs/Breadcrumbs';
 import Icon from '@icon/Icon';
 
-const EMPTY_FILTERS = { institutes: [] };
+/* ─── Парсинг списка преподавателей ──────────────────────────── */
 
-function TeachersPage() {
+const STAFF_URL = '/teachers-proxy/iita/staff/114_1106/';
+
+const fetchTeachers = async () => {
+  const res = await fetch(STAFF_URL);
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  const html = await res.text();
+
+  const doc = new DOMParser().parseFromString(html, 'text/html');
+
+  /* На странице преподаватели — li внутри ul со структурой: img + a + текст */
+  const items = [...doc.querySelectorAll('ul li')].filter(li =>
+    li.querySelector('a[href*="/person/"]')
+  );
+
+  return items.map(li => {
+    const link  = li.querySelector('a[href*="/person/"]');
+    const img   = li.querySelector('img');
+    const name  = link?.textContent?.trim() ?? '';
+    const href  = link?.getAttribute('href') ?? '';
+    const photo = img?.getAttribute('src') ?? null;
+    /* Должность — текст li кроме ссылки */
+    const position = li.textContent.replace(name, '').trim();
+
+    return {
+      id:       href,
+      name,
+      position,
+      photo:    photo ? `https://sutd.ru${photo}` : null,
+      detailUrl: href.startsWith('http') ? href : `https://sutd.ru${href}`,
+    };
+  }).filter(t => t.name);
+};
+
+/* ─── Page ────────────────────────────────────────────────────── */
+
+export default function TeachersPage() {
+  const navigate = useNavigate();
   const [search,   setSearch]   = useState('');
-  const [filters,  setFilters]  = useState(EMPTY_FILTERS);
   const [selected, setSelected] = useState(null);
 
-  const navigate = useNavigate();
+  const { data: teachers = [], isLoading, error } = useQuery({
+    queryKey: ['teachers-list'],
+    queryFn: fetchTeachers,
+    staleTime: 10 * 60 * 1000,
+    retry: 1,
+  });
 
-  const filtered = useMemo(() => TEACHERS.filter(t => {
-    const q = search.toLowerCase();
-    if (q && !t.name.toLowerCase().includes(q)) return false;
-    if (filters.institutes.length && !filters.institutes.includes(t.institute)) return false;
-    return true;
-  }), [search, filters]);
+  const filtered = useMemo(() =>
+    teachers.filter(t => t.name.toLowerCase().includes(search.toLowerCase())),
+    [teachers, search]
+  );
 
-  /* ── Detail view ── */
+  /* Детальный просмотр */
   if (selected) {
     return (
       <div className="tp-page tp-page--detail">
@@ -33,45 +70,42 @@ function TeachersPage() {
     );
   }
 
-  /* ── List view ── */
   return (
     <div className="tp-page">
-      {/* Left: search + list */}
-      <div className="tp-page__left">
-        <button className="icon-btn aq-page__back" onClick={() => navigate('/services')}>
-          <Icon name="ArrowLeft"/>
-        </button>
-        <SearchBar
-          value={search}
-          onChange={setSearch}
+      <Breadcrumbs items={[
+        { label: 'Сервисы', onClick: () => navigate('/services') },
+        { label: 'Преподаватели' },
+      ]} />
+
+      {/* Search — на всю ширину */}
+      <div className="tp-search">
+        <Icon name="Search" />
+        <input
+          className="tp-search__input"
           placeholder="Введите ФИО преподавателя..."
+          value={search}
+          onChange={e => setSearch(e.target.value)}
         />
-        <div className="tp-list">
-          {filtered.length === 0 ? (
-            <div className="tp-empty">Преподаватели не найдены</div>
-          ) : (
-            filtered.map(t => (
-              <TeacherListItem
-                key={t.id}
-                teacher={t}
-                isSelected={selected?.id === t.id}
-                onClick={() => setSelected(t)}
-              />
-            ))
-          )}
-        </div>
       </div>
 
-      {/* Right: filters */}
-      <div className="tp-page__right">
-        <TeacherFilters
-          filters={filters}
-          onChange={setFilters}
-          onClear={() => setFilters(EMPTY_FILTERS)}
-        />
+      {/* Список */}
+      <div className="tp-page__body"> 
+      <div className="tp-list">
+        {isLoading && <div className="tp-empty">Загрузка...</div>}
+        {error     && <div className="tp-empty">Не удалось загрузить список</div>}
+        {!isLoading && !error && filtered.length === 0 && (
+          <div className="tp-empty">Преподаватели не найдены</div>
+        )}
+        {filtered.map(t => (
+          <TeacherListItem
+            key={t.id}
+            teacher={t}
+            isSelected={selected?.id === t.id}
+            onClick={() => setSelected(t)}
+          />
+        ))}
       </div>
+    </div>
     </div>
   );
 }
-
-export default TeachersPage
