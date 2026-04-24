@@ -4,7 +4,7 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  --gap: 20px;
+  --gap: 16px;
 
   --bg:             #f5f5f7;
   --sidebar-bg:     #ffffff;
@@ -12,7 +12,8 @@
   --accent:         #213FF9;
   --accent-light:   #eef0ff;
   --text-primary:   #262626;
-  --text-secondary: #6b7280;
+  --light-black:    #383838;
+  --text-secondary: #7B7B7B;
   --sidebar-link:   #8E9EFF;
   --text-link:      #5b6ef5;
   --badge-bg:       #907EF8;
@@ -30,11 +31,8 @@
   --blob-orange:     #ffb47b;
   --blob-blue-light: #aac4f7;
 
-  /* tags */
-
   /* subject color */
   --subject-purple: #8E9EFF;
-
 }
 
 html, body {
@@ -59,80 +57,96 @@ body {
   flex: 1;
   min-width: 0;
   height: 100vh;
-  overflow: hidden;
-  padding: 24px var(--gap) 44px;
+  overflow: auto;
+  padding: 24px;
   display: flex;
   flex-direction: column;
   gap: var(--gap);
 }
 
-/*  Grid 
-  Экран (24 колонки):
-   [Sidebar 3 кол] [  .grid — 21 колонка  ]
-  Внутри .grid — 4 строки:
-  Строка 1 (3fr): Расписание  1–9  | Стажировки   10–18 | Новости  19–21 ↓
-  Строка 2 (2fr): Расписание  ↓    | Спецпредлож. 10–18 | Новости  ↓
-  Строка 3 (1fr): Расписание  ↓    | (пусто)            | Новости  ↓
-  ──────────────────────────────────────────────────────────────────────
-  Вакансии и Мероприятия — отдельный ряд ниже:
-  Строка 4 (2fr): Вакансии    1–9  | Мероприятия  10–18 |
-
-  Расписание: строки 1–3  → визуально = Стажировки(1) + Спецпредл.(2) + зазор(3)
-  Новости:    строки 1–3  → совпадает по высоте с левой колонкой */
-
+/* Внешний контейнер — две колонки (левая и центральная) */
 .grid {
-  display: grid;
-  grid-template-columns: repeat(21, 1fr);
-  grid-template-rows: 3fr 2fr 2fr;
+  display: flex;
+  flex-direction: row;
   gap: var(--gap);
   flex: 1;
   min-height: 0;
 }
 
-/* Расписание: строки A–B, кол 1–9 */
+
+
+/* ─── Левая колонка: расписание + спецпредложения ─── */
+.grid-col--left {
+  flex: 10 1 0;          /* 10 частей */
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap);
+}
+
+/* Расписание: авто-высота по контенту */
 .grid-schedule {
-  grid-column: 1 / 10;
-  grid-row: 1 / 3;
+  flex: 0 0 auto;
+  min-height: 250px;
 }
 
-/* Стажировки: строка A, кол 10–18 */
-.grid-internships {
-  grid-column: 10 / 19;
-  grid-row: 1;
+.grid-schedule .card {
+  height: auto;
+  min-height: 250px;
 }
 
-/* Новости: строки A–B, правая колонка 19–21 */
-.grid-news {
-  grid-column: 19 / 22;
-  grid-row: 1 / 3;
+.grid-schedule .schedule-list {
+  flex: 0 0 auto;
 }
 
-/* Спецпредложения: строка B, кол 10–18 */
+/* Спецпредложения: заполняют оставшееся место */
 .grid-offers {
-  grid-column: 10 / 19;
-  grid-row: 2;
+  flex: 1 1 0;
+  min-height: 140px;
+  min-width: 0;
 }
 
-/* Вакансии: строка C, кол 1–9 */
-.grid-vacancies {
-  grid-column: 1 / 10;
-  grid-row: 3;
+/* ─── Центральная колонка: вакансии + новости (верх) + мероприятия (низ) ─── */
+.grid-col--center {
+  flex: 11 1 0;          /* 11 частей, соотношение с левой 10:11 */
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap);
 }
 
-/* Мероприятия: строка C, кол 10–21 */
-.grid-events {
-  grid-column: 10 / 22;
-  grid-row: 3;
+/* Верхняя строка: вакансии (11/14) и новости (3/14) */
+.grid-col--center .top-row {
+  display: flex;
+  gap: var(--gap);
+  flex: 0 0 auto;        /* высота по контенту, не растягивается */
+}
+
+.grid-col--center .top-row .grid-vacancies {
+  flex: 11 1 0;
+  min-width: 0;
+}
+
+.grid-col--center .top-row .grid-news {
+  flex: 3 1 0;
+  min-width: 0;
+}
+
+/* Мероприятия – на всю ширину, занимают оставшееся место */
+.grid-col--center .grid-events {
+  flex: 1 1 0;           /* занимает оставшуюся высоту в колонке */
+  min-height: 0;
+  width: 100%;
 }
 
 /*  Card base  */
 .card {
   background: var(--card-bg);
   border-radius: var(--radius);
-  padding: 12px 16px 16px;
+  padding: 16px;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 16px;
   height: 100%;
   min-height: 0;
   overflow: hidden;
@@ -146,14 +160,14 @@ body {
 }
 
 .card__title {
-  font-size:20px;
+  font-size: 20px;
   font-weight: 500;
   color: var(--text-primary);
 }
 
 .card__subtitle {
-  font-size: 18px;
-  font-weight: 300;
+  font-size: 20px;
+  font-weight: 200;
   color: var(--text-secondary);
 }
 
@@ -162,44 +176,47 @@ body {
   border: none;
   background: none;
   cursor: pointer;
-  padding: 4px;
+  padding: 0;
   color: var(--text-secondary);
   display: flex;
   align-items: center;
   border-radius: 6px;
-  transition: color 0.15s, background 0.15s;
+  transition: color 0.15s;
 }
-.icon-btn:hover { color: var(--text-primary); background: var(--bg); }
-.icon-btn--sm   { padding: 2px; }
+.icon-btn:hover { color: var(--text-primary); }
 
-/* ─── Badge ──────────────────────────────────────────────────────────────────── */
+/* ─── FavButton — общая кнопка избранного ────────────────────────────── */
+.fav-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(4px);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-secondary);
+  flex-shrink: 0;
+  transition: color 0.15s;
+}
+.fav-btn:hover { color: var(--text-primary); }
+
+/* ─── Badge ──────────────────────────────────────────────────────────── */
 .badge {
   background: #ede9ff;
   color: #6B5CE7;
   font-size: 14px;
   font-weight: 500;
-  padding: 3px 8px;
-  border-radius: 6px;
-  letter-spacing: 0.3px;
+  padding: 8px;
+  border-radius: 24px;
+  display: inline-block;
+  max-width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
-
-/*  Blobs  */
-.blob {
-  position: absolute;
-  border-radius: 50%;
-  opacity: 0.85;
-}
-.blob--purple     { background: var(--blob-purple); }
-.blob--blue       { background: var(--blob-blue); }
-.blob--pink       { background: var(--blob-pink); }
-.blob--yellow     { background: var(--blob-yellow); }
-.blob--orange     { background: var(--blob-orange); }
-.blob--blue-light { background: var(--blob-blue-light); }
-
-.blob--xl { width: 100px; height: 100px; }
-.blob--lg { width: 52px;  height: 52px; }
-.blob--md { width: 38px;  height: 38px; }
-.blob--sm { width: 28px;  height: 28px; }
 
 /*  Shared two-column grid  */
 .two-col-grid {
