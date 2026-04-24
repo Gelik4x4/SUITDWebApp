@@ -3,110 +3,164 @@ import { useNavigate } from 'react-router-dom';
 import './AskQuestionPage.css';
 import ChatMessage from '../components/askquestion/ChatMessage';
 import ChatInput   from '../components/askquestion/ChatInput';
-import Icon from '@icon/Icon';
+import Breadcrumbs from '../components/breadcrumbs/Breadcrumbs';
 
+/* ─── Системный промпт ────────────────────────────────────────── */
+const SYSTEM_PROMPT = `Ты — ЦАТ Помощник, чат-бот студенческого портала СПбГУПТД.
+Отвечай кратко, дружелюбно и по делу. Пиши только на русском языке.
 
-const INITIAL_MESSAGES = [
-  {
-    id: 1,
-    side: 'bot',
-    text: 'Да, мы заботимся об осознанном потреблении и предлагаем переработку.\nКогда вы оформляете заказ, просто поставьте галочку «Отправить оригиналы на переработку».\nМы пришлём вам удобный пакет и адрес, куда их можно отправить.',
-    time: '16 февраля, 20:05',
-    read: true,
-  },
-  {
-    id: 2,
-    side: 'user',
-    text: 'Подскажите пожалуйста, как оформить анкету на повышенную стипендию?',
-    time: '16 февраля, 20:10',
-    read: true,
-  },
-  {
-    id: 3,
-    side: 'bot',
-    text: 'Сроки подачи анкеты\nДо 10 февраля и до 10 сентября каждого года. Дата может меняться из-за календарного расположения, поэтому необходимо уточнить в деканате.\nВ этом семестре все заполненные анкеты со всеми подписями нужно сдать до 9 февраля в твой деканат (дата может отличаться, поэтому уточни её заранее).\n\nПорядок подачи анкет:\nЗаполнить сводную анкету в электронном виде (самая первая в шаблоне документа).\nСкачать анкету на повышенную государственную академическую стипендию можно на сайте университета.',
-    time: '16 февраля, 20:15',
-    read: true,
-  },
-];
+База знаний:
 
-/* Авто-ответы бота */
-const BOT_REPLIES = [
-  'Спасибо за ваш вопрос! Я передам его куратору и вернусь с ответом в ближайшее время.',
-  'Уточните, пожалуйста, о каком конкретно вопросе идёт речь? Это поможет мне дать более точный ответ.',
-  'Для решения этого вопроса рекомендую обратиться в деканат вашего института.',
-  'Согласно регламенту университета, данный вопрос решается через личный кабинет студента на портале.',
-];
+СТИПЕНДИИ:
+- Академическая стипендия назначается при отсутствии троек по итогам сессии
+- Повышенная государственная академическая стипендия (ПГАС):
+  * Анкеты подаются дважды в год: до 10 февраля и до 10 сентября (даты уточнять в деканате)
+  * Нужно заполнить сводную анкету в электронном виде (шаблон на сайте sutd.ru)
+  * Распечатать, собрать подписи и сдать в деканат своего института
+  * Критерии: успехи в учёбе, науке, культуре, спорте, общественной деятельности
 
-function formatTime(date) {
-  return date.toLocaleString('ru-RU', {
-    day: 'numeric', month: 'long',
-    hour: '2-digit', minute: '2-digit',
-  }).replace(',', ',');
+РАСПИСАНИЕ:
+- Расписание доступно в личном кабинете на портале sutd.ru
+- Изменения в расписании публикуются в официальных группах ВКонтакте
+- По вопросам замен обращаться в деканат
+
+ОБЩЕЖИТИЕ:
+- Заявки на общежитие подаются в начале учебного года через деканат
+- Студенческий городок: ул. Малая Посадская, 26
+- По вопросам: студенческий отдел, каб. 107
+
+СЕССИЯ И УЧЁБА:
+- Пересдача: не более двух раз по каждому предмету
+- Академический отпуск: заявление в деканат + медицинская справка (при необходимости)
+- Перевод между группами: заявление в деканат
+
+ДОКУМЕНТЫ:
+- Справка об обучении: через деканат или МФЦ университета
+- Военный билет / отсрочка: отдел военно-учётного стола, каб. 210
+- Социальная стипендия: отдел социальной работы
+
+КОНТАКТЫ:
+- Официальный сайт: sutd.ru
+- Адрес: Большая Морская ул., 18, Санкт-Петербург
+- Деканат ИИТА: каб. 315
+- По всем прочим вопросам рекомендуй обратиться в деканат или на sutd.ru`;
+
+/* ─── API через Vite-прокси (обход CORS) ─────────────────────── */
+async function askClaude(history) {
+  const messages = history
+    .filter(m => m.id !== 1)
+    .map(m => ({
+      role: m.side === 'user' ? 'user' : 'assistant',
+      content: m.text,
+    }));
+
+  const res = await fetch('/anthropic-proxy/v1/messages', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'x-api-key': import.meta.env.VITE_ANTHROPIC_API_KEY ?? '',
+      'anthropic-version': '2023-06-01',
+    },
+    body: JSON.stringify({
+      model: 'claude-haiku-4-5-20251001',
+      max_tokens: 1000,
+      system: SYSTEM_PROMPT,
+      messages,
+    }),
+  });
+
+  if (!res.ok) throw new Error(`API ${res.status}`);
+  const data = await res.json();
+  return data.content?.[0]?.text ?? 'Не смог сформировать ответ.';
 }
 
-export default function AskQuestionPage({ onBack }) {
-  const [messages, setMessages] = useState(INITIAL_MESSAGES);
-  const [botIdx,   setBotIdx]   = useState(0);
-  const bottomRef = useRef(null);
+/* ─── Helpers ─────────────────────────────────────────────────── */
+function formatTime(date) {
+  return date.toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
+}
+
+const INITIAL_MESSAGES = [{
+  id: 1, side: 'bot',
+  text: 'Здравствуйте! Я – ЦАТ Помощник.\nПомогу с вопросами по учебе и жизни в университете.\nЧем могу помочь?',
+  time: formatTime(new Date()),
+}];
+
+/* ─── Page ────────────────────────────────────────────────────── */
+export default function AskQuestionPage() {
   const navigate = useNavigate();
+  const [messages,  setMessages]  = useState(INITIAL_MESSAGES);
+  const [isLoading, setIsLoading] = useState(false);
+  const bottomRef = useRef(null);
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
-  const handleSend = (text) => {
-    const now  = new Date();
-    const time = formatTime(now);
-
-    const userMsg = {
-      id: Date.now(),
-      side: 'user',
-      text,
-      time,
-      read: false,
-    };
-
-    setMessages(prev => [...prev, userMsg]);
-
-    /* Симуляция ответа бота через 800ms */
-    setTimeout(() => {
-      const botReply = {
-        id: Date.now() + 1,
-        side: 'bot',
-        text: BOT_REPLIES[botIdx % BOT_REPLIES.length],
+  const handleSend = async (text) => {
+    const userMsg = { id: Date.now(), side: 'user', text, time: formatTime(new Date()) };
+    const withUser = [...messages, userMsg];
+    setMessages(withUser);
+    setIsLoading(true);
+    try {
+      const reply = await askClaude(withUser);
+      setMessages(prev => [...prev, {
+        id: Date.now() + 1, side: 'bot', text: reply, time: formatTime(new Date()),
+      }]);
+    } catch (e) {
+      console.error(e);
+      setMessages(prev => [...prev, {
+        id: Date.now() + 1, side: 'bot',
+        text: 'Произошла ошибка соединения. Проверьте настройки VITE_ANTHROPIC_API_KEY и перезапустите dev-сервер.',
         time: formatTime(new Date()),
-        read: false,
-      };
-      setMessages(prev => [
-        ...prev.map(m => m.id === userMsg.id ? { ...m, read: true } : m),
-        botReply,
-      ]);
-      setBotIdx(i => i + 1);
-    }, 800);
+      }]);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
     <div className="aq-page">
-      {/* Sub-header: back + subtitle */}
-      <div className="aq-page__header">
-        <button className="icon-btn aq-page__back" onClick={() => navigate('/services')}>
-          <Icon name="ArrowLeft"/>
-        </button>
-        <span className="aq-page__subtitle">
-          Здесь вы можете задать интересующий вас вопрос
-        </span>
-      </div>
+      <Breadcrumbs items={[
+        { label: 'Сервисы', onClick: () => navigate('/services') },
+        { label: 'Чат с помощником' },
+      ]} />
 
-      {/* Chat area */}
       <div className="aq-page__chat">
+        {/* Bot header */}
+        <div className="aq-page__bot-header">
+          <div className="aq-page__bot-avatar">
+            <img
+              src="/src/assets/img/bot-avatar.png"
+              alt="ЦАТ Помощник"
+              className="aq-page__bot-photo"
+              onError={e => { e.target.style.display='none'; e.target.nextSibling.style.display='flex'; }}
+            />
+          </div>
+          <div className="aq-page__bot-info">
+            <div className="aq-page__bot-name">ЦАТ Помощник</div>
+            <div className="aq-page__bot-status">
+              <span className="aq-page__online-dot" />
+              Онлайн 24/7
+            </div>
+          </div>
+        </div>
+        <div className="aq-page__divider" />
+
+        {/* Messages */}
         <div className="aq-page__messages">
-          {messages.map(msg => (
-            <ChatMessage key={msg.id} msg={msg} />
-          ))}
+          <div className="aq-page__date-label">Сегодня</div>
+          {messages.map(msg => <ChatMessage key={msg.id} msg={msg} />)}
+          {isLoading && (
+            <div className="aq-page__typing">
+              <div className="aq-page__typing-dot" />
+              <div className="aq-page__typing-dot" />
+              <div className="aq-page__typing-dot" />
+            </div>
+          )}
           <div ref={bottomRef} />
         </div>
-        <ChatInput onSend={handleSend} />
+
+        <ChatInput onSend={handleSend} disabled={isLoading} />
       </div>
     </div>
   );
