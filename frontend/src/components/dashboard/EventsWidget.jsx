@@ -1,24 +1,34 @@
 import './EventsWidget.css';
-import EventCard from '../cards/EventCard.jsx';
 import Icon from '@icon/Icon';
+import FavButton from './FavButton';
 
+/* 
+  img      — путь к фоновому изображению (обязательный)
+  date     — строка даты "09 апр 20:00"
+  tagColor — цвет тега даты
+  title    — название мероприятия
+*/
+function EventCard({ img, date, tagColor = 'purple', title }) {
+  return (
+    <div className="event-card event-card--has-img">
+      <img src={img} alt={title} className="event-card__bg-img" />
+      <div className="event-card__overlay" />
 
+      {/* Верхняя строка: тег + кнопка избранного */}
+      <div className="event-card__top-row">
+        {date && (
+          <span className={`badge badge--${tagColor}`}>{date}</span>
+        )}
+        <FavButton />
+      </div>
 
-const events = [
-  {
-    img: '/src/assets/img/events/events-1.png',
-    date: 'Чт, 6 июня 20:00',
-    location: 'Точка Кипения',
-    title: 'Молодежный экономический форум «День будущего»',
-  },
-  {
-    img: '/src/assets/img/events/events-1.png',
-    date: 'Чт, 6 июня 20:00',
-    location: 'Точка Кипения',
-    title: 'Молодежный экономический форум «День будущего»',
-  },
-];
-
+      {/* Текст */}
+      <div className="event-card__footer">
+        <div className="event-card__title">{title}</div>
+      </div>
+    </div>
+  );
+}
 
 
 export default function EventsWidget() {
@@ -26,12 +36,11 @@ export default function EventsWidget() {
     <div className="card">
       <div className="card__header">
         <span className="card__title">Мероприятия для вас</span>
-        <button className="icon-btn"><Icon name="ArrowUp"/></button>
+        <button className="icon-btn"><Icon name="ArrowUp" /></button>
       </div>
-      <div className="two-col-grid">
+      <div className="events-grid">
         {events.map((e, i) => <EventCard key={i} {...e} />)}
       </div>
     </div>
   );
 }
-
