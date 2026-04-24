@@ -1,73 +1,99 @@
+/* Пустое состояние — по центру, минимальная высота задана на .grid-schedule */
+.schedule-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  min-height: 180px;
+}
+
+.schedule-empty__text {
+  font-size: 16px;
+  color: var(--text-secondary);
+}
+
+/* список расписания — строки по содержимому */
 .schedule-list {
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  flex: 1;
-  min-height: 0;
-  justify-content: space-between;
+  gap: 8px;
 }
 
+/* Карточка занятия */
 .schedule-item {
   display: flex;
   border-radius: var(--radius-sm);
   overflow: hidden;
   background: var(--schedule-item);
-  flex: 1;
-  min-height: 0;
-}
-
-.badge{
-  font-size: 14px;
-}
-
-.schedule-item__accent {
-  width: 8px;
   flex-shrink: 0;
-  background: var(--subject-purple);
 }
 
+/* Время — отдельная левая зона */
+.schedule-item__time-col {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+  min-width: 70px;
+  gap: 4px;
+  padding: 12px 0;
+}
+
+.schedule-item__time-start {
+  font-size: 16px;
+  font-weight: 300;
+  color: var(--text-primary);
+  line-height: 1.2;
+}
+
+.schedule-item__time-end {
+  font-size: 16px;
+  font-weight: 300;
+  color: var(--text-secondary);
+  line-height: 1.2;
+}
+
+/* Разделитель между временем и деталями */
+.schedule-item__divider {
+  width: 2px;
+  background: var(--border);
+  align-self: stretch;
+  margin: 0;
+  flex-shrink: 0;
+}
+
+/* Основной блок */
 .schedule-item__body {
   flex: 1;
-  padding: 10px 14px;
+  padding: 16px ;
   display: flex;
-  align-items: center;
-}
-
-.schedule-item__row {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  width: 100%;
-}
-
-.schedule-item__time {
-  font-size: 14px;
-  font-weight: 400;
-  color: var(--text-primary);
-  margin-bottom: 2px;
+  flex-direction: column;
+  justify-content: center;
+  gap: 4px;
+  min-width: 0;
 }
 
 .schedule-item__subject {
   font-size: 16px;
   font-weight: 400;
   color: var(--text-primary);
+  line-height: 1.2;
 }
 
-.schedule-item__teacher {
+.schedule-item__location {
   font-size: 14px;
   color: var(--text-secondary);
-  text-decoration: underline;
-  text-underline-offset: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
+/* Правая часть — бейдж */
 .schedule-item__right {
   display: flex;
   flex-direction: column;
-  align-items: flex-end;
-  gap: 6px;
-}
-
-.schedule-item__room {
-  font-size: 14px;
-  color: var(--text-secondary);
+  align-items: flex-start;
+  padding: 12px 12px 12px 0;
+  flex-shrink: 0;
 }
