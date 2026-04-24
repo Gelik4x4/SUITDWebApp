@@ -1,32 +1,35 @@
 import './LessonCard.css';
 
-const TAG_COLORS = {
-  purple: { bg: '#ede9ff', text: '#6B5CE7' },
-  blue:   { bg: '#e0eeff', text: '#3a7bd5' },
-  green:  { bg: '#e0f5ee', text: '#27ae60' },
-  orange: { bg: '#fff0e0', text: '#e07b00' },
+/* Цвет полоски и бейджа по типу занятия */
+const accentColor = (classType) => {
+  if (!classType) return 'purple';
+  const t = classType.toLowerCase();
+  if (t === 'пр' || t === 'практика') return 'orange';
+  if (t === 'лаб' || t === 'лабораторная') return 'blue';
+  return 'purple';
 };
 
-export default function LessonCard({ num, time, subject, teacher, room, class_type, tagColor = 'purple' }) {
-  const colors = TAG_COLORS[tagColor] ?? TAG_COLORS.purple;
-  return (
-    <div className="lesson">
-      {/* Numbered time header */}
-      <div className="lesson__timerow">
-        <span className="lesson__num">{num}</span>
-        <span className="lesson__time">{time}</span>
-      </div>
+export default function LessonCard({ time, subject, teacher, room, class_type }) {
+  const [start, end] = time?.split(/[-–]/).map(s => s.trim()) ?? [time, ''];
+  const color = accentColor(class_type);
 
-      {/* Card */}
-      <div className="lesson__card">
-        <div className="lesson__body">
-          <div className="lesson__subject">{subject}</div>
-          <div className="lesson__teacher">{teacher}</div>
-          <div className="lesson__room">{room}</div>
+  return (
+    <div className="lesson-item">
+      <div className="lesson-item__time-col">
+        <span className="lesson-item__time-start">{start}</span>
+        {end && <span className="lesson-item__time-end">{end}</span>}
+      </div>
+      <div className="lesson-item__divider" />
+      <div className="lesson-item__body">
+        <div className="lesson-item__subject">{subject}</div>
+        <div className="lesson-item__location">
+          {[room, teacher].filter(Boolean).join('  ·  ')}
         </div>
-        <span className="lesson__tag" style={{ background: colors.bg, color: colors.text }}>
-          {class_type}
-        </span>
+      </div>
+      <div className="lesson-item__right">
+        {class_type && (
+          <span className={`badge badge--${color}`}>{class_type}</span>
+        )}
       </div>
     </div>
   );

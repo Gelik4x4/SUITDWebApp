@@ -1,89 +1,77 @@
-.lesson {
+/* Карточка занятия на странице расписания — стиль виджета */
+.lesson-item {
   display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-/*  time row  */
-.lesson__timerow {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.lesson__num {
-  width: 26px;
-  height: 26px;
-  border-radius: 8px;
-  background: var(--accent);
-  color: #fff;
-  font-size: 13px;
-  font-weight: 700;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  background: var(--card-bg);
   flex-shrink: 0;
 }
 
-.lesson__time {
-  font-size: 16px;
-  font-weight: 400;
-  color: var(--text-primary);
-}
-
-/*  card  */
-.lesson__card {
-  background: var(--card-bg);
-  border-radius: var(--radius-sm);
-  display: flex;
-  align-items: stretch;
-  overflow: hidden;
-  padding: 16px 20px 16px 0;
-  gap: 16px;
-}
-
-
-.lesson__card {
-  position: relative;
-  padding: 16px 20px 16px 20px;
-}
-
-.lesson__card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  width: 8px;
-  background: var(--subject-purple);
-}
-
-.lesson__body {
-  flex: 1;
+/* Время */
+.lesson-item__time-col {
   display: flex;
   flex-direction: column;
-  gap: 3px;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+  min-width: 90px;
+  gap: 4px;
+  padding: 16px 0;
 }
 
-.lesson__subject {
+.lesson-item__time-start {
+  font-size: 18px;
+  font-weight: 300;
+  color: var(--text-primary);
+  line-height: 1.2;
+}
+
+.lesson-item__time-end {
+  font-size: 18px;
+  font-weight: 300;
+  color: var(--text-secondary);
+  line-height: 1.2;
+}
+
+/* Разделитель */
+.lesson-item__divider {
+  width: 2px;
+  background: var(--border);
+  align-self: stretch;
+  flex-shrink: 0;
+}
+
+/* Основной блок */
+.lesson-item__body {
+  flex: 1;
+  padding: 16px 16px 16px 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 4px;
+  min-width: 0;
+}
+
+.lesson-item__subject {
   font-size: 18px;
   font-weight: 400;
   color: var(--text-primary);
+  line-height: 1.2;
 }
 
-.lesson__teacher,
-.lesson__room {
+.lesson-item__location {
   font-size: 16px;
   color: var(--text-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-.lesson__tag {
-  align-self: flex-start;
-  font-size: 16px;
-  font-weight: 400;
-  padding: 3px 10px;
-  border-radius: 7px;
-  letter-spacing: 0.2px;
-  white-space: nowrap;
-  margin-top: 2px;
+/* Правая часть — бейдж */
+.lesson-item__right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 16px 16px 16px 0;
+  flex-shrink: 0;
 }
