@@ -1,31 +1,63 @@
+/* 2 карточки в строку */
 .offers-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 12px;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
   flex: 1;
   min-height: 0;
 }
 
+/* Карточка спецпредложения */
 .offer-card {
   border-radius: var(--radius-sm);
-  padding: 8px 12px;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  justify-content: flex-end;
+  position: relative;
+  padding: 0;
+  min-height: 80px;
 }
 
-.offer-card--gray  { background: #f3f4f6; }
-.offer-card--blue  { background: #e8eeff; }
-.offer-card--peach { background: #fff0e5; }
-
-.offer-card__percent {
-  font-size: 32px;
-  font-weight: 300;
-  color: var(--text-primary);
-  opacity: 0.18;
-  letter-spacing: -1px;
-  line-height: 1;
+/* Фоновое изображение */
+.offer-card__bg-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
 }
 
-.offer-card__name { font-size: 16px; font-weight: 300; color: var(--text-primary); }
-.offer-card__desc { font-size: 14px; color: var(--text-secondary); }
+/* Верхняя строка: тег слева, кнопка избранного справа */
+.offer-card__top-row {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  right: 8px;
+  z-index: 3;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 6px;
+}
+
+/* Переопределяем абсолютное позиционирование fav-btn внутри top-row */
+.offer-card__top-row .fav-btn {
+  position: static;
+  flex-shrink: 0;
+}
+
+/* Подпись */
+.offer-card__footer {
+  position: relative;
+  z-index: 2;
+  padding: 8px 12px 10px;
+}
+
+.offer-card__name {
+  font-size: 14px;
+  font-weight: 400;
+  color: #434343;
+  line-height: 1.3;
+}
