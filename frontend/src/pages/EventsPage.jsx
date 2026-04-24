@@ -1,68 +1,239 @@
 import { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
 import './EventsPage.css';
-import SearchBar      from '../components/searchbar/SearchBar';
 import EventCard    from '../components/events/EventCard';
-import EventFilters from '../components/events/EventFilters';
 import EventDetail  from '../components/events/EventDetail';
-import { EVENTS }   from '@constants/eventsData';
+import FavFilterPanel from '../components/filters/FavFilterPanel';
+import Breadcrumbs  from '../components/breadcrumbs/Breadcrumbs';
 import Icon from '@icon/Icon';
 
-const EMPTY_FILTERS = { directions: [] };
+/* ─── Парсинг мероприятий ─────────────────────────────────────── */
 
-function EventsPage() {
-  const [search,   setSearch]   = useState('');
-  const [filters,  setFilters]  = useState(EMPTY_FILTERS);
-  const [selected, setSelected] = useState(null);
+const EVENTS_URL = '/leader-proxy/events?actual=1&cityId=882&offline=0&registrationActual=1&sort=date&placeIds=3905';
 
+const fetchEvents = async () => {
+  const res = await fetch(EVENTS_URL);
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  const html = await res.text();
+  const doc  = new DOMParser().parseFromString(html, 'text/html');
+
+  /*
+   * Реальная структура leader-id SSR:
+   * <a href="/events/ID"><img ...></a>
+   * <p>Тип</p>
+   * <p>Время до окончания регистрации...</p>
+   * <h4><a href="/events/ID">Название</a></h4>
+   * <p>Дата...</p>
+   * <p>Город</p>
+   *
+   * Ищем h4 > a[href^="/events/"] — это надёжная точка входа.
+   */
+  const headings = [...doc.querySelectorAll('h4 a[href^="/events/"], h3 a[href^="/events/"]')];
+
+  return headings.map((a, i) => {
+    const href  = a.getAttribute('href') ?? '';
+    const id    = href.split('/').filter(Boolean).pop() ?? String(i);
+    const title = a.textContent.trim();
+
+    /* Ищем img-ссылку с тем же href рядом (раньше в DOM) */
+    const imgLink = doc.querySelector(`a[href="${href}"] img, a[href="https://leader-id.ru${href}"] img`);
+    const rawSrc  = imgLink?.getAttribute('src') ?? '';
+    const image   = rawSrc.startsWith('http') ? rawSrc
+                  : rawSrc ? `https://leader-id.ru${rawSrc}` : null;
+
+    /*
+     * Соседние элементы h4: ищем параграфы до и после.
+     * h4.parentElement содержит всё нужное.
+     */
+    const parent   = a.closest('h4, h3')?.parentElement;
+    const allTexts = parent
+      ? [...parent.querySelectorAll('p, span')].map(el => el.textContent.trim()).filter(Boolean)
+      : [];
+
+    /* Тип — первый короткий текст без цифр и слова "регистрации" */
+    const type = allTexts.find(t =>
+      t.length < 30 && !/регистрац|кол-во|\d/.test(t.toLowerCase())
+    ) ?? 'Другое';
+
+    /* Дата — содержит числа и месяц */
+    const date = allTexts.find(t =>
+      /\d/.test(t) && /апрел|мая|июн|июл|август|сентябр|октябр|ноябр|декабр|январ|феврал|март/i.test(t)
+    ) ?? '';
+
+    /* Локация */
+    const location = allTexts.find(t =>
+      /Санкт-Петербург|Москва|онлайн/i.test(t)
+    ) ?? 'Санкт-Петербург';
+
+    return { id, title, type, date, location, image, link: `https://leader-id.ru${href}`, description: '' };
+  }).filter(ev => ev.title);
+};
+
+/* ─── Парсинг детальной страницы мероприятия ─────────────────── */
+
+const fetchEventDetail = async (eventId) => {
+  const res = await fetch(`/leader-proxy/events/${eventId}`);
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  const html = await res.text();
+  const doc  = new DOMParser().parseFromString(html, 'text/html');
+
+  /* Большое фото мероприятия — берём src из og:image или первую картинку
+     из yandexcloud, которая НЕ является логотипом (содержит ID события или user_photo) */
+  const ogImage = doc.querySelector('meta[property="og:image"]')?.getAttribute('content');
+  const allImgs = [...doc.querySelectorAll('img[src*="leader-id.storage.yandexcloud.net"]')]
+    .map(img => img.getAttribute('src'))
+    .filter(src => src && !src.includes('4345976') && !src.includes('user_photo'));
+  const image = ogImage || allImgs[0] || null;
+
+  /* Дата — строка с "по Московскому времени" */
+  const allTexts = [...doc.querySelectorAll('p, span, div, h2, h3')]
+    .map(el => el.textContent.trim()).filter(Boolean);
+
+  const date = allTexts.find(t =>
+    /по Московскому времени/i.test(t) && t.length < 120
+  ) ?? '';
+
+  /* Локация — ссылки на places или адрес */
+  const placeLink = doc.querySelector('a[href*="/places/"]');
+  const location  = placeLink?.textContent?.trim() ?? 'Санкт-Петербург';
+
+  /* Адрес */
+  const addressSection = [...doc.querySelectorAll('h3')]
+    .find(h => h.textContent.includes('Адрес'));
+  const address = addressSection?.nextElementSibling?.textContent?.trim() ?? '';
+
+  /* Описание — секция "О мероприятии" */
+  const descSection = [...doc.querySelectorAll('h2')]
+    .find(h => h.textContent.includes('О мероприятии'));
+  let description = '';
+  if (descSection) {
+    let el = descSection.nextElementSibling;
+    const parts = [];
+    while (el && !['H2','H3'].includes(el.tagName)) {
+      const t = el.textContent.trim();
+      if (t) parts.push(t);
+      el = el.nextElementSibling;
+    }
+    description = parts.join('\n').trim();
+  }
+
+  /* Регистрация — дедлайн */
+  const regDeadline = allTexts.find(t =>
+    /Регистрация закончится/i.test(t) && t.length < 80
+  ) ?? '';
+
+  return { image, date, location, address, description, regDeadline };
+};
+
+
+
+const EVENT_TYPES = [
+  'Мероприятия кафедры ЦАТ','Форум','Лекция','Митап',
+  'Встреча','Конференция','Мастер-класс','Дизайн','IT','Инженерия','Другое',
+];
+
+/* ─── Page ────────────────────────────────────────────────────── */
+
+export default function EventsPage() {
   const navigate = useNavigate();
+  const [search,    setSearch]    = useState('');
+  const [selected,  setSelected]  = useState([]);      // фильтр по типу
+  const [favorites, setFavorites] = useState(new Set());
+  const [showFav,   setShowFav]   = useState(false);
+  const [openEvent, setOpenEvent] = useState(null);
 
-  const filtered = useMemo(() => EVENTS.filter(ev => {
+  const { data: events = [], isLoading, error } = useQuery({
+    queryKey: ['events-list'],
+    queryFn: fetchEvents,
+    staleTime: 5 * 60 * 1000,
+    retry: 1,
+  });
+
+  const toggleFav = (id) =>
+    setFavorites(prev => { const s = new Set(prev); s.has(id) ? s.delete(id) : s.add(id); return s; });
+
+  const filtered = useMemo(() => events.filter(ev => {
+    if (showFav && !favorites.has(ev.id)) return false;
     const q = search.toLowerCase();
     if (q && !ev.title.toLowerCase().includes(q)) return false;
-    if (filters.directions.length && !filters.directions.includes(ev.direction)) return false;
+    if (selected.length && !selected.includes(ev.type)) return false;
     return true;
-  }), [search, filters]);
+  }), [events, search, selected, favorites, showFav]);
 
-  if (selected) {
+  /* Детальный просмотр */
+  if (openEvent) {
     return (
-      <div className="evp-page">
-        <EventDetail event={selected} onBack={() => setSelected(null)} />
+      <div className="evp-page evp-page--detail">
+        <EventDetail
+          event={openEvent}
+          onBack={() => setOpenEvent(null)}
+          isFav={favorites.has(openEvent.id)}
+          onToggleFav={() => toggleFav(openEvent.id)}
+          fetchDetail={fetchEventDetail}
+        />
       </div>
     );
   }
 
   return (
+        <>
+        <Breadcrumbs items={[
+          { label: 'Сервисы', onClick: () => navigate('/services') },
+          { label: 'Мероприятия' },
+        ]} />
+
+        {/* Search — на всю ширину */}
+        <div className="evp-search">
+          <Icon name="Search" />
+          <input
+            className="evp-search__input"
+            placeholder="Введите ключевые слова..."
+            value={search}
+            onChange={e => setSearch(e.target.value)}
+          />
+        </div>
+
     <div className="evp-page">
-      {/* Left: search + 3-col grid */}
+
       <div className="evp-page__left">
-        <button className="icon-btn aq-page__back" onClick={() => navigate('/services')}>
-          <Icon name="ArrowLeft"/>
-        </button>
-        <SearchBar value={search} onChange={setSearch} />
+        
+        {/* Grid */}
         <div className="evp-grid-wrap">
-          {filtered.length === 0 ? (
+          {isLoading && <div className="evp-empty">Загрузка мероприятий...</div>}
+          {error     && <div className="evp-empty">Не удалось загрузить мероприятия</div>}
+          {!isLoading && !error && filtered.length === 0 && (
             <div className="evp-empty">Мероприятия не найдены</div>
-          ) : (
+          )}
+          {!isLoading && !error && filtered.length > 0 && (
             <div className="evp-grid">
               {filtered.map(ev => (
-                <EventCard key={ev.id} event={ev} onClick={() => setSelected(ev)} />
+                <EventCard
+                  key={ev.id}
+                  event={ev}
+                  isFav={favorites.has(ev.id)}
+                  onToggleFav={() => toggleFav(ev.id)}
+                  onClick={() => setOpenEvent(ev)}
+                />
               ))}
             </div>
           )}
         </div>
       </div>
 
-      {/* Right: filters */}
+      {/* RIGHT — фильтры */}
       <div className="evp-page__right">
-        <EventFilters
-          filters={filters}
-          onChange={setFilters}
-          onClear={() => setFilters(EMPTY_FILTERS)}
+        <FavFilterPanel
+          options={EVENT_TYPES}
+          selected={selected}
+          onChange={setSelected}
+          showFav={showFav}
+          onToggleFav={() => setShowFav(v => !v)}
+          onClear={() => { setSelected([]); setShowFav(false); }}
         />
       </div>
+
     </div>
+    </>
   );
 }
-
-export default EventsPage
