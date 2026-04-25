@@ -1,25 +1,29 @@
 import './ContestCard.css';
-import ContestIllustration from './ContestIllustration';
-import Icon from '@icon/Icon';
+import FavButton from '../buttons/FavButton';
 
-
-export default function ContestCard({ contest, onClick }) {
+export default function ContestCard({ contest, isFav, onToggleFav, onClick }) {
   return (
     <div className="con-card" onClick={onClick} role="button" tabIndex={0}
       onKeyDown={e => e.key === 'Enter' && onClick()}>
+
       <div className="con-card__img">
-        <ContestIllustration />
-        <button
-          className="con-card__fav icon-btn"
-          onClick={e => { e.stopPropagation(); }}
+        {contest.image
+          ? <img src={contest.image} alt={contest.title} className="con-card__photo" />
+          : <div className="con-card__img-placeholder" />
+        }
+        <div
+          className="con-card__fav-wrap"
+          onClick={e => { e.stopPropagation(); onToggleFav(); }}
         >
-          <Icon name="Heart"/>
-        </button>
+          <FavButton active={isFav} />
+        </div>
       </div>
+
       <div className="con-card__body">
         <div className="con-card__title">{contest.title}</div>
-        <div className="con-card__desc">{contest.description}</div>
-        <div className="con-card__deadline">{contest.deadline}</div>
+        {contest.deadline && (
+          <div className="con-card__deadline">{contest.deadline}</div>
+        )}
       </div>
     </div>
   );
