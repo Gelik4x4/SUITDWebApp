@@ -30,6 +30,27 @@ function EventCard({ img, date, tagColor = 'purple', title }) {
   );
 }
 
+/* Моковые данные — заменить на реальный API */
+const events = [
+  {
+    img: '/src/assets/img/events/event-1.png',
+    date: '09 апр 20:00',
+    tagColor: 'purple',
+    title: 'IX Международный конгресс «Дизайн. Материалы. Технология»',
+  },
+  {
+    img: '/src/assets/img/events/event-2.png',
+    date: '11 апр 18:00',
+    tagColor: 'orange',
+    title: 'Как создать и продвигать писательский бренд',
+  },
+  {
+    img: '/src/assets/img/events/event-3.png',
+    date: '17 апр 16:00',
+    tagColor: 'blue',
+    title: 'Студенческая весна 2026, финал',
+  },
+];
 
 export default function EventsWidget() {
   return (
