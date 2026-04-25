@@ -51,7 +51,7 @@ export default function VacancyFilterPanel({
         onClick={onToggleFav}
       >
         <span>Избранные</span>
-        <Icon name="Heart" size={16} />
+        <Icon name="Heart" size={24} />
       </button>
 
       <CheckGroup title="Опыт"           options={expOptions} selected={expSelected} onChange={onExpChange} />

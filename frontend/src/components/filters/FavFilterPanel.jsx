@@ -37,7 +37,7 @@ export default function FavFilterPanel({
         onClick={onToggleFav}
       >
         <span>Избранные</span>
-        <Icon name="Heart" size={16} />
+        <Icon name="Heart" size={24} />
       </button>
 
       {/* Чекбоксы */}
