@@ -1,65 +1,54 @@
 .news-page {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.news-page--detail {
   flex: 1;
   min-height: 0;
-  display: grid;
-  grid-template-columns: 14fr 7fr;
-  gap: var(--gap);
   overflow: hidden;
 }
 
-/* Детальная страница  */
-.news-page--detail {
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-}
-
-/* ── Левая колонка ── */
-.news-page__left {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  min-height: 0;
-  overflow: hidden;
-}
-
-/* Search */
 .news-search {
   display: flex;
   align-items: center;
-  gap: 10px;
-  background: var(--card-bg);
-  border: 1.5px solid var(--border);
+  gap: 8px;
+  border: 1px solid var(--text-secondary);
   border-radius: 12px;
-  padding: 11px 16px;
+  padding: 12px;
   flex-shrink: 0;
   color: var(--text-secondary);
   transition: border-color 0.15s;
 }
 .news-search:focus-within { border-color: var(--accent); }
+
 .news-search__input {
   flex: 1;
   border: none;
   outline: none;
   background: none;
   font-family: inherit;
-  font-size: 14px;
+  font-size: 16px;
+  font-weight: 200;
   color: var(--text-primary);
+  padding: 0px;
 }
-.news-search__input::placeholder { color: #c0c4cc; }
+.news-search__input::placeholder { color: var(--text-secondary); }
 
-/* Scrollable list */
+.news-page__body {
+  display: grid;
+  grid-template-columns: repeat(24, 1fr);
+  gap: var(--gap);
+  align-items: start;
+}
+
 .news-list {
-  flex: 1;
-  min-height: 0;
-  overflow-y: auto;
+  grid-column: span 17;
   display: flex;
   flex-direction: column;
-  gap: 14px;
-  padding-right: 4px;
+  gap: 16px;
 }
-.news-list::-webkit-scrollbar { width: 4px; }
-.news-list::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
 
 .news-empty {
   display: flex;
@@ -67,18 +56,16 @@
   justify-content: center;
   height: 120px;
   color: var(--text-secondary);
-  font-size: 14px;
+  font-size: 16px;
   background: var(--card-bg);
   border-radius: var(--radius);
 }
 
-/* ── Правая колонка (фильтры) ── */
 .news-page__right {
+  grid-column: span 7;
   background: var(--card-bg);
   border-radius: var(--radius);
-  padding: 20px;
-  overflow-y: auto;
-  min-height: 0;
+  padding: 24px;
+  position: sticky;
+  top: 0;
 }
-.news-page__right::-webkit-scrollbar { width: 4px; }
-.news-page__right::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }

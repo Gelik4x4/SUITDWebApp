@@ -1,0 +1,109 @@
+.vfp {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* Избранное */
+.vfp-fav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 10px 16px;
+  border-radius: 20px;
+  border: none;
+  background: #FFDBD3;
+  color: #c0392b;
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: 400;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+  width: 100%;
+}
+.vfp-fav--active {   background: #ffb3b3; color: #a00; }
+.vfp-fav:hover   { background: #ffcaca; }
+
+/* Группа */
+.vfp-group {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.vfp-group__title {
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--light-black);
+}
+
+/* 2 колонки для групп с множеством опций */
+.vfp-group__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px 12px;
+}
+
+/* Чекбокс */
+.vfp-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+.vfp-checkbox__input { display: none; }
+
+.vfp-checkbox__box {
+  width: 17px; height: 17px;
+  border-radius: 5px;
+  border: 1.5px solid var(--border);
+  background: var(--card-bg);
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s, border-color 0.15s;
+}
+.vfp-checkbox__input:checked + .vfp-checkbox__box {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+.vfp-checkbox__input:checked + .vfp-checkbox__box::after {
+  content: '';
+  width: 8px; height: 4px;
+  border-left: 2px solid #fff;
+  border-bottom: 2px solid #fff;
+  transform: rotate(-45deg) translateY(-1px);
+  display: block;
+}
+
+.vfp-checkbox__label {
+  font-size: 14px;
+  color: var(--text-primary);
+  line-height: 1.2;
+}
+
+.vfp label:not(:first-of-type) {
+  margin-top: 0;
+}
+
+.vfp .vfp-checkbox {
+  margin-bottom: 0;
+}
+
+/* Очистить */
+.vfp-clear {
+  background: var(--accent);
+  border: none;
+  border-radius: 12px;
+  padding: 12px;
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: 400;
+  color: #fff;
+  cursor: pointer;
+  width: 100%;
+  transition: opacity 0.15s;
+}
+.vfp-clear:hover { opacity: 0.88; }

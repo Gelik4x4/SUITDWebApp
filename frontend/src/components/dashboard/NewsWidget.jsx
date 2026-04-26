@@ -12,7 +12,7 @@ export default function NewsWidget() {
     <div className="card news-card">
       <div className="card__header">
         <span className="card__title">Новости</span>
-        <button className="icon-btn"><Icon name="ArrowUp"/></button>
+        <button className="icon-btn"><Icon name="ArrowUp" /></button>
       </div>
       <div className="news-list">
         {newsImages.map((src, i) => (

@@ -20,6 +20,7 @@ import AskQuestionPage from "./pages/AskQuestionPage";
 import PodcastsPage from "./pages/PodcastsPage";
 import ChangePassword from "./pages/ChangePassword";
 import SuccessPopup from "./components/auth/SuccessPopup"
+import ClubsPage from "./pages/ClubsPage";
 
 
 // Импорт онбординга
@@ -91,17 +92,17 @@ export default function App() {
               <main className="main">
                 <Header />
                 <Routes>
-                  <Route path="/"              element={<Navigate to="/home" replace />} />
-                  <Route path="/home"          element={<Home />} />
-                  <Route path="/schedule"      element={<SchedulePage />} />
-                  <Route path="/services"      element={<ServicesPage />} />
-                  <Route path="/profile"       element={<ProfilePage />} />
+                  <Route path="/"                        element={<Navigate to="/home" replace />} />
+                  <Route path="/home"                    element={<Home />} />
+                  <Route path="/schedule"                element={<SchedulePage />} />
+                  <Route path="/services"                element={<ServicesPage />} />
+                  <Route path="/profile"                 element={<ProfilePage />} />
                   
                   <Route path="/services/studentcard"    element={<StudentCardPage />} />
                   <Route path="/services/news"           element={<NewsPage />} />
                   <Route path="/services/teachers"       element={<TeachersPage />} />
 
-                  {/* <Route path="/services/sport"       element={< />} /> */}
+                  <Route path="/services/clubs"          element={< ClubsPage/>} />
                   <Route path="/services/events"         element={<EventsPage />} />
                   <Route path="/services/askquestion"    element={<AskQuestionPage />} />
 
@@ -110,8 +111,8 @@ export default function App() {
                   <Route path="/services/internships"    element={<InternshipsPage />} />
                   <Route path="/services/specialoffers"  element={<SpecialOffersPage />} />
 
-                  <Route path="/services/podcasts"  element={<PodcastsPage />} />
-                  <Route path="/services/articles"  element={<ArticlesPage />} />
+                  <Route path="/services/podcasts"       element={<PodcastsPage />} />
+                  <Route path="/services/articles"       element={<ArticlesPage />} />
                 </Routes>
               </main>
             </div>

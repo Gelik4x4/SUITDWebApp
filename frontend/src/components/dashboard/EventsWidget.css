@@ -1,84 +1,78 @@
-/* event card*/
+/* 3 карточки мероприятий в строке */
+.events-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  flex: 1;
+  min-height: 0;
+}
+
+/* Карточка мероприятия */
 .event-card {
   border-radius: var(--radius-sm);
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  height: 100%;
-  min-height: 0;
-  background: #dce8ff;
-}
-
-/* photo */
-.event-card__img-wrap {
+  justify-content: flex-end;
   position: relative;
-  flex: 0 0 60%;
-  overflow: hidden;
+  min-height: 0;
+  height: 100%;
 }
 
-.event-card__photo {
+/* Фоновое изображение */
+.event-card__bg-img {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  display: block;
+  z-index: 0;
 }
 
-/* favourites */
-.event-card__fav {
+/* Верхняя строка: тег слева, кнопка избранного справа */
+.event-card__top-row {
   position: absolute;
-  top: 10px;
-  right: 10px;
-  z-index: 2;
-  background: rgba(255, 255, 255, 0.75);
-  backdrop-filter: blur(4px);
-  border-radius: 50%;
-  width: 28px;
-  height: 28px;
-  border: none;
-  cursor: pointer;
+  top: 8px;
+  left: 8px;
+  right: 8px;
+  z-index: 3;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--text-secondary);
-  transition: background 0.15s;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 6px;
+  /* .fav-btn внутри не absolute — позиционируется через flex */
 }
-.event-card__fav:hover { background: rgba(255,255,255,0.95); }
 
-/* text */
+/* Переопределяем абсолютное позиционирование fav-btn внутри top-row */
+.event-card__top-row .fav-btn {
+  position: static;
+  flex-shrink: 0;
+}
+
+/* Текст внизу */
 .event-card__footer {
-  flex: 1;
-  padding: 10px 14px 12px;
+  position: relative;
+  z-index: 2;
+  padding: 10px 12px 12px;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
-  gap: 12px;
-  background: #dce8ff;
+  gap: 4px;
 }
 
-.event-card__meta {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  font-size: 14px;
-  color: #3a4a7a;
-}
-
-.event-card__location {
-  display: flex;
-  align-items: center;
-  gap: 3px;
+.event-card--has-img .event-card__title {
+  color: #434343;
 }
 
 .event-card__title {
-  font-size: 16px;
-  font-weight: 300;
-  color: #1a2a5a;
+  font-size: 14px;
+  font-weight: 400;
   line-height: 1.4;
 }
 
-.grid-events .two-col-grid {
+.grid-events .events-grid {
   height: 100%;
 }
-.grid-events .two-col-grid > .event-card {
+
+.grid-events .event-card {
   height: 100%;
 }

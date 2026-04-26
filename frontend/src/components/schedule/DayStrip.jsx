@@ -9,8 +9,13 @@ export default function DayStrip({ activeDay, onDayChange, days }) {
         {days.map((d, i) => (
           <button
             key={i}
-            className={`day-strip__btn${activeDay === i ? ' day-strip__btn--active' : ''}`}
-            onClick={() => onDayChange(i)}
+            className={[
+              'day-strip__btn',
+              activeDay === i ? 'day-strip__btn--active' : '',
+              d.isPast ? 'day-strip__btn--past' : '',
+            ].filter(Boolean).join(' ')}
+            onClick={() => !d.isPast && onDayChange(i)}
+            disabled={d.isPast}
           >
             {DAYS[i]} {d.num}
           </button>

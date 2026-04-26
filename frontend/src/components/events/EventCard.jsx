@@ -1,31 +1,31 @@
 import './EventCard.css';
-import EventIllustration from './EventIllustration';
-import Icon from '@icon/Icon';
+import FavButton from '../buttons/FavButton';
 
-
-export default function EventCard({ event, onClick }) {
+export default function EventCard({ event, isFav, onToggleFav, onClick }) {
   return (
     <div className="ev-card" onClick={onClick} role="button" tabIndex={0}
       onKeyDown={e => e.key === 'Enter' && onClick()}>
 
-      {/* Illustration */}
+      {/* Image */}
       <div className="ev-card__img">
-        <EventIllustration />
-        <button className="ev-card__fav icon-btn" onClick={e => e.stopPropagation()}>
-          <Icon name="Heart"/>
-        </button>
-      </div>
-
-      {/* Meta row */}
-      <div className="ev-card__meta">
-        <span className="ev-card__date">{event.date}</span>
-        <span className="ev-card__loc">
-          <Icon name="Location" size={16}/> {event.location}
-        </span>
+        {event.image
+          ? <img src={event.image} alt={event.title} className="ev-card__photo" />
+          : <div className="ev-card__img-placeholder" />
+        }
+        {/* Date badge top-left */}
+        {event.date && (
+          <span className="ev-card__date-badge">{event.date.split(',')[0]}</span>
+        )}
+        {/* Fav button top-right */}
+        <div className="ev-card__fav-wrap" onClick={e => { e.stopPropagation(); onToggleFav(); }}>
+          <FavButton active={isFav} />
+        </div>
       </div>
 
       {/* Title */}
-      <div className="ev-card__title">{event.title}</div>
+      <div className="ev-card__body">
+        <div className="ev-card__title">{event.title}</div>
+      </div>
     </div>
   );
 }

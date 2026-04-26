@@ -1,0 +1,13 @@
+.fav-btn {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  background: #FFFFFF;
+  backdrop-filter: blur(4px);
+  border: none; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--text-secondary);
+  flex-shrink: 0;
+  transition: color 0.15s, background 0.15s;
+}
+.fav-btn:hover { color: #e03; }
+.fav-btn--active { color: #e03; background: #FFDBD3; }

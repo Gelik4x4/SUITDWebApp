@@ -8,8 +8,8 @@ export const PAGE_TITLES = {
   '/services/news': 'Новости',
   '/services/teachers': 'Преподаватели',
 
-  '/services/sport': 'Спорт',
-  '/services/events': 'События',
+  '/services/clubs': 'Клубы',
+  '/services/events': 'Мероприятия',
   '/services/askquestion': 'Задать вопрос',
 
   '/services/contests': 'Конкурсы',

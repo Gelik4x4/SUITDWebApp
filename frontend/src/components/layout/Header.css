@@ -5,12 +5,12 @@
 }
 
 .topbar__greeting {
-  font-size: 32px;
+  font-size: 28px;
   font-weight: 600;
   color: var(--text-primary);
 }
 
 .topbar__actions {
   display: flex;
-  gap: 8px;
+  gap: 16px;
 }

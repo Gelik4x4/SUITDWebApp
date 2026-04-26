@@ -1,4 +1,4 @@
-/*  Overlay  */
+/* ── Overlay ── */
 .cal-overlay {
   position: fixed;
   inset: 0;
@@ -8,163 +8,183 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 24px;
 }
 
-/*  Modal box  */
+/* ── Modal box ── */
 .cal-modal {
   background: var(--card-bg);
   border-radius: 20px;
-  padding: 24px 28px 20px;
-  width: 680px;
-  max-width: calc(100vw - 48px);
+  padding: 28px 32px 24px;
+  width: min(1100px, 100%);
+  /* Высота адаптируется под экран */
+  max-height: calc(100vh - 48px);
   box-shadow: 0 20px 60px rgba(10, 15, 60, 0.18);
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 16px;
+  overflow: hidden;
 }
 
-/*  Header  */
+/* ── Header ── */
 .cal-modal__header {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  flex-shrink: 0;
 }
 
 .cal-modal__title {
-  font-size: 18px;
-  font-weight: 700;
-  color: var(--text-primary);
-}
-
-/*  Two months row  */
-.cal-months-row {
-  display: flex;
-  gap: 0;
-  align-items: flex-start;
-}
-
-.cal-months-divider {
-  width: 1px;
-  background: var(--border);
-  align-self: stretch;
-  margin: 0 24px;
-}
-
-/*  Single month  */
-.cal-month {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.cal-month__title {
-  font-size: 14px;
-  font-weight: 700;
-  color: var(--text-primary);
-  text-align: center;
-}
-
-/*  Calendar grid  */
-.cal-grid {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  gap: 2px;
-}
-
-.cal-grid__head {
-  font-size: 11px;
+  font-size: 24px;
   font-weight: 600;
-  color: var(--text-secondary);
-  text-align: center;
-  padding: 4px 0 6px;
-}
-
-.cal-grid__cell {
-  aspect-ratio: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 13px;
-  font-weight: 500;
   color: var(--text-primary);
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background 0.12s, color 0.12s;
-}
-.cal-grid__cell:hover:not(.cal-grid__cell--empty) {
-  background: var(--accent-light);
-  color: var(--accent);
-}
-.cal-grid__cell--empty {
-  cursor: default;
-  color: transparent;
-}
-.cal-grid__cell--today {
-  background: var(--accent);
-  color: #ffffff;
-  font-weight: 700;
-}
-
-/*  Nav / slider  */
-.cal-nav {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  justify-content: center;
-  padding: 0 4px;
-}
-
-
-.cal-nav__btn {
-  border: none;
-  background: transparent;  /* было var(--bg) */
-  border-radius: 8px;
-  width: 34px;
-  height: 34px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  color: var(--text-primary);
-  flex-shrink: 0;
-  transition: background 0.12s, color 0.12s;
-}
-
-.cal-nav__btn:hover {
-  background: var(--border);
-}
-
-.cal-nav__btn--disabled {
-  opacity: 0.3;
-  cursor: not-allowed;
-}
-
-.cal-nav__thumb {
-  position: absolute;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  width: 18px;
-  height: 18px;
-  background: var(--accent);
-  border-radius: 50%;
-  box-shadow: 0 2px 6px rgba(91,110,245,0.35);
-  transition: left 0.2s ease;
 }
 
 .cal-close-btn {
   background: transparent;
   border: none;
   cursor: pointer;
-  padding: 0;
+  padding: 4px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   color: var(--text-primary);
-  transition: color 0.12s;
+  border-radius: 8px;
+  transition: color 0.12s, background 0.12s;
+}
+.cal-close-btn:hover {
+  background: var(--border);
 }
 
-.cal-close-btn:hover {
+/* ── Calendar grid wrapper — занимает оставшееся место ── */
+.cal-grid-wrap {
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── Calendar grid ── */
+.cal-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  /* Строки: 1 заголовочная + авто количество недель */
+  grid-auto-rows: auto;
+  border-left: 1px solid var(--border);
+  border-top: 1px solid var(--border);
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+}
+
+/* Day name headers */
+.cal-grid__head {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  text-align: center;
+  padding: 10px 0;
+  border-right: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  background: var(--card-bg);
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+
+/* ── Day cell ── */
+.cal-cell {
+  border-right: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  padding: 6px 5px 5px;
+  /* Все ячейки одинаковой высоты через min-height + flex */
+  min-height: clamp(80px, 12vh, 120px);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  overflow: hidden;
+}
+
+.cal-cell--empty {
   background: transparent;
-  color: var(--accent);
+}
+
+.cal-cell--past {
+  background: var(--bg);
+}
+
+.cal-cell--today .cal-cell__num {
+  background: var(--accent);
+  color: #fff;
+}
+
+/* Day number */
+.cal-cell__num {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-bottom: 2px;
+}
+
+/* Lesson chips container */
+.cal-cell__lessons {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+  overflow: hidden;
+}
+
+/* ── Lesson chip ── */
+.cal-chip {
+  font-size: 11px;
+  font-weight: 400;
+  padding: 2px 5px;
+  border-radius: 4px;
+  /* Многоточие если не влазит */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
+  width: 100%;
+  line-height: 1.4;
+  display: block;
+}
+
+/* ── Navigation ── */
+.cal-nav {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.cal-nav__btn {
+  border: 1.5px solid var(--border);
+  background: transparent;
+  border-radius: 10px;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--text-primary);
+  transition: background 0.12s, color 0.12s;
+}
+.cal-nav__btn:hover:not(.cal-nav__btn--disabled) {
+  background: var(--border);
+}
+.cal-nav__btn--disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
 }

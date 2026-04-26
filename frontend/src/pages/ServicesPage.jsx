@@ -1,43 +1,33 @@
 import './ServicesPage.css';
 import ServiceCard    from '../components/services/ServiceCard';
 import ServiceSection from '../components/services/ServiceSection';
-import {
-  AbstractStudentCard,   AbstractNews,      AbstractTeachers,
-  AbstractSport,         AbstractEvents,    AbstractQuestion,
-  AbstractContests,      AbstractVacancies, AbstractInternships,
-  AbstractSpecialOffers, AbstractPodcasts,  AbstractArticles,
-} from '../components/services/ServiceAbstracts';
-
 
 function ServicesPage() {
   return (
     <div className="services-page">
+
       <ServiceSection title="Университет" modifier="university">
-        {/* Первый ряд элементов */}
-        <ServiceCard page="/services/studentcard"        color="orange" Abstract={AbstractStudentCard} />
-        <ServiceCard page="/services/news"               color="blue"   Abstract={AbstractNews} />
-        <ServiceCard page="/services/teachers"           color="purple" Abstract={AbstractTeachers} />
-        {/* Второй ряд элементов  */}
-        <ServiceCard page="/services/sport"              color="blue"   Abstract={AbstractSport} />
-        <ServiceCard page="/services/events"             color="orange" Abstract={AbstractEvents} />
-        <ServiceCard page="/services/askquestion"        color="yellow" Abstract={AbstractQuestion} />
+        <ServiceCard page="/services/studentcard"   color="blue"   img="/src/assets/img/services/service-1.png" />
+        <ServiceCard page="/services/news"          color="blue"   img="/src/assets/img/services/service-2.png" />
+        <ServiceCard page="/services/teachers"      color="blue"   img="/src/assets/img/services/service-3.png" />
+        <ServiceCard page="/services/events"        color="blue"   img="/src/assets/img/services/service-4.png" />
+        <ServiceCard page="/services/clubs"         color="blue"   img="/src/assets/img/services/service-5.png" />
+        <ServiceCard page="/services/askquestion"   color="blue"   img="/src/assets/img/services/service-6.png" />
       </ServiceSection>
 
       <ServiceSection title="Возможности" modifier="opportunities">
-        {/* Третий ряд элементов  */}
-        <ServiceCard page="/services/contests"           color="purple" Abstract={AbstractContests} />
-        <ServiceCard page="/services/vacancies"          color="teal"   Abstract={AbstractVacancies} />
-        <ServiceCard page="/services/internships"        color="pink"   Abstract={AbstractInternships} />
-        <ServiceCard page="/services/specialoffers"      color="blue"   Abstract={AbstractSpecialOffers} />
+        <ServiceCard page="/services/vacancies"     color="orange" img="/src/assets/img/services/service-7.png" />
+        <ServiceCard page="/services/contests"      color="orange" img="/src/assets/img/services/service-8.png" />
+        <ServiceCard page="/services/specialoffers" color="orange" img="/src/assets/img/services/service-9.png" />
       </ServiceSection>
 
       <ServiceSection title="Развитие" modifier="development">
-        {/* Четвертый ряд элементов */}
-        <ServiceCard page="/services/podcasts" color="orange" Abstract={AbstractPodcasts} />
-        <ServiceCard page="/services/articles"   color="blue"   Abstract={AbstractArticles} />
+        <ServiceCard page="/services/articles"      color="purple" img="/src/assets/img/services/service-10.png" />
+        <ServiceCard page="/services/podcasts"      color="purple" img="/src/assets/img/services/service-11.png" />
       </ServiceSection>
+
     </div>
   );
 }
 
-export default ServicesPage
+export default ServicesPage;

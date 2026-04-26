@@ -3,10 +3,8 @@
   min-height: 0;
   display: flex;
   flex-direction: column;
-  gap: 0;
   max-width: 100%;
-  overflow-y: auto;
-  padding-right: 4px;
+  overflow: hidden;
 }
 
 /* ── Controls row ── */
@@ -15,14 +13,16 @@
   align-items: center;
   justify-content: space-between;
   margin-bottom: 20px;
+  flex-shrink: 0;
 }
+
 .sched-controls__right {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 8px;
 }
 
-/* ── Shared small icon button (used by DayStrip, CalendarModal, SchedulePage) ── */
+/* ── Shared small icon button ── */
 .sched-icon-btn {
   border: none;
   background: none;
@@ -34,36 +34,11 @@
   border-radius: 8px;
   transition: background 0.15s, color 0.15s;
   font-size: 14px;
+  font-family: inherit;
 }
-
 .sched-icon-btn:hover {
   background: var(--border);
   color: var(--text-primary);
-}
-
-/* ── Schedule list ── */
-.sched-list {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-/* ── Empty day ── */
-.sched-empty {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 160px;
-  color: var(--text-secondary);
-  font-size: 15px;
-  background: var(--card-bg);
-  border-radius: var(--radius);
-}
-
-.sched-controls__right {
-  display: flex;
-  align-items: center;
-  gap: 8px;
 }
 
 .sched-nav-group {
@@ -72,14 +47,88 @@
   gap: 4px;
   border: 1.5px solid var(--border, #e0e0e0);
   border-radius: 12px;
-  background: transparent;
-  padding: 0px;
+  padding: 0;
 }
 
-/* SchedulePage.css — дополнение */
-.sched-controls__right {
+/* ── Только карточки скроллятся ── */
+.sched-scroll {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding-bottom: 80vh;
+}
+
+/* ── Day section ── */
+.sched-day-section {
+  margin-bottom: 32px;
+}
+
+.sched-day-title {
+  font-size: 16px;
+  font-weight: 400;
+  color: var(--text-secondary);
+  margin-bottom: 12px;
+  padding-left: 2px;
+}
+
+/* ── Schedule list inside section ── */
+.sched-list {
   display: flex;
-  align-items: center;
+  flex-direction: column;
   gap: 8px;
 }
 
+/* ── Empty day ── */
+.sched-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 80px;
+  color: var(--text-secondary);
+  font-size: 15px;
+  background: var(--card-bg);
+  border-radius: var(--radius);
+}
+
+/* ── Breadcrumbs ── */
+.sched-breadcrumbs {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+  flex-shrink: 0;
+}
+
+.sched-breadcrumb {
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--text-secondary);
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: default;
+  font-family: inherit;
+}
+
+.sched-breadcrumb--link {
+  cursor: pointer;
+  transition: color 0.15s;
+}
+.sched-breadcrumb--link:hover {
+  color: var(--accent);
+}
+
+.sched-breadcrumb__sep {
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+/* ── Loading state ── */
+.sched-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  font-size: 15px;
+  color: var(--text-secondary);
+}

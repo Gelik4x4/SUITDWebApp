@@ -1,33 +1,33 @@
 .vac-page {
-  flex: 1;
-  min-height: 0;
-  display: grid;
-  grid-template-columns: 14fr 7fr;
+  display: flex;
   gap: var(--gap);
-  overflow: hidden;
+  margin-top: 8px;
 }
 
-/* ── Левая колонка ── */
+.vac-page--detail {
+  flex-direction: column;
+}
+
 .vac-page__left {
+  flex: 1;
+  min-width: 0;
   display: flex;
   flex-direction: column;
   gap: 16px;
-  min-height: 0;
-  overflow: hidden;
 }
 
-/* Search bar */
+/* Search */
 .vac-search {
   display: flex;
   align-items: center;
-  gap: 10px;
-  background: var(--card-bg);
-  border: 1.5px solid var(--border);
+  gap: 8px;
+  border: 1px solid var(--text-secondary);
   border-radius: 12px;
-  padding: 11px 16px;
+  padding: 12px;
   flex-shrink: 0;
   color: var(--text-secondary);
   transition: border-color 0.15s;
+  margin-top: 8px;
 }
 .vac-search:focus-within { border-color: var(--accent); }
 .vac-search__input {
@@ -36,42 +36,34 @@
   outline: none;
   background: none;
   font-family: inherit;
-  font-size: 14px;
+  font-size: 16px;
+  font-weight: 200;
   color: var(--text-primary);
+  padding: 0px;
 }
-.vac-search__input::placeholder { color: #c0c4cc; }
+.vac-search__input::placeholder { color: var(--text-secondary); }
 
-/* Cards scroll list */
+/* List */
 .vac-list {
-  flex: 1;
-  min-height: 0;
-  overflow-y: auto;
   display: flex;
   flex-direction: column;
-  gap: 14px;
-  padding-right: 4px;
+  gap: 16px;
 }
-.vac-list::-webkit-scrollbar { width: 4px; }
-.vac-list::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
 
 .vac-empty {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 120px;
-  color: var(--text-secondary);
-  font-size: 14px;
-  background: var(--card-bg);
-  border-radius: var(--radius);
+  display: flex; align-items: center; justify-content: center;
+  height: 120px; color: var(--text-secondary); font-size: 14px;
+  background: var(--card-bg); border-radius: var(--radius);
 }
 
-/* ── Правая колонка (фильтры) ── */
+/* Right — sticky */
 .vac-page__right {
+  width: 290px;
+  flex-shrink: 0;
   background: var(--card-bg);
   border-radius: var(--radius);
-  padding: 20px;
-  overflow-y: auto;
-  min-height: 0;
+  padding: 16px;
+  align-self: start;
+  position: sticky;
+  top: 0;
 }
-.vac-page__right::-webkit-scrollbar { width: 4px; }
-.vac-page__right::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }

@@ -1,41 +1,55 @@
 .tp-page {
-  flex: 1;
-  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  height: 100vh;
+}
+
+.tp-page__body {
   display: grid;
-  grid-template-columns: 14fr 7fr;
+  grid-template-columns: repeat(24, 1fr);
   gap: var(--gap);
-  overflow: hidden;
+  align-items: start;
 }
 
-/* Detail view — одна колонка */
-.tp-page--detail {
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-}
 
-/* ── Левая колонка ── */
-.tp-page__left {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  min-height: 0;
-  overflow: hidden;
-}
-
-/* Scrollable list */
 .tp-list {
-  flex: 1;
-  min-height: 0;
-  overflow-y: auto;
+  grid-column: span 24;
   display: flex;
   flex-direction: column;
-  background: var(--card-bg);
-  border-radius: var(--radius);
-  padding: 8px;
+  gap: 16px;
 }
-.tp-list::-webkit-scrollbar { width: 4px; }
-.tp-list::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+.tp-search {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid var(--text-secondary);
+  border-radius: 12px;
+  padding: 12px;
+  flex-shrink: 0;
+  color: var(--text-secondary);
+  transition: border-color 0.15s;
+}
+.tp-search:focus-within { border-color: var(--accent); }
+
+.tp-search__input {
+  flex: 1;
+  border: none;
+  outline: none;
+  background: none;
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: 200;
+  color: var(--text-primary);
+  padding: 0px;
+}
+.tp-search__input::placeholder { color: var(--text-secondary); }
+
+.tp-list {
+  display: flex;
+  flex-direction: column;
+}
 
 .tp-empty {
   display: flex;
@@ -43,16 +57,5 @@
   justify-content: center;
   height: 120px;
   color: var(--text-secondary);
-  font-size: 14px;
+  font-size: 16px;
 }
-
-/* ── Правая колонка (фильтры) ── */
-.tp-page__right {
-  background: var(--card-bg);
-  border-radius: var(--radius);
-  padding: 20px;
-  overflow-y: auto;
-  min-height: 0;
-}
-.tp-page__right::-webkit-scrollbar { width: 4px; }
-.tp-page__right::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }

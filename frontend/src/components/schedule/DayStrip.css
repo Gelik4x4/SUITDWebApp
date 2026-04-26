@@ -4,6 +4,7 @@
   justify-content: space-between;
   margin-bottom: 20px;
   gap: 20px;
+  flex-shrink: 0;
 }
 
 .day-strip__list {
@@ -20,7 +21,7 @@
   font-size: 14px;
   font-weight: 500;
   color: var(--text-secondary);
-  padding: 8px 18px;
+  padding: 8px 48px;
   border-radius: 40px;
   transition: background 0.15s, color 0.15s;
   white-space: nowrap;
@@ -28,6 +29,14 @@
 .day-strip__btn:hover {
   background: var(--border);
   color: var(--text-primary);
+}
+.day-strip__btn--past {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+.day-strip__btn--past:hover {
+  background: none;
+  color: var(--text-secondary);
 }
 .day-strip__btn--active {
   background: var(--accent);

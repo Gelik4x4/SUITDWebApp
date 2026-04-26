@@ -4,9 +4,10 @@
   overflow-y: auto;
   display: flex;
   flex-direction: column;
-  gap: 32px;
+  gap: 48px;
   padding-right: 4px;
-  max-width: calc((21 / 21) * 100%);
+  max-width: calc((24 / 24) * 100%);
+  margin-top: 16px;
 }
 
 .services-page::-webkit-scrollbar { width: 4px; }

@@ -1,33 +1,55 @@
 import { useNavigate } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
+import { supabase } from '@supabaseClient';
 import './StudentCardPage.css';
-import SearchBar      from '../components/searchbar/SearchBar';
 import StudentCardView from '../components/studentcard/StudentCardView';
-import { STUDENT_DATA } from '@constants/StudentCardData';
-import Icon from '@icon/Icon';
+import Breadcrumbs from '../components/breadcrumbs/Breadcrumbs';
 
-function StudentCardPage() {
+const fetchStudentData = async () => {
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) throw new Error('Не авторизован');
+
+  const { data, error } = await supabase
+    .from('users')
+    .select('first_name, middle_name, last_name, group_id, faculty, role, groups(name)')
+    .eq('id', user.id)
+    .single();
+
+  if (error) throw error;
+
+  const fullName = [data.last_name, data.first_name, data.middle_name]
+    .filter(Boolean)
+    .join(' ');
+
+  return {
+    qualification: data.role ?? 'Студент',
+    name:          fullName || '—',
+    group:         data.groups?.name ?? '—',
+    faculty:       data.faculty ?? '—',
+    studentId:     null,   // появится позже
+    birthDate:     null,   // появится позже
+  };
+};
+
+export default function StudentCardPage() {
   const navigate = useNavigate();
+
+  const { data, isLoading, error } = useQuery({
+    queryKey: ['studentCard'],
+    queryFn: fetchStudentData,
+    staleTime: 10 * 60 * 1000,
+  });
+
+  if (isLoading) return <div className="scp-page" />;
+  if (error) return <div className="scp-page" style={{ color: 'red' }}>Ошибка загрузки</div>;
+
   return (
     <div className="scp-page">
-      <button className="icon-btn aq-page__back" onClick={() => navigate('/services')}>
-        <Icon name="ArrowLeft"/>
-      </button>
-      {/* Back button row (как у всех сервисов — в строке поиска) */}
-      <div className="scp-page__toprow">
-        <SearchBar
-          value=""
-          onChange={() => {}}
-          // onBack={onBack}
-          placeholder=""
-        />
-      </div>
-
-      {/* Card centered */}
-      <div className="scp-page__body">
-        <StudentCardView data={STUDENT_DATA} />
-      </div>
+      <Breadcrumbs items={[
+        { label: 'Сервисы', onClick: () => navigate('/services') },
+        { label: 'Студенческий билет' },
+      ]} />
+      <StudentCardView data={data} />
     </div>
   );
 }
-
-export default StudentCardPage
