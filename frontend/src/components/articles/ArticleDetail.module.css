@@ -1,0 +1,343 @@
+/* ── Wrapper ─────────────────────────────────────────────────── */
+.artdWrap {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* ── Two-column layout ───────────────────────────────────────── */
+.artdLayout {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: 17fr 7fr;
+  gap: 16px;
+  overflow: hidden;
+}
+
+/* ── Scrollable left column ──────────────────────────────────── */
+.artdScroll {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+.artdScroll::-webkit-scrollbar { width: 4px; }
+.artdScroll::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+.artdContent {
+  background: var(--card-bg);
+  border-radius: var(--radius);
+  padding: 28px 32px 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* ── Header row ──────────────────────────────────────────────── */
+.artdTopbar {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.artdTitle {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1.35;
+  letter-spacing: -0.2px;
+  margin: 0;
+  flex: 1;
+}
+
+.artdTopbarRight {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+  padding-top: 2px;
+}
+
+/* ── Period ──────────────────────────────────────────────────── */
+.artdPeriod {
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+/* ── Hero image ──────────────────────────────────────────────── */
+.artdHero {
+  width: 100%;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  flex-shrink: 0;
+  margin-top: 4px;
+}
+.artdHeroImg {
+  width: 100%;
+  display: block;
+  object-fit: cover;
+  max-height: 380px;
+}
+
+/* ── Content blocks ──────────────────────────────────────────── */
+.artdPara {
+  font-size: 14px;
+  line-height: 1.8;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.artdHeading {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 4px 0 0;
+}
+
+.artdList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.artdList li {
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--text-primary);
+  padding-left: 18px;
+  position: relative;
+}
+.artdList li::before {
+  content: '•';
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.artdToc {
+  list-style: none;
+  padding: 14px 18px;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  background: var(--bg);
+  border-radius: var(--radius-sm);
+}
+.artdTocItem {
+  font-size: 13px;
+  color: var(--accent);
+  line-height: 1.6;
+  cursor: pointer;
+}
+.artdTocItem:hover { text-decoration: underline; }
+
+/* ── Right sidebar ───────────────────────────────────────────── */
+.artdSidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-self: start;
+}
+
+.artdSidebarCard {
+  background: var(--card-bg);
+  border-radius: var(--radius);
+  padding: 16px 18px;
+}
+
+.artdSidebarText {
+  font-size: 13px;
+  line-height: 1.65;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.artdSidebarBtn {
+  display: block;
+  width: 100%;
+  padding: 14px 20px;
+  background: var(--accent);
+  color: #fff;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  text-align: center;
+  border-radius: var(--radius);
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  transition: opacity 0.15s;
+  box-sizing: border-box;
+}
+.artdSidebarBtn:hover { opacity: 0.88; }
+
+/* ── To-top button ───────────────────────────────────────────── */
+.artdTotop {
+  position: absolute;
+  bottom: 24px;
+  right: 16px;
+  width: 48px;
+  height: 48px;
+  border: none;
+  background: var(--card-bg);
+  border-radius: 50%;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.14);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  transition: box-shadow 0.15s, transform 0.15s;
+  z-index: 10;
+}
+.artdTotop:hover {
+  box-shadow: 0 6px 20px rgba(91, 110, 245, 0.25);
+  transform: translateY(-2px);
+}
+
+.artdTotopIcon {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent);
+}
+
+/* Mobile-only elements — hidden on desktop */
+@media (min-width: 481px) {
+  .artdMobCard,
+  .artdMobBtn {
+    display: none;
+  }
+}
+
+/* ════════════════════════════════════════════════
+   Mobile — max-width: 480px
+   ════════════════════════════════════════════════ */
+@media (max-width: 480px) {
+  .artdWrap {
+    gap: 0;
+    overflow: hidden;
+  }
+
+  /* Hide desktop breadcrumbs */
+  .artdDesktopBreadcrumbs {
+    display: none;
+  }
+
+  /* Layout: single column, scrollable */
+  .artdLayout {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    overflow-y: auto;
+    flex: 1;
+    min-height: 0;
+    padding: 32px 16px 0;
+  }
+
+  .artdScroll {
+    overflow-y: visible;
+    padding-right: 0;
+    flex: none;
+  }
+
+  /* Desktop single card — replaced by mobile cards */
+  .artdContent {
+    display: contents;
+  }
+
+  /* Mobile card: white rounded block */
+  .artdMobCard {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    background: var(--card-bg);
+    border-radius: 16px;
+    padding: 16px;
+    margin-bottom: 16px;
+  }
+
+  .artdMobCardDeadline {
+    gap: 0;
+  }
+
+  .artdTopbar {
+    gap: 12px;
+  }
+
+  .artdTopbarRight {
+    padding-top: 0;
+  }
+
+  .artdTitle {
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1.35;
+  }
+
+  .artdPeriod {
+    font-size: 13px;
+    color: var(--text-secondary);
+  }
+
+  .artdSidebarText {
+    font-size: 13px;
+    line-height: 1.6;
+  }
+
+  .artdPara {
+    font-size: 14px;
+    line-height: 1.75;
+  }
+
+  /* Hide desktop sidebar */
+  .artdSidebar {
+    display: none;
+  }
+
+  /* Desktop sidebar btn — hidden (replaced by mob btn) */
+  .artdSidebarBtn {
+    display: none;
+  }
+
+  /* Fixed bottom button */
+  .artdMobBtn {
+    display: block;
+    position: fixed;
+    bottom: calc(64px + env(safe-area-inset-bottom));
+    left: 24px;
+    right: 24px;
+    padding: 16px 20px;
+    background: var(--accent);
+    color: #fff;
+    font-family: inherit;
+    font-size: 16px;
+    font-weight: 600;
+    text-align: center;
+    border-radius: 16px;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    box-shadow: 0 4px 20px rgba(33, 63, 249, 0.25);
+    z-index: 50;
+    box-sizing: border-box;
+  }
+
+  /* Hide to-top on mobile */
+  .artdTotop {
+    display: none;
+  }
+
+}
