@@ -8,6 +8,7 @@ import CalendarModal from '../components/schedule/CalendarModal';
 import GroupSelectorModal from '../components/schedule/GroupSelectorModal';
 import Icon from '@icon/Icon';
 import Breadcrumbs from '../components/breadcrumbs/Breadcrumbs';
+import TeacherScheduleView from '../components/schedule/TeacherScheduleView';
 import { supabase } from '@supabaseClient';
 
 /* ─── Constants ───────────────────────────────────────────────── */
@@ -158,7 +159,7 @@ function scrollToSection(container, target) {
 
 /* ─── Day section ─────────────────────────────────────────────── */
 
-function DaySection({ date, lessons, sectionRef }) {
+function DaySection({ date, lessons, sectionRef, onTeacherClick }) {
   return (
     <section
       className="sched-day-section"
@@ -171,7 +172,7 @@ function DaySection({ date, lessons, sectionRef }) {
       ) : (
         <div className="sched-list">
           {lessons.map((item, i) => (
-            <LessonCard key={i} {...item} />
+            <LessonCard key={i} {...item} date={date} onTeacherClick={onTeacherClick} />
           ))}
         </div>
       )}
@@ -181,18 +182,27 @@ function DaySection({ date, lessons, sectionRef }) {
 
 /* ─── Inner schedule view (переиспользуем для своей и чужой группы) ── */
 
-function ScheduleView({ schedule, groupName, onGroupClick, onCalendarClick }) {
+function ScheduleView({ schedule, groupName, onGroupClick, onCalendarClick, onTeacherClick }) {
   const dateList = useRef(buildDateList());
   const [activeDate, setActiveDate] = useState(today());
   const sectionRefs = useRef([]);
   const scrollRef = useRef(null);
+  const scrollElRef = useRef(null); // фактический scroll-контейнер (mobile: sched-scroll, desktop: .main)
   const isProgrammaticScroll = useRef(false);
 
   const stripDays = buildWeekStrip(activeDate);
   const activeDayIndex = weekdayIndex(activeDate);
 
   useEffect(() => {
-    const scrollRoot = scrollRef.current;
+    // На мобиле скроллит .sched-scroll, на десктопе — .main
+    const isMobile = window.matchMedia('(max-width: 600px)').matches;
+    scrollElRef.current = isMobile
+      ? scrollRef.current
+      : scrollRef.current?.closest('.main') ?? scrollRef.current;
+  }, []);
+
+  useEffect(() => {
+    const scrollRoot = scrollElRef.current ?? scrollRef.current;
     if (!scrollRoot) return;
 
     const observer = new IntersectionObserver(
@@ -206,7 +216,7 @@ function ScheduleView({ schedule, groupName, onGroupClick, onCalendarClick }) {
           if (iso) setActiveDate(new Date(iso));
         }
       },
-      { root: scrollRoot, rootMargin: '0px 0px -60% 0px', threshold: 0 }
+      { root: scrollElRef.current ?? scrollRef.current, rootMargin: '0px 0px -60% 0px', threshold: 0 }
     );
 
     sectionRefs.current.forEach(ref => { if (ref) observer.observe(ref); });
@@ -224,7 +234,7 @@ function ScheduleView({ schedule, groupName, onGroupClick, onCalendarClick }) {
     const target = sectionRefs.current[sectionIndex];
     if (!target) return;
     isProgrammaticScroll.current = true;
-    scrollToSection(scrollRef.current, target);
+    scrollToSection(scrollElRef.current ?? scrollRef.current, target);
     setTimeout(() => { isProgrammaticScroll.current = false; }, 900);
   }, [stripDays]);
 
@@ -244,25 +254,22 @@ function ScheduleView({ schedule, groupName, onGroupClick, onCalendarClick }) {
     );
     if (idx >= 0) {
       isProgrammaticScroll.current = true;
-      scrollToSection(scrollRef.current, sectionRefs.current[idx]);
+      scrollToSection(scrollElRef.current ?? scrollRef.current, sectionRefs.current[idx]);
       setTimeout(() => { isProgrammaticScroll.current = false; }, 900);
     }
   };
 
   return (
     <>
+      <div className="sched-sticky-header">
       {/* Controls */}
       <div className="sched-controls">
         <div onClick={onGroupClick} style={{ cursor: 'pointer' }}>
           <GroupSelector group={groupName} />
         </div>
         <div className="sched-controls__right">
-          <div className="sched-nav-group">
-            <button className="sched-icon-btn" onClick={onCalendarClick}>
-              <Icon name="Calendar" />
-            </button>
-          </div>
-          <div className="sched-nav-group">
+          
+          <div className="sched-nav-group sched-nav-group--week">
             <button className="sched-icon-btn" onClick={handlePrevWeek}>
               <Icon name="ArrowLeft" />
             </button>
@@ -273,6 +280,11 @@ function ScheduleView({ schedule, groupName, onGroupClick, onCalendarClick }) {
               <Icon name="ArrowRight" />
             </button>
           </div>
+          <div className="sched-nav-group sched-nav-group--calendar">
+            <button className="sched-icon-btn" onClick={onCalendarClick}>
+              <Icon name="Calendar" />
+            </button>
+          </div>
         </div>
       </div>
 
@@ -281,7 +293,10 @@ function ScheduleView({ schedule, groupName, onGroupClick, onCalendarClick }) {
         activeDay={activeDayIndex}
         onDayChange={handleDayChange}
         days={stripDays}
+        onPrevWeek={handlePrevWeek}
+        onNextWeek={handleNextWeek}
       />
+      </div>{/* /sched-sticky-header */}
 
       {/* Scroll area */}
       <div className="sched-scroll" ref={scrollRef}>
@@ -291,6 +306,7 @@ function ScheduleView({ schedule, groupName, onGroupClick, onCalendarClick }) {
             date={date}
             lessons={schedule[weekdayIndex(date)] ?? []}
             sectionRef={el => (sectionRefs.current[i] = el)}
+            onTeacherClick={onTeacherClick}
           />
         ))}
       </div>
@@ -305,6 +321,8 @@ export default function SchedulePage() {
   const [groupModalOpen, setGroupModalOpen] = useState(false);
   /* null = смотрим свою группу; string = название выбранной чужой группы */
   const [viewingGroup, setViewingGroup] = useState(null);
+  /* null = нет; string = имя выбранного преподавателя */
+  const [viewingTeacher, setViewingTeacher] = useState(null);
 
   /* Своё расписание */
   const { data: myData, isLoading: myLoading, error: myError } = useQuery({
@@ -333,6 +351,7 @@ export default function SchedulePage() {
   const isViewingOther = viewingGroup !== null;
 
   const handleSelectGroup = (groupName) => {
+    setViewingTeacher(null);
     /* Если выбрали свою группу — сбрасываем режим просмотра */
     if (groupName === myGroupName) {
       setViewingGroup(null);
@@ -345,23 +364,39 @@ export default function SchedulePage() {
     <>
       <div className="sched-page">
 
-        {/* Хлебные крошки — только при просмотре чужой группы */}
-        {isViewingOther && (
-          <Breadcrumbs items={[
-            { label: 'Расписание', onClick: () => setViewingGroup(null) },
-            { label: 'Расписание группы' },
-          ]} />
-        )}
-
-        {otherLoading && viewingGroup ? (
-          <div className="sched-loading">Загрузка расписания группы {viewingGroup}...</div>
+        {/* Расписание преподавателя */}
+        {viewingTeacher ? (
+          <>
+            <Breadcrumbs items={[
+              { label: 'Расписание', onClick: () => setViewingTeacher(null) },
+              { label: 'Расписание преподавателя' },
+            ]} />
+            <TeacherScheduleView
+              teacher={{ name: viewingTeacher }}
+              onTeacherClick={() => setGroupModalOpen(true)}
+            />
+          </>
         ) : (
-          <ScheduleView
-            schedule={activeSchedule}
-            groupName={activeGroupName}
-            onGroupClick={() => setGroupModalOpen(true)}
-            onCalendarClick={() => setCalendarOpen(true)}
-          />
+          <>
+            {/* Хлебные крошки — только при просмотре чужой группы */}
+            {isViewingOther && (
+              <Breadcrumbs items={[
+                { label: 'Расписание', onClick: () => setViewingGroup(null) },
+                { label: 'Расписание группы' },
+              ]} />
+            )}
+
+            {otherLoading && viewingGroup ? (
+              <div className="sched-loading">Загрузка расписания группы {viewingGroup}...</div>
+            ) : (
+              <ScheduleView
+                schedule={activeSchedule}
+                groupName={activeGroupName}
+                onGroupClick={() => setGroupModalOpen(true)}
+                onCalendarClick={() => setCalendarOpen(true)}
+              />
+            )}
+          </>
         )}
 
       </div>
@@ -376,7 +411,7 @@ export default function SchedulePage() {
         <GroupSelectorModal
           onClose={() => setGroupModalOpen(false)}
           onSelectGroup={handleSelectGroup}
-          onSelectTeacher={(t) => console.log('Преподаватель:', t)}
+          onSelectTeacher={(t) => { setViewingTeacher(t); setViewingGroup(null); }}
         />
       )}
     </>

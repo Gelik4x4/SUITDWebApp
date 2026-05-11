@@ -70,7 +70,7 @@ export default function GroupSelectorModal({ onClose, onSelectGroup, onSelectTea
             {isGroups ? 'Выбор группы' : 'Выбор преподавателя'}
           </h2>
           <button className="gsm-close" onClick={onClose}>
-            <Icon name="Cross" size={24} />
+            <Icon name="Cross" size={28} />
           </button>
         </div>
 

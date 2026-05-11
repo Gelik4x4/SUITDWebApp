@@ -3,7 +3,7 @@
   position: fixed;
   inset: 0;
   background: rgba(10, 15, 40, 0.32);
-  backdrop-filter: blur(3px);
+  backdrop-filter: blur(2px);
   z-index: 100;
   display: flex;
   align-items: center;
@@ -11,18 +11,16 @@
   padding: 24px;
 }
 
-/* ── Modal box ── */
 .cal-modal {
   background: var(--card-bg);
   border-radius: 20px;
-  padding: 28px 32px 24px;
+  padding: 32px;
   width: min(1100px, 100%);
-  /* Высота адаптируется под экран */
   max-height: calc(100vh - 48px);
   box-shadow: 0 20px 60px rgba(10, 15, 60, 0.18);
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 24px;
   overflow: hidden;
 }
 
@@ -44,7 +42,6 @@
   background: transparent;
   border: none;
   cursor: pointer;
-  padding: 4px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -52,9 +49,7 @@
   border-radius: 8px;
   transition: color 0.12s, background 0.12s;
 }
-.cal-close-btn:hover {
-  background: var(--border);
-}
+
 
 /* ── Calendar grid wrapper — занимает оставшееся место ── */
 .cal-grid-wrap {
@@ -80,11 +75,11 @@
 
 /* Day name headers */
 .cal-grid__head {
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 500;
   color: var(--text-secondary);
   text-align: center;
-  padding: 10px 0;
+  padding: 4px 0;
   border-right: 1px solid var(--border);
   border-bottom: 1px solid var(--border);
   background: var(--card-bg);
@@ -104,14 +99,6 @@
   flex-direction: column;
   gap: 2px;
   overflow: hidden;
-}
-
-.cal-cell--empty {
-  background: transparent;
-}
-
-.cal-cell--past {
-  background: var(--bg);
 }
 
 .cal-cell--today .cal-cell__num {
@@ -169,7 +156,7 @@
 }
 
 .cal-nav__btn {
-  border: 1.5px solid var(--border);
+  border: none;
   background: transparent;
   border-radius: 10px;
   width: 36px;
@@ -187,4 +174,202 @@
 .cal-nav__btn--disabled {
   opacity: 0.3;
   cursor: not-allowed;
+}
+
+/* ══════════════════════════════════════════
+   Dark theme
+   ══════════════════════════════════════════ */
+body.dark .cal-modal {
+  background: #3a3a3a;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+}
+
+/* Сетка — бордеры чуть светлее фона модала */
+body.dark .cal-grid {
+  border-color: #4a4a4a;
+}
+
+body.dark .cal-grid__head {
+  background: #3a3a3a;
+  border-color: #4a4a4a;
+}
+
+body.dark .cal-cell {
+  border-color: #4a4a4a;
+  background: #2e2e2e;
+}
+
+/* Чипы занятий в тёмной теме — прозрачный фон, яркий текст с обводкой */
+body.dark .cal-chip {
+  background: transparent !important;
+  border: 1px solid currentColor;
+  opacity: 0.9;
+}
+
+/* Лек — фиолетовый */
+body.dark .cal-chip--lek {
+  color: #8e7ef5 !important;
+}
+
+/* Пр — оранжевый */
+body.dark .cal-chip--pr {
+  color: #f5a050 !important;
+}
+
+/* Лаб — синий */
+body.dark .cal-chip--lab {
+  color: #6aaaf5 !important;
+}
+
+/* Дефолтный чип */
+body.dark .cal-chip--default {
+  color: #999 !important;
+}
+
+/* ════════════════════════════════════════════
+   MOBILE  ≤ 600px  — bottom sheet, список месяцев
+   ════════════════════════════════════════════ */
+
+/* Оверлей — полный экран на мобилке */
+.cal-overlay--mobile {
+  align-items: flex-start;
+  justify-content: stretch;
+  padding: 0;
+  background: var(--bg);
+  backdrop-filter: none;
+}
+
+/* Скрываем таббар когда открыт календарь */
+body.cal-open .sidebar {
+  display: none !important;
+}
+
+/* Модалка — на весь экран */
+.cal-modal--mobile {
+  width: 100%;
+  max-width: 100%;
+  height: 100%;
+  max-height: 100%;
+  border-radius: 0;
+  padding: 0 24px 0;
+  gap: 0;
+  box-shadow: none;
+  background: var(--bg);
+  animation: cal-slidein-mobile 0.22s ease;
+}
+
+@keyframes cal-slidein-mobile {
+  from { transform: translateX(100%); }
+  to   { transform: translateX(0); }
+}
+
+/* Drag handle — скрываем (не bottom sheet) */
+.cal-modal--mobile::before {
+  display: none;
+}
+
+/* Заголовок по центру */
+.cal-modal--mobile .cal-modal__header {
+  justify-content: center;
+  position: relative;
+  padding: 32px 0 24px 0;
+  flex-shrink: 0;
+}
+
+.cal-modal--mobile .cal-modal__title {
+  font-size: 17px;
+  text-align: center;
+}
+
+.cal-modal--mobile .cal-close-btn {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+/* Скролл-область месяцев */
+.cal-mobile-scroll {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: calc(env(safe-area-inset-bottom) + 32px);
+}
+
+/* Блок месяца */
+.cal-mobile-month {
+  padding: 16px 0 16px;
+}
+
+.cal-mobile-month__title {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 16px;
+}
+
+/* Сетка 7 колонок */
+.cal-mobile-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 0;
+}
+
+/* Заголовки дней */
+.cal-mobile-grid__head {
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  text-align: center;
+  padding: 6px 0 10px;
+}
+
+/* Ячейки */
+.cal-mobile-cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 44px;
+}
+
+.cal-mobile-cell--empty {
+  background: transparent;
+}
+
+.cal-mobile-cell--past .cal-mobile-cell__num {
+  color: var(--text-secondary);
+  opacity: 0.45;
+}
+
+/* Число */
+.cal-mobile-cell__num {
+  font-size: 16px;
+  font-weight: 400;
+  color: var(--text-primary);
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Сегодня — обводка */
+.cal-mobile-cell--today .cal-mobile-cell__num {
+  border: 2px solid #ffffff;
+  color: #ffffff;
+  font-weight: 600;
+}
+
+/* TODO: выбранная дата — заливка */
+.cal-mobile-cell--selected .cal-mobile-cell__num {
+  background: var(--accent);
+  color: #fff;
+  font-weight: 600;
+}
+
+/* Dark + mobile */
+body.dark .cal-modal--mobile {
+  background: #3a3a3a;
 }

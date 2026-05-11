@@ -1,4 +1,6 @@
+import { useState } from 'react';
 import './LessonCard.css';
+import LessonModal from './LessonModal';
 
 /* Цвет полоски и бейджа по типу занятия */
 const accentColor = (classType) => {
@@ -9,12 +11,14 @@ const accentColor = (classType) => {
   return 'purple';
 };
 
-export default function LessonCard({ time, subject, teacher, room, class_type }) {
+export default function LessonCard({ time, subject, teacher, room, class_type, date, onTeacherClick }) {
+  const [modalOpen, setModalOpen] = useState(false);
   const [start, end] = time?.split(/[-–]/).map(s => s.trim()) ?? [time, ''];
   const color = accentColor(class_type);
 
   return (
-    <div className="lesson-item">
+    <>
+    <div className="lesson-item" style={{ cursor: 'pointer' }} onClick={() => setModalOpen(true)}>
       <div className="lesson-item__time-col">
         <span className="lesson-item__time-start">{start}</span>
         {end && <span className="lesson-item__time-end">{end}</span>}
@@ -28,9 +32,18 @@ export default function LessonCard({ time, subject, teacher, room, class_type })
       </div>
       <div className="lesson-item__right">
         {class_type && (
-          <span className={`badge badge--${color}`}>{class_type}</span>
+          <span className={`shed-badge badge--${color}`}>{class_type}</span>
         )}
       </div>
     </div>
+    {modalOpen && (
+      <LessonModal
+        lesson={{ time, subject, teacher, room, class_type }}
+        date={date}
+        onClose={() => setModalOpen(false)}
+        onTeacherClick={onTeacherClick}
+      />
+    )}
+  </>
   );
 }
