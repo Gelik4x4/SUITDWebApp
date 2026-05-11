@@ -56,3 +56,33 @@
 .popup-button:hover {
   opacity: 0.85;
 }
+
+/* ── Mobile adaptive ── */
+@media (max-width: 600px) {
+  .popup-overlay {
+    align-items: flex-start;
+    padding-top: 0;
+  }
+
+  .popup-container {
+    min-height: 100vh;
+    padding: 48px 24px 36px;
+    justify-content: center;
+  }
+
+  .popup-title {
+    font-size: 26px;
+    margin-bottom: 20px;
+  }
+
+  .popup-image {
+    width: 55%;
+    margin-bottom: 28px;
+  }
+
+  .popup-button {
+    max-width: 100%;
+    font-size: 16px;
+    padding: 14px 24px;
+  }
+}
