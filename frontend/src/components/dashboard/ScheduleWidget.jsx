@@ -31,7 +31,7 @@ function ScheduleItem({ time, class_type: classType, subject, teacher, room }) {
       </div>
       <div className="schedule-item__right">
         {classType && (
-          <span className={`badge badge--${color === 'orange' ? 'orange' : 'purple'}`}>
+          <span className={`shed-badge badge--${color === 'orange' ? 'orange' : 'purple'}`}>
             {classType}
           </span>
         )}

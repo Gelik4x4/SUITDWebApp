@@ -18,6 +18,7 @@
   justify-content: flex-end;
   background: var(--bg);
   min-height: 0;
+  cursor: pointer;
 }
 
 .job-card__bg-img {
@@ -30,11 +31,9 @@
   z-index: 0;
 }
 
-/* Верхняя строка: тег слева, кнопка избранного справа */
 .job-card__top-row {
   position: absolute;
   top: 8px;
-  left: 8px;
   right: 8px;
   z-index: 3;
   display: flex;
@@ -43,10 +42,11 @@
   gap: 6px;
 }
 
-/* Переопределяем абсолютное позиционирование fav-btn внутри top-row */
+/* fav всегда прижат вправо — даже без бейджа */
 .job-card__top-row .fav-btn {
   position: static;
   flex-shrink: 0;
+  margin-left: auto;
 }
 
 .job-card__content {
@@ -59,10 +59,81 @@
   font-weight: 400;
   color: #1A1A1A;
   line-height: 1.2;
+  -webkit-line-clamp: 2;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .job-card__company {
   font-size: 14px;
   color: #434343;
   margin-top: 4px;
+}
+
+.vacancies-widget-empty {
+  font-size: 13px;
+  color: var(--text-secondary);
+  padding: 12px 0;
+  text-align: center;
+}
+
+/* ── Mobile ── */
+@media (max-width: 480px) {
+  /* Прозрачная обёртка */
+  .home-mobile__vacancies .card {
+    background: transparent !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    border-radius: 0 !important;
+    overflow: visible !important;
+  }
+
+  /* Заголовок по сетке */
+  .home-mobile__vacancies .card__header {
+    padding: 0 16px !important;
+    margin: 0 !important;
+  }
+
+  .home-mobile__vacancies .card__title {
+    font-size: 20px;
+    font-weight: 600;
+  }
+
+  /* Горизонтальный скролл — строго без паддингов */
+  .home-mobile__vacancies .vacancies-grid {
+    display: flex !important;
+    flex-direction: row !important;
+    gap: 8px;
+    overflow-x: auto;
+    overflow-y: visible;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    padding: 0 !important;
+    margin: 0 16px !important;
+    scrollbar-width: none;
+    /* сброс grid */
+    grid-template-columns: unset !important;
+    grid-template-rows: unset !important;
+    align-items: stretch;
+    width: 100%;
+  }
+  .home-mobile__vacancies .vacancies-grid::-webkit-scrollbar { display: none; }
+
+  /* Карточка: 9 колонок из 12 = 9*32+8*8 = 288+64 = 352px */
+  .home-mobile__vacancies .job-card {
+    flex-shrink: 0;
+    width: 260px;
+    min-height: 160px;
+    scroll-snap-align: start;
+    border-radius: 16px !important;
+  }
+
+  /* Первая карточка — отступ слева 24px */
+  .home-mobile__vacancies .job-card:first-child {
+    margin-left: 24px;
+  }
+
+  .home-mobile__vacancies .job-card__title { font-size: 17px; }
+  .home-mobile__vacancies .job-card__company { font-size: 12px; }
 }

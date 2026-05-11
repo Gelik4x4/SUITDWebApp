@@ -7,72 +7,151 @@
   min-height: 0;
 }
 
-/* Карточка мероприятия */
-.event-card {
-  border-radius: var(--radius-sm);
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  position: relative;
-  min-height: 0;
-  height: 100%;
-}
-
-/* Фоновое изображение */
-.event-card__bg-img {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  z-index: 0;
-}
-
-/* Верхняя строка: тег слева, кнопка избранного справа */
-.event-card__top-row {
-  position: absolute;
-  top: 8px;
-  left: 8px;
-  right: 8px;
-  z-index: 3;
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 6px;
-  /* .fav-btn внутри не absolute — позиционируется через flex */
-}
-
-/* Переопределяем абсолютное позиционирование fav-btn внутри top-row */
-.event-card__top-row .fav-btn {
-  position: static;
-  flex-shrink: 0;
-}
-
-/* Текст внизу */
-.event-card__footer {
-  position: relative;
-  z-index: 2;
-  padding: 10px 12px 12px;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.event-card--has-img .event-card__title {
-  color: #434343;
-}
-
-.event-card__title {
-  font-size: 14px;
-  font-weight: 400;
-  line-height: 1.4;
-}
-
 .grid-events .events-grid {
   height: 100%;
 }
 
-.grid-events .event-card {
+.events-widget-empty {
+  font-size: 13px;
+  color: var(--text-secondary);
+  padding: 12px 0;
+  text-align: center;
+}
+
+.ev-card {
+  background: var(--card-bg);
+  border-radius: var(--radius);
+  overflow: hidden;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0px 0px 12px rgba(98, 98, 98, 0.15);
+  transition: box-shadow 0.15s, transform 0.15s;
   height: 100%;
+}
+
+.ev-card:hover {
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.12);
+  transform: translateY(-2px);
+}
+
+.ev-card__img {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 5 / 3;
+  overflow: hidden;
+  flex-shrink: 0;
+  background: var(--bg);
+}
+
+.ev-card__photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.ev-card__img-placeholder {
+  width: 100%;
+  height: 100%;
+  background: var(--border);
+}
+
+.ev-card__date-badge {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: #ffffff;
+  backdrop-filter: blur(4px);
+  border-radius: 20px;
+  padding: 4px 10px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-primary);
+  z-index: 2;
+  white-space: nowrap;
+}
+
+.ev-card__fav-wrap {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  z-index: 2;
+}
+
+.ev-card__body {
+  padding: 12px;
+  flex: 1;
+}
+
+.ev-card__title {
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--text-primary);
+  line-height: 1.35;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* ── Mobile ── */
+@media (max-width: 480px) {
+  /* Прозрачная обёртка — заголовок визуально снаружи */
+  .home-mobile__events .card {
+    background: transparent !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    border-radius: 0 !important;
+    overflow: visible !important;
+  }
+
+  /* Заголовок выровнен по сетке (24px) */
+  .home-mobile__events .card__header {
+    padding: 0px 16px !important;
+    margin: 0 !important;
+  }
+
+  .home-mobile__events .card__title {
+    font-size: 20px;
+    font-weight: 600;
+  }
+
+  /* Горизонтальный скролл — строго от 0 до 0, без паддингов */
+  .home-mobile__events .events-grid {
+    display: flex !important;
+    flex-direction: row !important;
+    gap: 8px;
+    overflow-x: auto;
+    overflow-y: visible;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    padding: 0 !important;
+    margin: 0 16px !important;
+    scrollbar-width: none;
+    align-items: stretch;
+    width: 100%;
+  }
+  .home-mobile__events .events-grid::-webkit-scrollbar { display: none; }
+
+  /* Карточка: 7 колонок из 12
+     viewport=480, отступов нет → 1col=(480-11*8)/12=32px
+     7cols = 7*32 + 6*8 = 224+48 = 272px */
+  .home-mobile__events .ev-card {
+    flex-shrink: 0;
+    width: 272px;
+    scroll-snap-align: start;
+    border-radius: 16px !important;
+    overflow: hidden;
+    height: auto;
+  }
+
+  /* Первая карточка — отступ слева по сетке */
+  .home-mobile__events .ev-card:first-child {
+    margin-left: 24px;
+  }
+
+  .home-mobile__events .ev-card__img {
+    aspect-ratio: 4 / 3;
+  }
 }
