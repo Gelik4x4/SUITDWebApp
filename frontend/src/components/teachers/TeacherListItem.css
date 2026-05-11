@@ -15,5 +15,7 @@
   line-height: 1.2;
 }
 .teacher-item:last-child { border-bottom: none; }
-.teacher-item:hover { color: var(--accent); padding-left: 4px; }
+.teacher-item:hover { color: var(--accent); padding-left: 2px; }
 .teacher-item--selected { color: var(--accent); font-weight: 500; }
+
+body.dark .teacher-item:hover { color: #8E9EFF; padding-left: 2px; }

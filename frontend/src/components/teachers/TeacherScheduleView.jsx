@@ -86,7 +86,7 @@ function shortName(fullName) {
 
 /* ─── Component ───────────────────────────────────────────────── */
 
-export default function TeacherScheduleView({ teacher }) {
+export default function TeacherScheduleView({ teacher, onTeacherClick }) {
   const dateList = useRef(buildDateList());
   const [activeDate, setActiveDate] = useState(today());
   const sectionRefs = useRef([]);
@@ -143,14 +143,17 @@ export default function TeacherScheduleView({ teacher }) {
 
   return (
     <div className="tsv">
+      {/* Sticky header: controls + DayStrip */}
+      <div className="sched-sticky-header">
+
       {/* Controls */}
       <div className="tsv-controls">
-        <div className="tsv-controls__name">
+        <div className="tsv-controls__name" onClick={onTeacherClick} style={{ cursor: onTeacherClick ? 'pointer' : 'default' }}>
           {shortName(teacher.name)}
-          <Icon name="ArrowDown" size={16} />
+          {onTeacherClick && <Icon name="ArrowDown" size={16} />}
         </div>
         <div className="tsv-controls__right">
-          <div className="sched-nav-group">
+          <div className="sched-nav-group sched-nav-group--week">
             <button className="sched-icon-btn" onClick={handlePrevWeek}><Icon name="ArrowLeft" /></button>
             <button className="sched-icon-btn" onClick={handleToday}>Сегодня</button>
             <button className="sched-icon-btn" onClick={handleNextWeek}><Icon name="ArrowRight" /></button>
@@ -160,6 +163,8 @@ export default function TeacherScheduleView({ teacher }) {
 
       {/* DayStrip */}
       <DayStrip activeDay={activeDayIndex} onDayChange={handleDayChange} days={stripDays} />
+
+      </div>{/* /sched-sticky-header */}
 
       {/* Scroll */}
       <div className="tsv-scroll" ref={scrollRef}>

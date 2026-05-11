@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import './TeacherDetail.css';
 import Breadcrumbs          from '../breadcrumbs/Breadcrumbs';
@@ -44,7 +44,7 @@ function AccordionItem({ title, content, defaultOpen = false }) {
     <div className={`td-accordion${open ? ' td-accordion--open' : ''}`}>
       <button className="td-accordion__header" onClick={() => setOpen(o => !o)}>
         <span>{title}</span>
-        <Icon name={open ? 'ArrowDown' : 'ArrowRight'} size={18} />
+        <Icon name={open ? 'ArrowDown' : 'ArrowRight'} size={24} />
       </button>
       {open && (
         <div className="td-accordion__body">
@@ -64,6 +64,11 @@ function AccordionItem({ title, content, defaultOpen = false }) {
 */
 export default function TeacherDetail({ teacher, onBack }) {
   const [view, setView] = useState('info');
+
+  useEffect(() => {
+    document.body.classList.add('hide-tabbar');
+    return () => document.body.classList.remove('hide-tabbar');
+  }, []);
 
   const { data: detail, isLoading } = useQuery({
     queryKey: ['teacher-detail', teacher.id],
@@ -90,7 +95,10 @@ export default function TeacherDetail({ teacher, onBack }) {
   if (view === 'schedule') {
     return (
       <div className="td td--full">
-        <Breadcrumbs items={breadcrumbs} />
+        <div className="td__breadcrumbs"><Breadcrumbs items={breadcrumbs} /></div>
+        <button className="td-view-back" onClick={() => setView('info')} aria-label="Назад">
+          <Icon name="ArrowLeft" size={20} />
+        </button>
         <TeacherScheduleView teacher={teacher} />
       </div>
     );
@@ -100,8 +108,8 @@ export default function TeacherDetail({ teacher, onBack }) {
   if (view === 'chat') {
     return (
       <div className="td td--full">
-        <Breadcrumbs items={breadcrumbs} />
-        <TeacherChat teacher={{ ...teacher, photo }} />
+        <div className="td__breadcrumbs"><Breadcrumbs items={breadcrumbs} /></div>
+        <TeacherChat teacher={{ ...teacher, photo }} onBack={() => setView('info')} />
       </div>
     );
   }
@@ -109,7 +117,7 @@ export default function TeacherDetail({ teacher, onBack }) {
   /* ── Info view ── */
   return (
     <div className="td">
-      <Breadcrumbs items={breadcrumbs} />
+      <div className="td__breadcrumbs"><Breadcrumbs items={breadcrumbs} /></div>
 
       {/* Hero */}
       <div className="td-hero">
@@ -118,6 +126,9 @@ export default function TeacherDetail({ teacher, onBack }) {
             ? <img src={photo} alt={teacher.name} className="td-hero__photo" />
             : <div className="td-hero__photo-placeholder"><Icon name="User" size={48} /></div>
           }
+          <button className="td-hero__back" onClick={onBack} aria-label="Назад">
+            <Icon name="ArrowLeft" size={20} />
+          </button>
         </div>
         <div className="td-hero__info">
           <h2 className="td-hero__name">{teacher.name}</h2>
