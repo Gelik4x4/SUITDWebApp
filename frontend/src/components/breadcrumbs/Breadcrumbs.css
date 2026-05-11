@@ -38,3 +38,8 @@
   color: var(--text-secondary);
   user-select: none;
 }
+
+
+body.dark .breadcrumbs__link:hover {
+  color: #8E9EFF;
+}
