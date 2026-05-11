@@ -114,6 +114,9 @@
   overflow: hidden;
 }
 
+body.dark .btn--outline  { background: transparent; border: 1.5px solid #BCC6FF; color: #BCC6FF;}
+
+
 .td-accordion__header {
   width: 100%;
   display: flex;
@@ -131,6 +134,8 @@
   gap: 8px;
 }
 .td-accordion__header:hover { color: var(--accent); }
+
+body.dark .td-accordion__header:hover { color: #8E9EFF; }
 
 .td-accordion__body {
   padding: 0 16px 16px;
@@ -160,4 +165,128 @@
   display: flex;
   flex-direction: column;
   gap: 16px;
+}
+
+/* ── Мобильные кнопки назад — скрыты на десктопе ── */
+.td-hero__back,
+.td-view-back {
+  display: none;
+}
+
+/* ════════════════════════════════════════════
+   MOBILE  ≤ 600px
+   ════════════════════════════════════════════ */
+@media (max-width: 600px) {
+
+  /* Скрываем breadcrumbs */
+  .td__breadcrumbs { display: none; }
+
+  /* Info view — скроллится */
+  .td {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    gap: 0;
+    padding-bottom: calc(env(safe-area-inset-bottom) + 16px);
+  }
+
+  .tp-page--detail {
+    padding: 0;
+  }
+
+  /* Hero — фото на всю ширину без отступов */
+  .td-hero {
+    flex-direction: column;
+    padding: 0;
+    gap: 24px;
+    border-radius: 0;
+    background: none;
+    box-shadow: none;
+  }
+
+  .td-hero__photo-wrap {
+    width: 100%;
+    height: 115vw;
+    border-radius: 0;
+    position: relative;
+    flex-shrink: 0;
+  }
+
+  /* Стрелка назад поверх фото */
+  .td-hero__back {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.85);
+    backdrop-filter: blur(4px);
+    border: none;
+    cursor: pointer;
+    color: var(--text-primary);
+    z-index: 10;
+  }
+
+  .td-hero__info {
+    padding: 0 16px;
+    gap: 8px;
+  }
+
+  .td-hero__name { font-size: 20px; font-weight: 600; }
+  .td-hero__position { font-size: 14px; }
+
+  /* Кнопки — в колонку на всю ширину */
+  .td-hero__actions {
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 8px;
+  }
+
+  .td-hero__btn {
+    width: 100%;
+    justify-content: center;
+    padding: 14px 16px;
+    border-radius: 14px;
+    font-size: 16px;
+  }
+
+  /* Аккордеоны — одна колонка */
+  .td-sections {
+    grid-template-columns: 1fr;
+    gap: 16px;
+    margin: 24px 16px 0;
+    padding-bottom: 12px;
+  }
+
+  .td-sections__col { gap: 12px; }
+
+  /* Schedule/chat view */
+  .td--full {
+    position: relative;
+    padding-top: 0;
+  }
+
+  .td-accordion__header {
+    font-size: 17px;
+  }
+
+  /* Кнопка назад для schedule view */
+  .td-view-back {
+    display: flex;
+    align-items: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--text-primary);
+    flex-shrink: 0;
+    padding: 0;
+  }
 }

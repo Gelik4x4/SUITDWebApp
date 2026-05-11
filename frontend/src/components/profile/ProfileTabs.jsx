@@ -2,15 +2,16 @@ import React from 'react';
 import './ProfileTabs.css';
 
 const TABS = [
-  { id: 'data',    label: 'Данные' },
-  { id: 'settings', label: 'Настройки' },
-  { id: 'support', label: 'Техподдержка' },
-  { id: 'about',   label: 'О приложении' },
+  { id: 'data',     label: 'Данные'     },
+  { id: 'settings', label: 'Настройки'  },
+  { id: 'support',  label: 'Поддержка'  },
+  { id: 'about',    label: 'О сервисе'  },
 ];
 
 export default function ProfileTabs({ active, onChange }) {
   return (
     <div className="profile-tabs">
+       <div className="profile-tabs__wrapper">
       {TABS.map(t => (
         <button
           key={t.id}
@@ -20,6 +21,7 @@ export default function ProfileTabs({ active, onChange }) {
           {t.label}
         </button>
       ))}
+    </div>
     </div>
   );
 }

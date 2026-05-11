@@ -1,9 +1,11 @@
 import { useNavigate } from 'react-router-dom';
+import { useState, useMemo, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@supabaseClient';
 import './StudentCardPage.css';
 import StudentCardView from '../components/studentcard/StudentCardView';
 import Breadcrumbs from '../components/breadcrumbs/Breadcrumbs';
+import MobilePageHeader from '../components/MobilePageHeader/MobilePageHeader';
 
 const fetchStudentData = async () => {
   const { data: { user } } = await supabase.auth.getUser();
@@ -34,6 +36,11 @@ const fetchStudentData = async () => {
 export default function StudentCardPage() {
   const navigate = useNavigate();
 
+  useEffect(() => {
+    document.body.classList.add('hide-tabbar');
+    return () => document.body.classList.remove('hide-tabbar');
+  }, []);
+
   const { data, isLoading, error } = useQuery({
     queryKey: ['studentCard'],
     queryFn: fetchStudentData,
@@ -45,6 +52,7 @@ export default function StudentCardPage() {
 
   return (
     <div className="scp-page">
+      <MobilePageHeader title="Студенческий билет" backTo="/services" />
       <Breadcrumbs items={[
         { label: 'Сервисы', onClick: () => navigate('/services') },
         { label: 'Студенческий билет' },

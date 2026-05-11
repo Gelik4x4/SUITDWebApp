@@ -2,83 +2,143 @@ import { useState, useRef, useEffect } from 'react';
 import './TabSupport.css';
 import Icon from '@icon/Icon';
 
-const INITIAL_MESSAGES = [
-  {
-    id: 1, side: 'user',
-    text: 'Привет!\nочистить кэш и перезагрузить страницу;\nпроверить фильтры (город, занятость);\nзайти с другого браузера / устройства.\nСкриньот прилагаю.\nМожет быть, она снята с публикации или есть какие-то технические проблемы? Очень хотел бы откликнуться, если она ещё открыта.\nЗаранее спасибо за помощь!',
-    time: '16 февраля, 20:10', read: true,
-  },
-  {
-    id: 2, side: 'support',
-    text: 'Здравствуйте!\n\nСпасибо за обращение. Чтобы мы могли точнее проверить информацию по вакансии «Дизайнер в агентство ВАК» и помочь вам, уточните, пожалуйста, следующие детали:\n\nС какого именно устройства и в каком браузере вы пытались открыть вакансию?\n\nПриложите, пожалуйста, скриншот того, что вы видите.\n\nКак только получим эти данные, сразу же проверим статус вакансии.\n\nС уважением,\nКоманда поддержки',
-    time: '16 февраля, 20:15', read: false,
-  },
-];
+const INITIAL_MESSAGES = [];
+
+function DateDivider({ label }) {
+  return (
+    <div className="chat-date-divider">
+      <span className="chat-date-divider__label">{label}</span>
+    </div>
+  );
+}
 
 function ChatMessage({ msg }) {
   const isUser = msg.side === 'user';
+  const lines  = msg.text.split('\n');
+
   return (
     <div className={`chat-msg chat-msg--${msg.side}`}>
+      {!isUser && (
+        <div className="chat-msg__avatar">
+          <Icon name="Smile" size={22} />
+        </div>
+      )}
       <div className="chat-msg__bubble">
-        {msg.text.split('\n').map((line, i) => (
-          <span key={i}>{line}{i < msg.text.split('\n').length - 1 && <br />}</span>
-        ))}
-      </div>
-      <div className="chat-msg__meta">
-        {msg.time}
-        {isUser && (
-          <span className={`chat-msg__read${msg.read ? ' chat-msg__read--done' : ''}`}><Icon name="Tick" size={16}/></span>
-        )}
+        <span className="chat-msg__text">
+          {lines.map((line, i) => (
+            <span key={i}>{line}{i < lines.length - 1 && <br />}</span>
+          ))}
+        </span>
+        <span className="chat-msg__meta">
+          <span className="chat-msg__time">{msg.time}</span>
+          {isUser && (
+            <span className={`chat-msg__read${msg.read ? ' chat-msg__read--done' : ''}`}>
+              <Icon name="Tick" size={14} />
+            </span>
+          )}
+        </span>
       </div>
     </div>
   );
 }
 
-export default function TabSupport() {
+export default function TabSupport({ onBack }) {
   const [messages, setMessages] = useState(INITIAL_MESSAGES);
-  const [input, setInput]       = useState('');
-  const bottomRef = useRef(null);
+  const [input,    setInput]    = useState('');
+  const bottomRef  = useRef(null);
+  const textareaRef = useRef(null);
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
+
+  const now = () => {
+    const d = new Date();
+    return `${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;
+  };
 
   const send = () => {
     const text = input.trim();
     if (!text) return;
     setMessages(prev => [
       ...prev,
-      { id: Date.now(), side: 'user', text, time: 'Сейчас', read: false },
+      { id: Date.now(), side: 'user', text, time: now(), read: false },
     ]);
     setInput('');
+    if (textareaRef.current) {
+      textareaRef.current.style.height = 'auto';
+    }
   };
 
   const onKey = e => {
     if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); send(); }
   };
 
+  const hasMessages = messages.length > 0;
+
   return (
     <div className="tab-support">
+
+      {/* Desktop header */}
+      <div className="chat-header">
+        <div className="chat-header__avatar">
+          <Icon name="Smile" size={24} />
+        </div>
+        <span className="chat-header__title">Техподдержка</span>
+      </div>
+      <div className="chat-header__divider" />
+
+      {/* Mobile header */}
+      <div className="chat-mobile-header">
+        <button
+          className="chat-mobile-header__back icon-btn"
+          onClick={onBack}
+          aria-label="Назад"
+        >
+          <Icon name="ArrowLeft" size={22} />
+        </button>
+        <span className="chat-mobile-header__title">Техподдержка</span>
+        <div className="chat-mobile-header__icon" aria-hidden="true">
+          <Icon name="Smile" size={22} />
+        </div>
+      </div>
+
       {/* Messages area */}
       <div className="chat-messages">
-        {messages.map(m => <ChatMessage key={m.id} msg={m} />)}
+        {!hasMessages && (
+          <div className="chat-empty">
+            Возникли проблемы? Здесь вы можете задать интересующий вас вопрос
+          </div>
+        )}
+        {hasMessages && (
+          <>
+            <DateDivider label="Сегодня" />
+            {messages.map(m => <ChatMessage key={m.id} msg={m} />)}
+          </>
+        )}
         <div ref={bottomRef} />
       </div>
 
       {/* Input bar */}
       <div className="chat-input-bar">
-        <input
+        <textarea
+          ref={textareaRef}
           className="chat-input-bar__input"
-          placeholder="Ваш вопрос..."
+          placeholder="ваш запрос..."
           value={input}
-          onChange={e => setInput(e.target.value)}
+          rows={1}
+          onChange={e => {
+            setInput(e.target.value);
+            e.target.style.height = 'auto';
+            e.target.style.height = Math.min(e.target.scrollHeight, 140) + 'px';
+          }}
           onKeyDown={onKey}
         />
         <button className="chat-input-bar__attach icon-btn">
-          <Icon name="Attachment"/>
+          <Icon name="Attachment" />
         </button>
         <button className="chat-input-bar__send icon-btn" onClick={send}>
-          <Icon name="Send"/>
+          <Icon name="Send" />
         </button>
       </div>
     </div>

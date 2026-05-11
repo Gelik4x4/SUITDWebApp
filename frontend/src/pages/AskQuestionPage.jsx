@@ -4,6 +4,7 @@ import './AskQuestionPage.css';
 import ChatMessage from '../components/askquestion/ChatMessage';
 import ChatInput   from '../components/askquestion/ChatInput';
 import Breadcrumbs from '../components/breadcrumbs/Breadcrumbs';
+import Icon from '@icon/Icon';
 
 /* ─── Системный промпт ────────────────────────────────────────── */
 const SYSTEM_PROMPT = `Ты — ЦАТ Помощник, чат-бот студенческого портала СПбГУПТД.
@@ -93,6 +94,11 @@ export default function AskQuestionPage() {
   const bottomRef = useRef(null);
 
   useEffect(() => {
+    document.body.classList.add('hide-tabbar');
+    return () => document.body.classList.remove('hide-tabbar');
+  }, []);
+
+  useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
@@ -120,13 +126,38 @@ export default function AskQuestionPage() {
 
   return (
     <div className="aq-page">
-      <Breadcrumbs items={[
-        { label: 'Сервисы', onClick: () => navigate('/services') },
-        { label: 'Чат с помощником' },
-      ]} />
+      {/* Мобильный хэдер */}
+      <div className="aq-page__mobile-header">
+        <button className="aq-page__mobile-back" onClick={() => navigate('/services')} aria-label="Назад">
+          <Icon name="ArrowLeft" size={22} />
+        </button>
+        <div className="aq-page__mobile-header__center">
+          <span className="aq-page__mobile-title">ЦАТ Помощник</span>
+          <span className="aq-page__mobile-status">
+            <span className="aq-page__online-dot" />
+            Онлайн 24/7
+          </span>
+        </div>
+        <div className="aq-page__bot-avatar aq-page__mobile-avatar">
+          <img
+            src="/src/assets/img/bot-avatar.png"
+            alt="ЦАТ Помощник"
+            className="aq-page__bot-photo"
+            onError={e => { e.target.style.display='none'; }}
+          />
+        </div>
+      </div>
+
+      {/* Десктопные breadcrumbs */}
+      <div className="aq-page__breadcrumbs">
+        <Breadcrumbs items={[
+          { label: 'Сервисы', onClick: () => navigate('/services') },
+          { label: 'Чат с помощником' },
+        ]} />
+      </div>
 
       <div className="aq-page__chat">
-        {/* Bot header */}
+        {/* Bot header — только десктоп */}
         <div className="aq-page__bot-header">
           <div className="aq-page__bot-avatar">
             <img

@@ -5,7 +5,10 @@
   cursor: pointer;
   display: flex;
   flex-direction: column;
+  box-shadow: 0px 0px 12px rgba(98, 98, 98, 0.15);
 }
+
+body.dark .club-card { box-shadow: none; }
 
 .club-card__img {
   width: 100%;
@@ -29,6 +32,7 @@
   padding: 12px 16px;
 }
 
+
 .club-card__name {
   font-size: 16px;
   font-weight: 400;
@@ -37,4 +41,10 @@
   display: -webkit-box;
   -webkit-box-orient: vertical;
   overflow: hidden;
+}
+
+@media (max-width: 600px) {
+  .club-card { border-radius: 14px;}
+  .club-card__name { font-size: 14px; }
+  .club-card__body { padding: 12px 8px;}
 }

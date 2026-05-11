@@ -1,0 +1,84 @@
+.art-card {
+  background: var(--card-bg);
+  border-radius: var(--radius);
+  overflow: hidden;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: box-shadow 0.15s, transform 0.15s;
+}
+
+.art-card__body {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.art-card__top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.art-card__title {
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--text-primary);
+  line-height: 1.25;
+  flex: 1;
+  margin: 0;
+}
+
+.art-card__excerpt {
+  font-size: 14px;
+  line-height: 1.65;
+  color: var(--text-primary);
+  margin: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+
+.art-card__deadline {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+/* ════════════════════════════════════════════════
+   Mobile — max-width: 480px
+   ════════════════════════════════════════════════ */
+@media (max-width: 480px) {
+  .art-card {
+    border-radius: 16px;
+  }
+
+  .art-card:hover {
+    transform: none;
+    box-shadow: none;
+  }
+
+  .art-card__body {
+    padding: 16px;
+    gap: 8px;
+  }
+
+  .art-card__title {
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 1.4;
+  }
+
+  .art-card__excerpt {
+    font-size: 13px;
+    -webkit-line-clamp: 2;
+  }
+
+  .art-card__deadline {
+    font-size: 13px;
+  }
+}

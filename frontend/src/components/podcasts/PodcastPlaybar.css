@@ -1,0 +1,118 @@
+.pod-playbar {
+  position: fixed;
+  bottom: 0;
+  left: 180px; /* sidebar width */
+  right: 0;
+  background: var(--card-bg);
+  border-top: 1px solid var(--border);
+  box-shadow: 0 -4px 24px rgba(0, 0, 0, 0.08);
+  z-index: 300;
+  border-radius: 16px 16px 0 0;
+}
+
+/* Thin progress bar at very top of playbar */
+.pod-playbar__progress {
+  height: 3px;
+  background: var(--border);
+  cursor: pointer;
+  border-radius: 3px 3px 0 0;
+  overflow: hidden;
+}
+.pod-playbar__progress-fill {
+  height: 100%;
+  background: var(--accent);
+  border-radius: 3px;
+  transition: width 0.5s linear;
+}
+
+.pod-playbar__inner {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 10px 20px 12px;
+}
+
+/* Cover thumbnail */
+.pod-playbar__cover {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  overflow: hidden;
+  flex-shrink: 0;
+  background: #7b6ef6;
+}
+.pod-playbar__cover-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Info */
+.pod-playbar__info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.pod-playbar__title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.pod-playbar__times {
+  font-size: 11px;
+  color: var(--text-secondary);
+}
+
+/* Controls */
+.pod-playbar__controls {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+.pod-playbar__ctrl {
+  color: var(--text-secondary);
+  transition: color 0.15s;
+}
+.pod-playbar__ctrl:hover { color: var(--text-primary); }
+
+.pod-playbar__play {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: transform 0.12s, opacity 0.12s;
+}
+.pod-playbar__play:hover {
+  transform: scale(1.07);
+  opacity: 0.92;
+}
+
+/* Close */
+.pod-playbar__close {
+  color: var(--text-secondary);
+  flex-shrink: 0;
+  margin-left: 4px;
+}
+.pod-playbar__close:hover { color: var(--text-primary); }
+
+/* Hidden on mobile — player opens fullscreen instead */
+@media (max-width: 480px) {
+  .pod-playbar {
+    display: none;
+  }
+}

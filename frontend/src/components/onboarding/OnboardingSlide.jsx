@@ -26,6 +26,13 @@ export default function OnboardingSlide({
           <h1 className="ob-slide__title" dangerouslySetInnerHTML={{ __html: title }} />
           <p className="ob-slide__sub">{subtitle}</p>
 
+          {/* Mobile-only image (shown via CSS only on ≤480px, left panel hidden) */}
+          <div className="ob-slide__image-mobile">
+            <img src={imageSrc} alt="onboarding" className="ob-slide__image" />
+          </div>
+
+          <div className="ob-slide__spacer" />
+
           {(isWelcome || step === null) && (
             <div className="ob-slide__actions">
               <button className="ob-btn ob-btn--primary" onClick={onNext}>

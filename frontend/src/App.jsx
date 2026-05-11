@@ -21,6 +21,7 @@ import PodcastsPage from "./pages/PodcastsPage";
 import ChangePassword from "./pages/ChangePassword";
 import SuccessPopup from "./components/auth/SuccessPopup"
 import ClubsPage from "./pages/ClubsPage";
+import ChatsPage from "./pages/ChatsPage";
 
 
 // Импорт онбординга
@@ -113,6 +114,7 @@ export default function App() {
 
                   <Route path="/services/podcasts"       element={<PodcastsPage />} />
                   <Route path="/services/articles"       element={<ArticlesPage />} />
+                  <Route path="/chats"                   element={<ChatsPage />} />
                 </Routes>
               </main>
             </div>

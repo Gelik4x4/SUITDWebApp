@@ -36,3 +36,22 @@
   font-weight: 400;
   margin-top: 8px;
 }
+
+@media (max-width: 600px) {
+  .news-card {
+    border-radius: 14px;
+  }
+
+  .news-card__title {
+    font-size: 15px;
+  }
+
+  .news-card__excerpt {
+    font-size: 14px;
+    -webkit-line-clamp: 2;
+  }
+
+  .news-card__date {
+    font-size: 13px;
+  }
+}

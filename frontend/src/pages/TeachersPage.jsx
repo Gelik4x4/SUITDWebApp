@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import './TeachersPage.css';
@@ -6,6 +6,7 @@ import TeacherListItem from '../components/teachers/TeacherListItem';
 import TeacherDetail   from '../components/teachers/TeacherDetail';
 import Breadcrumbs     from '../components/breadcrumbs/Breadcrumbs';
 import Icon from '@icon/Icon';
+import MobilePageHeader from '../components/MobilePageHeader/MobilePageHeader';
 
 /* ─── Парсинг списка преподавателей ──────────────────────────── */
 
@@ -48,7 +49,10 @@ export default function TeachersPage() {
   const navigate = useNavigate();
   const [search,   setSearch]   = useState('');
   const [selected, setSelected] = useState(null);
-
+  useEffect(() => {
+    document.body.classList.add('hide-tabbar');
+    return () => document.body.classList.remove('hide-tabbar');
+  }, []);
   const { data: teachers = [], isLoading, error } = useQuery({
     queryKey: ['teachers-list'],
     queryFn: fetchTeachers,
@@ -72,6 +76,7 @@ export default function TeachersPage() {
 
   return (
     <div className="tp-page">
+      <MobilePageHeader title="Преподаватели" backTo="/services" />
       <Breadcrumbs items={[
         { label: 'Сервисы', onClick: () => navigate('/services') },
         { label: 'Преподаватели' },

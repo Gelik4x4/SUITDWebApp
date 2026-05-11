@@ -1,0 +1,33 @@
+.mobile-page-header {
+  display: none;
+}
+
+@media (max-width: 600px) {
+  .mobile-page-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    margin: 32px 16px 0;
+    flex-shrink: 0;
+  }
+  
+  .mobile-page-header__back {
+    position: absolute;
+    left: 0;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    padding: 4px;
+    border-radius: 8px;
+  }
+
+  .mobile-page-header__title {
+    font-size: 17px;
+    font-weight: 500;
+    color: var(--text-primary);
+  }
+}

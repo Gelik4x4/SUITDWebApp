@@ -6,3 +6,18 @@
   gap: 24px;
   overflow-y: auto;
 }
+
+@media (max-width: 600px) {
+  .scp-page {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    padding: 0 16px calc(64px + env(safe-area-inset-bottom) + 16px);
+  }
+
+  /* Скрываем десктопные breadcrumbs */
+  .scp-page > .breadcrumbs {
+    display: none;
+  }
+}

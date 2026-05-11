@@ -105,3 +105,126 @@
 .btn { font-family: inherit; font-weight: 400; cursor: pointer; border: none; transition: opacity 0.15s; }
 .btn:hover { opacity: 0.88; }
 .btn--primary { background: var(--accent); color: #fff; }
+
+/* ── Мобильные элементы — скрыты на десктопе ── */
+.club-detail__mobile-hero { display: none; }
+.club-detail__mobile-cta  { display: none; }
+.club-detail__breadcrumbs { display: block; }
+
+/* ════════════════════════════════════════════
+   MOBILE  ≤ 600px
+   ════════════════════════════════════════════ */
+@media (max-width: 600px) {
+
+  .club-detail__breadcrumbs { display: none; }
+
+  .club-detail {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    gap: 0;
+    padding-bottom: calc(80px + env(safe-area-inset-bottom));
+  }
+  .clubs-page--detail {
+    padding: 0;
+  }
+
+  /* Hero */
+  .club-detail__mobile-hero {
+    display: block;
+    position: relative;
+    width: 100%;
+    height: 55vw;
+    flex-shrink: 0;
+  }
+
+  .club-detail__mobile-hero__img {
+    width: 100%; height: 100%;
+    object-fit: cover; display: block;
+  }
+
+  .club-detail__mobile-hero__placeholder {
+    width: 100%; height: 100%;
+    background: var(--border);
+  }
+
+  .club-detail__mobile-hero__overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    padding: 16px;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, transparent 50%);
+  }
+
+  .club-detail__mobile-hero__back,
+  .club-detail__mobile-hero__btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.85);
+    backdrop-filter: blur(4px);
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-primary);
+    text-decoration: none;
+  }
+
+  /* Body одна колонка */
+  .club-detail__body {
+    grid-template-columns: 1fr;
+    gap: 0;
+    padding: 0 16px;
+  }
+
+  .club-detail__main {
+    grid-column: span 1;
+    border-radius: 0;
+    background: none;
+    padding: 24px 0;
+    gap: 12px;
+  }
+
+  /* Скрываем баннер — уже в hero */
+  .club-detail__banner { display: none; }
+
+  .club-detail__title { font-size: 20px; font-weight: 600; }
+
+  /* Sidebar под main */
+  .club-detail__meta {
+    grid-column: span 1;
+    position: static;
+    border-radius: 0;
+    background: none;
+    padding: 0 0 16px;
+    gap: 12px;
+  }
+
+  /* Скрываем десктопную CTA */
+  .club-detail__cta { display: none; }
+
+  /* Фиксированная кнопка снизу */
+  .club-detail__mobile-cta {
+    display: block;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 12px var(--page-padding, 24px) calc(env(safe-area-inset-bottom) + 12px);
+
+    z-index: 50;
+  }
+
+
+  .club-detail__mobile-cta .club-detail__cta {
+    display: block;
+    padding: 14px;
+    border-radius: 14px;
+    font-size: 16px;
+  }
+}

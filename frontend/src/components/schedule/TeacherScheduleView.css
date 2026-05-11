@@ -1,0 +1,116 @@
+.tsv {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+
+/* На десктопе sticky-header внутри TSV не нужен отступ топбара */
+.tsv .sched-sticky-header {
+  top: 0;
+}
+
+/* Controls */
+.tsv-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  flex-shrink: 0;
+}
+
+.tsv-controls__name {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 20px;
+  font-weight: 400;
+  color: var(--text-primary);
+  cursor: default;
+}
+
+.tsv-controls__right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Scroll area */
+.tsv-scroll {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding-bottom: 80vh;
+}
+
+/* Day section */
+.tsv-day-section { margin-bottom: 32px; }
+
+.tsv-day-title {
+  font-size: 16px;
+  font-weight: 400;
+  color: var(--text-secondary);
+  margin-bottom: 12px;
+  padding-left: 2px;
+}
+
+.tsv-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.tsv-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 80px;
+  color: var(--text-secondary);
+  font-size: 15px;
+  background: var(--card-bg);
+  border-radius: var(--radius);
+}
+
+
+/* ════════════════════════════════════════════
+   MOBILE  ≤ 600px
+   ════════════════════════════════════════════ */
+@media (max-width: 600px) {
+
+  .tsv {
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    padding: 0 var(--page-padding, 24px);
+  }
+
+  .tsv-scroll {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+    padding: 0 0 calc(64px + env(safe-area-inset-bottom) + 32px) 0;
+  }
+
+  .tsv-controls {
+    margin-bottom: 16px;
+  }
+
+  .tsv-day-title {
+    font-size: 14px;
+    margin-bottom: 10px;
+  }
+
+  .tsv-day-section {
+    margin-bottom: 24px;
+  }
+
+  .tsv-list {
+    gap: 6px;
+  }
+}

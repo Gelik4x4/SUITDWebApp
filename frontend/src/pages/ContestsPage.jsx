@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import './ContestsPage.css';
@@ -7,6 +7,8 @@ import ContestDetail  from '../components/contests/ContestDetail';
 import FavFilterPanel from '../components/filters/FavFilterPanel';
 import Breadcrumbs    from '../components/breadcrumbs/Breadcrumbs';
 import Icon from '@icon/Icon';
+import MobilePageHeader from '../components/MobilePageHeader/MobilePageHeader';
+import MobileFilterSheet from '../components/filters/MobileFilterSheet';
 import { CONTESTS as STATIC_CONTESTS } from '@constants/contestsData';
 
 /* ─── Парсинг с sutd.ru/nauka/conferences/ ───────────────────── */
@@ -115,11 +117,16 @@ const CONTEST_CATS = [
 /* ─── Page ────────────────────────────────────────────────────── */
 export default function ContestsPage() {
   const navigate = useNavigate();
+  useEffect(() => {
+    document.body.classList.add('hide-tabbar');
+    return () => document.body.classList.remove('hide-tabbar');
+  }, []);
   const [search,      setSearch]      = useState('');
   const [selected,    setSelected]    = useState([]);
   const [favorites,   setFavorites]   = useState(new Set());
   const [showFav,     setShowFav]     = useState(false);
   const [openContest, setOpenContest] = useState(null);
+  const [filterOpen,  setFilterOpen]  = useState(false);
 
   const { data: parsedContests = [], isLoading, error } = useQuery({
     queryKey: ['sutd-contests'],
@@ -163,11 +170,15 @@ export default function ContestsPage() {
 
   return (
     <>
-    <Breadcrumbs items={[
+      <MobilePageHeader title="Конкурсы" backTo="/services" />
+      <div className="con-breadcrumbs">
+        <Breadcrumbs items={[
           { label: 'Сервисы', onClick: () => navigate('/services') },
           { label: 'Конкурсы' },
         ]} />
+      </div>
 
+      <div className="con-search-row">
         <div className="con-search">
           <Icon name="Search" />
           <input
@@ -177,6 +188,10 @@ export default function ContestsPage() {
             onChange={e => setSearch(e.target.value)}
           />
         </div>
+        <button className="con-filter-btn" onClick={() => setFilterOpen(true)} aria-label="Фильтры">
+          <Icon name="Filter" size={24} />
+        </button>
+      </div>
     <div className="con-page">
       <div className="con-page__left">
 
@@ -201,7 +216,7 @@ export default function ContestsPage() {
         </div>
       </div>
 
-      <div className="con-page__right">
+      <div className="con-page__right con-page__right--desktop">
         <FavFilterPanel
           options={CONTEST_CATS}
           selected={selected}
@@ -212,6 +227,18 @@ export default function ContestsPage() {
         />
       </div>
     </div>
+      {filterOpen && (
+        <MobileFilterSheet
+          title="Фильтры"
+          options={CONTEST_CATS}
+          selected={selected}
+          onApply={(cats, fav) => { setSelected(cats); setShowFav(fav); }}
+          onClear={() => { setSelected([]); setShowFav(false); }}
+          onClose={() => setFilterOpen(false)}
+          showFav
+          favActive={showFav}
+        />
+      )}
     </>
   );
 }

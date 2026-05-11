@@ -26,7 +26,7 @@
   gap: 8px;
   border: 1px solid var(--text-secondary);
   border-radius: 12px;
-  padding: 12px;
+  padding: 0px 12px;
   flex-shrink: 0;
   color: var(--text-secondary);
   transition: border-color 0.15s;
@@ -42,7 +42,7 @@
   font-size: 16px;
   font-weight: 200;
   color: var(--text-primary);
-  padding: 0px;
+  padding: 12px 0px;
 }
 .tp-search__input::placeholder { color: var(--text-secondary); }
 
@@ -58,4 +58,44 @@
   height: 120px;
   color: var(--text-secondary);
   font-size: 16px;
+}
+
+@media (max-width: 600px) {
+  .tp-page {
+    flex: 1;
+    min-height: 0;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    gap: 16px;
+    padding: 0;
+  }
+
+  .tp-search {
+    margin: 0 16px;
+  }
+
+  /* Скрываем десктопные breadcrumbs */
+  .tp-page > .breadcrumbs { display: none; }
+
+  /* MobilePageHeader и поиск — с отступами */
+
+
+
+  /* Только список скроллится */
+  .tp-page__body {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    padding: 0 0 calc(64px + env(safe-area-inset-bottom) + 16px);
+    display: block;
+    margin: 0 16px;
+  }
+  .tp-search {
+    margin-top: 8px;
+  }
+
+  .tp-list { gap: 0; }
 }

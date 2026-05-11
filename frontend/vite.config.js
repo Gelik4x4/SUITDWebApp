@@ -62,6 +62,11 @@ export default defineConfig({
           'Referer': 'https://xn--j1aaidmgm0e.xn--p1ai/',
         },
       },
+      '/conferences-proxy': {
+        target: 'https://sutd.ru',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/conferences-proxy/, '')
+      },
       '/leader-proxy': {
         target: 'https://leader-id.ru',
         changeOrigin: true,

@@ -1,34 +1,31 @@
 .podp-page {
   flex: 1;
   min-height: 0;
-  display: grid;
-  grid-template-columns: 14fr 7fr;
-  gap: var(--gap);
-  overflow: hidden;
-}
-
-.podp-page__left {
   display: flex;
   flex-direction: column;
   gap: 16px;
-  min-height: 0;
   overflow: hidden;
 }
 
-.podp-grid-wrap {
-  flex: 1;
-  min-height: 0;
-  overflow-y: auto;
-  padding-right: 4px;
+
+/* Detail view */
+.podp-page--detail {
+  overflow: hidden;
 }
-.podp-grid-wrap::-webkit-scrollbar { width: 4px; }
-.podp-grid-wrap::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
 
+/* List view — карточки шоу без сайдбара */
+.podp-page--list {
+  overflow-y: auto;
+  padding-bottom: 8px;
+}
+.podp-page--list::-webkit-scrollbar { width: 4px; }
+.podp-page--list::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
 
+/* Сетка шоу — карточки фиксированной ширины */
 .podp-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 14px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
   align-content: start;
 }
 
@@ -43,12 +40,36 @@
   border-radius: var(--radius);
 }
 
-.podp-page__right {
-  background: var(--card-bg);
-  border-radius: var(--radius);
-  padding: 20px;
-  overflow-y: auto;
-  min-height: 0;
+/* Desktop-only elements */
+@media (min-width: 481px) {
+  .podp-desktop-bc {}
 }
-.podp-page__right::-webkit-scrollbar { width: 4px; }
-.podp-page__right::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+/* ════════════════════════════════════════════════
+   Mobile — max-width: 480px
+   ════════════════════════════════════════════════ */
+@media (max-width: 480px) {
+  .podp-page--list {
+    padding-bottom: 0;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  /* Hide desktop breadcrumbs */
+  .podp-desktop-bc {
+    display: none;
+  }
+
+  /* Grid → vertical scrollable list */
+  .podp-grid {
+    flex-direction: column;
+    flex-wrap: nowrap;
+    gap: 8px;
+    overflow-y: auto;
+    flex: 1;
+    min-height: 0;
+    padding: 0 16px calc(64px + env(safe-area-inset-bottom));
+  }
+}

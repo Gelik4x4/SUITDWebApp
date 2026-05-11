@@ -6,11 +6,11 @@
 :root {
   --gap: 16px;
 
-  --bg:             #f5f5f7;
+  --bg:             #F7F6FB;
   --sidebar-bg:     #ffffff;
   --card-bg:        #ffffff;
   --accent:         #213FF9;
-  --accent-light:   #eef0ff;
+  --accent-light:   #EFF0FF;
   --text-primary:   #262626;
   --light-black:    #383838;
   --text-secondary: #7B7B7B;
@@ -22,6 +22,7 @@
   --radius:         16px;
   --radius-sm:      10px;
   --schedule-item:  #f4f4f4;
+  --barcode-color:   #262626;
 
   /* blobs color */
   --blob-purple:     #a89bff;
@@ -33,6 +34,91 @@
 
   /* subject color */
   --subject-purple: #8E9EFF;
+
+  /* mobile page padding */
+  --page-padding: 24px;
+}
+
+/* ══════════════════════════════════════════
+   Dark theme — applied via .dark on <body>
+   ══════════════════════════════════════════ */
+body.dark {
+  --bg:             #262626;
+  --sidebar-bg:     #23232b;
+  --card-bg:        #23232b;
+  --accent:         #213FF9;
+  --accent-light:   #484848;
+  --text-primary:   #f0f0f2;
+  --light-black:    #c8c8d0;
+  --text-secondary: #919191;
+  --sidebar-link:   #8E9EFF;
+  --text-link:      #8E9EFF;
+  --badge-bg:       #907EF8;
+  --badge-text:     #ffffff;
+  --border:         #333344;
+  --schedule-item:  #2c2c38;
+  --barcode-color:  #ffffff;
+
+  /* blobs */
+  --blob-purple:     #a89bff;
+  --blob-blue:       #7bb3ff;
+  --blob-pink:       #ffb3b3;
+  --blob-yellow:     #ffe066;
+  --blob-orange:     #ffb47b;
+  --blob-blue-light: #aac4f7;
+}
+
+/* Sidebar in dark */
+body.dark .sidebar {
+  background: #353535;
+}
+
+/* Cards in dark */
+body.dark .card {
+  background: #353535 !important;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.35);
+}
+
+body.dark {
+  --card-bg: #353535;
+}
+
+body.dark .schedule-item {
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.35);
+}
+
+/* Icon buttons in dark */
+body.dark .icon-btn {
+  color: var(--text-secondary);
+}
+body.dark .icon-btn:hover {
+  color: var(--text-primary);
+}
+
+body.dark .schedule-item__divider {
+  background: var(--border);
+}
+
+body.dark .sched-icon-btn:hover {
+  background: #353535;
+  color: #ffffff;
+}
+
+
+/* sidebar logout hover in dark */
+body.dark .sidebar__logout:hover { color: #f87171; }
+
+/* topbar bg in dark */
+body.dark .topbar {
+  background: var(--bg);
+}
+
+/* Mobile sidebar (tab bar) in dark */
+@media (max-width: 480px) {
+  body.dark .sidebar {
+    background: var(--sidebar-bg);
+    box-shadow: 0 4px 24px rgba(0,0,0,0.4);
+  }
 }
 
 html, body {
@@ -43,6 +129,7 @@ body {
   font-family: 'Onest', 'Segoe UI', sans-serif;
   background: var(--bg);
   color: var(--text-primary);
+  transition: background 0.25s, color 0.25s;
 }
 
 /*  Layout  */
@@ -58,10 +145,10 @@ body {
   min-width: 0;
   height: 100vh;
   overflow: auto;
-  padding: 24px;
+  padding: 0 24px 24px;
   display: flex;
   flex-direction: column;
-  gap: var(--gap);
+  gap: 20px;
 }
 
 /* Внешний контейнер — две колонки (левая и центральная) */
@@ -73,18 +160,15 @@ body {
   min-height: 0;
 }
 
-
-
 /* ─── Левая колонка: расписание + спецпредложения ─── */
 .grid-col--left {
-  flex: 10 1 0;          /* 10 частей */
+  flex: 10 1 0;
   min-width: 0;
   display: flex;
   flex-direction: column;
   gap: var(--gap);
 }
 
-/* Расписание: авто-высота по контенту */
 .grid-schedule {
   flex: 0 0 auto;
   min-height: 250px;
@@ -99,27 +183,25 @@ body {
   flex: 0 0 auto;
 }
 
-/* Спецпредложения: заполняют оставшееся место */
 .grid-offers {
   flex: 1 1 0;
   min-height: 140px;
   min-width: 0;
 }
 
-/* ─── Центральная колонка: вакансии + новости (верх) + мероприятия (низ) ─── */
+/* ─── Центральная колонка ─── */
 .grid-col--center {
-  flex: 11 1 0;          /* 11 частей, соотношение с левой 10:11 */
+  flex: 11 1 0;
   min-width: 0;
   display: flex;
   flex-direction: column;
   gap: var(--gap);
 }
 
-/* Верхняя строка: вакансии (11/14) и новости (3/14) */
 .grid-col--center .top-row {
   display: flex;
   gap: var(--gap);
-  flex: 0 0 auto;        /* высота по контенту, не растягивается */
+  flex: 0 0 auto;
 }
 
 .grid-col--center .top-row .grid-vacancies {
@@ -132,9 +214,8 @@ body {
   min-width: 0;
 }
 
-/* Мероприятия – на всю ширину, занимают оставшееся место */
 .grid-col--center .grid-events {
-  flex: 1 1 0;           /* занимает оставшуюся высоту в колонке */
+  flex: 1 1 0;
   min-height: 0;
   width: 100%;
 }
@@ -150,6 +231,8 @@ body {
   height: 100%;
   min-height: 0;
   overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  transition: background 0.25s, box-shadow 0.25s;
 }
 
 .card__header {
@@ -185,13 +268,12 @@ body {
 }
 .icon-btn:hover { color: var(--text-primary); }
 
-/* ─── FavButton — общая кнопка избранного ────────────────────────────── */
+/* ─── FavButton ─── */
 .fav-btn {
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.75);
-  backdrop-filter: blur(4px);
+  background: #ffffff;
   border: none;
   cursor: pointer;
   display: flex;
@@ -199,14 +281,14 @@ body {
   justify-content: center;
   color: var(--text-secondary);
   flex-shrink: 0;
-  transition: color 0.15s;
+  transition: color 0.15s, background 0.25s;
 }
-.fav-btn:hover { color: var(--text-primary); }
+.fav-btn:hover { color: #D90000; }
 
-/* ─── Badge ──────────────────────────────────────────────────────────── */
+/* ─── Badge ─── */
 .badge {
-  background: #ede9ff;
-  color: #6B5CE7;
+  background: #FFAE77;
+  color: #993D00;
   font-size: 14px;
   font-weight: 500;
   padding: 8px;
@@ -216,6 +298,7 @@ body {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  transition: background 0.25s, color 0.25s;
 }
 
 /*  Shared two-column grid  */
@@ -225,4 +308,97 @@ body {
   gap: 12px;
   flex: 1;
   min-height: 0;
+}
+
+/* Desktop: скрыть мобильный блок */
+.home-mobile { display: none; }
+
+/* ════════════════════════════════════════════════
+   Mobile — max-width: 480px
+   ════════════════════════════════════════════════ */
+@media (max-width: 480px) {
+
+  html, body {
+    height: 100%;
+    overflow: hidden;
+  }
+
+  #root {
+    height: 100%;
+    overflow: hidden;
+  }
+
+  .layout {
+    flex-direction: column;
+    height: 100%;
+    overflow: hidden;
+  }
+
+  .main {
+    flex: 1;
+    min-height: 0;
+    height: auto;
+    overflow: hidden;
+    padding: 0;
+    gap: 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .card {
+    padding: 16px;
+  }
+
+  /* ── Десктоп скрыт ── */
+  .home-desktop { display: none !important; }
+
+  /* ── Мобильный контейнер ── */
+  .home-mobile {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    padding: 8px 0 calc(64px + 48px + env(safe-area-inset-bottom));
+    box-sizing: border-box;
+    width: 100%;
+    overflow-x: hidden;
+    overflow-y: auto;
+    flex: 1;
+    min-height: 0;
+  }
+
+  .home-mobile__news {
+    padding-left: 16px;
+    padding-right: 0px;
+    box-sizing: border-box;
+    width: 100%;
+  }
+
+  .home-mobile__schedule,
+  .home-mobile__offer-a,
+  .home-mobile__offer-b {
+    padding-left: 16px;
+    padding-right: 16px;
+    box-sizing: border-box;
+    width: 100%;
+  }
+
+  .home-mobile__events,
+  .home-mobile__vacancies {
+    width: 100%;
+    padding: 0;
+    box-sizing: border-box;
+    overflow: visible;
+  }
+
+  body.dark .card {
+  background: none !important;
+}
+
+  .home-mobile__schedule .card,
+  .home-mobile__offer-a .card,
+  .home-mobile__offer-b .card {
+    border-radius: 16px !important;
+    width: 100%;
+    box-sizing: border-box;
+  }
 }

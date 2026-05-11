@@ -13,3 +13,7 @@
   transition: color 0.15s;
 }
 .group-selector:hover { color: var(--accent); }
+
+body.dark .group-selector:hover  {
+  color: #8E9EFF;
+}

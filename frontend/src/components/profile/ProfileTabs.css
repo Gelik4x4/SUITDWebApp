@@ -1,10 +1,16 @@
 .profile-tabs {
   display: flex;
-  gap: 6px;
-  background: var(--bg);
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+.profile-tabs__wrapper {
+  display: flex;
+  gap: 4px;
+  background: var(--bg-secondary, #E4E8FF);
   padding: 4px;
-  border-radius: 12px;
-  width: fit-content;
+  border-radius: 14px;
+  width: fit-content;   /* или inline-flex */
 }
 
 .profile-tabs__btn {
@@ -12,19 +18,20 @@
   outline: none;
   cursor: pointer;
   font-family: inherit;
-  font-size: 13px;
-  font-weight: 600;
-  padding: 8px 18px;
-  border-radius: 9px;
+  font-size: 14px;
+  font-weight: 500;
+  padding: 10px 24px;
+  border-radius: 10px;
   background: transparent;
   color: var(--text-secondary);
   transition: background 0.15s, color 0.15s;
 }
 .profile-tabs__btn:hover {
   color: var(--text-primary);
-  background: var(--border);
+  background: #D6DCFC;
 }
 .profile-tabs__btn--active {
   background: var(--accent);
   color: #ffffff;
+  font-weight: 600;
 }

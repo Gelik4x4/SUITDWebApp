@@ -13,6 +13,7 @@
   height: 100%;
   min-height: 0;
   text-decoration: none;
+  transition: background 0.25s;
 }
 
 /* Фоновое изображение — правый нижний угол */
@@ -39,7 +40,7 @@
   max-width: 60%;
 }
 
-/* Цвета */
+/* Цвета — светлая тема */
 .srv-card--orange { background: #FEE3DD; }
 .srv-card--blue   { background: #DCECFF; }
 .srv-card--purple { background: #D1D8FD; }
@@ -47,3 +48,31 @@
 .srv-card--teal   { background: #b3dff5; }
 .srv-card--yellow { background: #f5e6a3; }
 .srv-card--mint   { background: #b3f5d6; }
+
+/* ── Dark theme ── */
+body.dark .srv-card--blue,
+body.dark .srv-card--purple,
+body.dark .srv-card--orange {
+  background: #353535;
+}
+
+body.dark .srv-card--teal { background: #1e2e35; }
+body.dark .srv-card--yellow { background: #2e2b1e; }
+body.dark .srv-card--mint { background: #1e2e28; }
+
+@media (max-width: 600px) {
+  .srv-card {
+    border-radius: 14px;
+    padding: 12px;
+  }
+
+  .srv-card__label {
+    font-size: 14px;
+    max-width: 75%;
+  }
+
+  .srv-card__img {
+    width: 60%;
+    height: 70%;
+  }
+}

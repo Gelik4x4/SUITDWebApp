@@ -1,5 +1,5 @@
-import { useState, useMemo } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState, useMemo, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import './EventsPage.css';
 import EventCard    from '../components/events/EventCard';
@@ -7,6 +7,8 @@ import EventDetail  from '../components/events/EventDetail';
 import FavFilterPanel from '../components/filters/FavFilterPanel';
 import Breadcrumbs  from '../components/breadcrumbs/Breadcrumbs';
 import Icon from '@icon/Icon';
+import MobilePageHeader from '../components/MobilePageHeader/MobilePageHeader';
+import MobileFilterSheet from '../components/filters/MobileFilterSheet';
 
 /* ─── Парсинг мероприятий ─────────────────────────────────────── */
 
@@ -137,11 +139,19 @@ const EVENT_TYPES = [
 
 export default function EventsPage() {
   const navigate = useNavigate();
+  const location = useLocation();
   const [search,    setSearch]    = useState('');
-  const [selected,  setSelected]  = useState([]);      // фильтр по типу
+  const [selected,  setSelected]  = useState([]);
   const [favorites, setFavorites] = useState(new Set());
   const [showFav,   setShowFav]   = useState(false);
-  const [openEvent, setOpenEvent] = useState(null);
+  // Если пришли с виджета — сразу открываем выбранное мероприятие
+  const [openEvent, setOpenEvent] = useState(location.state?.openEvent ?? null);
+  const [filterOpen, setFilterOpen] = useState(false);
+
+  useEffect(() => {
+    document.body.classList.add('hide-tabbar');
+    return () => document.body.classList.remove('hide-tabbar');
+  }, []);
 
   const { data: events = [], isLoading, error } = useQuery({
     queryKey: ['events-list'],
@@ -178,20 +188,33 @@ export default function EventsPage() {
 
   return (
         <>
-        <Breadcrumbs items={[
-          { label: 'Сервисы', onClick: () => navigate('/services') },
-          { label: 'Мероприятия' },
-        ]} />
 
-        {/* Search — на всю ширину */}
-        <div className="evp-search">
-          <Icon name="Search" />
-          <input
-            className="evp-search__input"
-            placeholder="Введите ключевые слова..."
-            value={search}
-            onChange={e => setSearch(e.target.value)}
-          />
+
+        {/* Мобильный хэдер */}
+        <MobilePageHeader title="Мероприятия" backTo="/services" />
+
+        {/* Хлебные крошки — только десктоп */}
+        <div className="evp-breadcrumbs">
+          <Breadcrumbs items={[
+            { label: 'Сервисы', onClick: () => navigate('/services') },
+            { label: 'Мероприятия' },
+          ]} />
+        </div>
+
+        {/* Search + фильтр */}
+        <div className="evp-search-row">
+          <div className="evp-search">
+            <Icon name="Search" />
+            <input
+              className="evp-search__input"
+              placeholder="Поиск"
+              value={search}
+              onChange={e => setSearch(e.target.value)}
+            />
+          </div>
+          <button className="evp-filter-btn" onClick={() => setFilterOpen(true)} aria-label="Фильтры">
+            <Icon name="Filter" size={24} />
+          </button>
         </div>
 
     <div className="evp-page">
@@ -234,6 +257,20 @@ export default function EventsPage() {
       </div>
 
     </div>
+      {/* Мобильный фильтр */}
+      {filterOpen && (
+        <MobileFilterSheet
+          title="Фильтры"
+          options={EVENT_TYPES}
+          selected={selected}
+          onApply={(cats, fav) => { setSelected(cats); setShowFav(fav); }}
+          onClear={() => { setSelected([]); setShowFav(false); }}
+          onClose={() => setFilterOpen(false)}
+          showFav
+          favActive={showFav}
+          onToggleFav={() => setShowFav(v => !v)}
+        />
+      )}
     </>
   );
 }

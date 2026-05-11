@@ -1,22 +1,48 @@
 .tab-data {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px 24px;
+  max-width: 1208px;
+}
+
+/* ── Левая колонка ─────────────────────────────────────────────── */
+.tab-data__left {
   display: flex;
   flex-direction: column;
-  gap: 28px;
-  max-width: 420px;
+  gap: 16px;
 }
 
 .tab-data__fields {
   display: flex;
   flex-direction: column;
+  gap: 24px;
+}
+
+.tab-data__change-pwd {
+  width: 100%;
+  padding: 14px 22px;
+  font-size: 15px;
+}
+
+/* ── Правая колонка ────────────────────────────────────────────── */
+.tab-data__right {
+  display: flex;
+  flex-direction: column;
   gap: 18px;
 }
 
-.tab-data__actions {
+.tab-data__notif-wrap {
   display: flex;
+  flex-direction: column;
   gap: 12px;
-  flex-wrap: wrap;
 }
 
+.tab-data__email-actions {
+  display: flex;
+  gap: 8px;
+}
+
+/* ── Кнопки ────────────────────────────────────────────────────── */
 .btn {
   font-family: inherit;
   font-size: 13px;
@@ -29,18 +55,68 @@
   transition: opacity 0.15s, box-shadow 0.15s;
 }
 .btn:hover { opacity: 0.88; }
+.btn:disabled { opacity: 0.6; cursor: not-allowed; }
 
-.btn--primary {
-  background: var(--accent);
-  color: #fff;
-}
-.btn--outline {
-  background: transparent;
-  color: var(--accent);
-  border: 1.5px solid var(--accent);
-}
-.btn--ghost {
-  background: var(--bg);
-  color: var(--text-secondary);
-  border: 1.5px solid var(--border);
+.btn--primary { background: var(--accent); color: #fff; }
+.btn--outline  { background: transparent; color: var(--accent); border: 1.5px solid var(--accent); }
+.btn--ghost    { background: #E4E8FF !important; color: var(--text-secondary); border: 1.5px solid var(--border); }
+
+/* ════════════════════════════════════════════════
+   Mobile — max-width: 480px
+   ════════════════════════════════════════════════ */
+@media (max-width: 480px) {
+  .tab-data {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    max-width: 100%;
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    padding: 32px 16px calc(80px + env(safe-area-inset-bottom));
+  }
+
+  .tab-data__left {
+    gap: 0;
+  }
+
+  .tab-data__fields {
+    gap: 24px;
+    margin-bottom: 16px;
+  }
+
+  .tab-data__right {
+    gap: 24px;
+  }
+
+  .tab-data__notif-wrap {
+    gap: 10px;
+  }
+
+  /* Сохранить/Отмена — рядом во всю ширину */
+  .tab-data__email-actions {
+    display: flex;
+    gap: 8px;
+  }
+
+  .tab-data__email-actions .btn {
+    flex: 1;
+    padding: 14px;
+    font-size: 15px;
+    border-radius: 14px;
+  }
+
+  /* Кнопка «Сменить пароль» — фиксирована снизу */
+  .tab-data__change-pwd {
+    position: fixed;
+    bottom: calc(64px + env(safe-area-inset-bottom));
+    left: 24px;
+    right: 24px;
+    width: auto;
+    padding: 16px;
+    font-size: 16px;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(33, 63, 249, 0.25);
+    z-index: 50;
+  }
 }

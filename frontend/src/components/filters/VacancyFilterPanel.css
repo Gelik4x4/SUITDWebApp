@@ -48,7 +48,7 @@
 /* Чекбокс */
 .vfp-checkbox {
   display: flex;
-  align-items: center;
+  align-items: top;
   gap: 8px;
   cursor: pointer;
 }
@@ -69,6 +69,12 @@
   background: var(--accent);
   border-color: var(--accent);
 }
+
+body.dark .vfp-checkbox__box {
+  border-color: #f0f0f2;
+}
+
+
 .vfp-checkbox__input:checked + .vfp-checkbox__box::after {
   content: '';
   width: 8px; height: 4px;

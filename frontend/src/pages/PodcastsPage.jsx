@@ -1,69 +1,52 @@
-import { useState, useMemo } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './PodcastsPage.css';
-import SearchBar      from '../components/searchbar/SearchBar';
+import Breadcrumbs    from '../components/breadcrumbs/Breadcrumbs';
+import MobilePageHeader from '../components/MobilePageHeader/MobilePageHeader';
 import PodcastCard    from '../components/podcasts/PodcastCard';
-import PodcastFilters from '../components/podcasts/PodcastFilters';
 import PodcastDetail  from '../components/podcasts/PodcastDetail';
-import { PODCASTS }   from '@constants/podcastsData';
-import Icon from '@icon/Icon';
+import { SHOWS }      from '@constants/podcastsData';
 
-
-const EMPTY_FILTERS = { directions: [] };
-
-function PodcastsPage() {
-  const [search,   setSearch]   = useState('');
-  const [filters,  setFilters]  = useState(EMPTY_FILTERS);
+export default function PodcastsPage() {
+  const navigate = useNavigate();
   const [selected, setSelected] = useState(null);
 
-  const navigate = useNavigate();
+  const show = SHOWS.find(s => s.id === selected);
 
-  const filtered = useMemo(() => PODCASTS.filter(p => {
-    const q = search.toLowerCase();
-    if (q && !p.title.toLowerCase().includes(q) && !p.fullTitle.toLowerCase().includes(q)) return false;
-    if (filters.directions.length && !filters.directions.includes(p.direction)) return false;
-    return true;
-  }), [search, filters]);
+  // Скрываем таббар на всей странице подкастов
+  useEffect(() => {
+    document.body.classList.add('hide-tabbar');
+    return () => document.body.classList.remove('hide-tabbar');
+  }, []);
 
-  if (selected) {
+  if (show) {
     return (
-      <div className="podp-page">
-        <PodcastDetail podcast={selected} onBack={() => setSelected(null)} />
-      </div>
+      <PodcastDetail
+        show={show}
+        onBack={() => setSelected(null)}
+        navigate={navigate}
+      />
     );
   }
 
   return (
-    <div className="podp-page">
-      {/* Left: search + 3-col grid */}
-      <div className="podp-page__left">
-        <button className="icon-btn aq-page__back" onClick={() => navigate('/services')}>
-          <Icon name="ArrowLeft"/>
-        </button>
-        <SearchBar value={search} onChange={setSearch} />
-        <div className="podp-grid-wrap">
-          {filtered.length === 0 ? (
-            <div className="podp-empty">Подкасты не найдены</div>
-          ) : (
-            <div className="podp-grid">
-              {filtered.map(p => (
-                <PodcastCard key={p.id} podcast={p} onClick={() => setSelected(p)} />
-              ))}
-            </div>
-          )}
-        </div>
+    <div className="podp-page podp-page--list">
+      {/* Desktop */}
+      <div className="podp-desktop-bc">
+        <Breadcrumbs items={[
+          { label: 'Сервисы', onClick: () => navigate('/services') },
+          { label: 'Подкасты' },
+        ]} />
       </div>
 
-      {/* Right: filters */}
-      <div className="podp-page__right">
-        <PodcastFilters
-          filters={filters}
-          onChange={setFilters}
-          onClear={() => setFilters(EMPTY_FILTERS)}
-        />
+      {/* Mobile */}
+      <MobilePageHeader title="Подкасты" backTo="/services" />
+
+      <div className="podp-grid">
+        {SHOWS.map(s => (
+          <PodcastCard key={s.id} show={s} onClick={() => setSelected(s.id)} />
+        ))}
       </div>
     </div>
   );
 }
-
-export default PodcastsPage

@@ -5,6 +5,7 @@
   overflow: hidden;
   background: var(--card-bg);
   flex-shrink: 0;
+  box-shadow: 0 2px 5px rgba(98, 98, 98, 0.05);
 }
 
 /* Время */
@@ -16,18 +17,18 @@
   flex-shrink: 0;
   min-width: 90px;
   gap: 4px;
-  padding: 16px 0;
+  padding: 24px 0;
 }
 
 .lesson-item__time-start {
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 300;
   color: var(--text-primary);
   line-height: 1.2;
 }
 
 .lesson-item__time-end {
-  font-size: 18px;
+  font-size: 17px;
   font-weight: 300;
   color: var(--text-secondary);
   line-height: 1.2;
@@ -53,7 +54,7 @@
 }
 
 .lesson-item__subject {
-  font-size: 18px;
+  font-size: 17px;
   font-weight: 400;
   color: var(--text-primary);
   line-height: 1.2;
@@ -75,3 +76,8 @@
   padding: 16px 16px 16px 0;
   flex-shrink: 0;
 }
+
+body.dark .lesson-item__divider {
+  background: #919191;
+}
+

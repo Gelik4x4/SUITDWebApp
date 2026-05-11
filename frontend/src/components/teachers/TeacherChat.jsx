@@ -19,7 +19,7 @@ function formatDateLabel(date) {
   return date.toLocaleDateString('ru-RU', { day: 'numeric', month: 'long' });
 }
 
-export default function TeacherChat({ teacher }) {
+export default function TeacherChat({ teacher, onBack }) {
   const [messages, setMessages] = useState([]);
   const [input, setInput]       = useState('');
   const bottomRef = useRef(null);
@@ -52,8 +52,25 @@ export default function TeacherChat({ teacher }) {
 
   return (
     <div className="tc">
-      {/* Header */}
-      <div className="tc-header">
+      {/* Мобильный хэдер: стрелка + имя по центру + аватар */}
+      <div className="tc-mobile-header">
+        <button className="tc-mobile-header__back" onClick={onBack} aria-label="Назад">
+          <Icon name="ArrowLeft" size={22} />
+        </button>
+        <div className="tc-mobile-header__center">
+          <span className="tc-mobile-header__name">{teacher.name}</span>
+          <span className="tc-mobile-header__status">Онлайн</span>
+        </div>
+        <div className="tc-mobile-header__avatar">
+          {teacher.photo
+            ? <img src={teacher.photo} alt={teacher.name} className="tc-header__photo" />
+            : <div className="tc-header__photo-placeholder"><Icon name="User" size={18} /></div>
+          }
+        </div>
+      </div>
+
+      {/* Десктопный хэдер */}
+      <div className="tc-header tc-header--desktop">
         <div className="tc-header__avatar">
           {teacher.photo
             ? <img src={teacher.photo} alt={teacher.name} className="tc-header__photo" />
@@ -65,9 +82,9 @@ export default function TeacherChat({ teacher }) {
           <div className="tc-header__name">{teacher.name}</div>
           <div className="tc-header__role">Преподаватель</div>
         </div>
-      </div>
+      </div>{/* /tc-header--desktop */}
 
-      <div className="tc-divider" />
+      <div className="tc-divider tc-divider--desktop" />
 
       {/* Messages */}
       <div className="tc-messages">
