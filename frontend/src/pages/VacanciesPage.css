@@ -1,6 +1,9 @@
 .vac-page {
+  flex: 1;
+  min-height: 0;
   display: flex;
   gap: var(--gap);
+  overflow: hidden;
   margin-top: 8px;
 }
 
@@ -11,9 +14,11 @@
 .vac-page__left {
   flex: 1;
   min-width: 0;
+  min-height: 0;
   display: flex;
   flex-direction: column;
   gap: 16px;
+  overflow: hidden;
 }
 
 /* Search */
@@ -23,7 +28,7 @@
   gap: 8px;
   border: 1px solid var(--text-secondary);
   border-radius: 12px;
-  padding: 12px;
+  padding: 0px 12px;
   flex-shrink: 0;
   color: var(--text-secondary);
   transition: border-color 0.15s;
@@ -39,9 +44,19 @@
   font-size: 16px;
   font-weight: 200;
   color: var(--text-primary);
-  padding: 0px;
+  padding: 12px 0px;
 }
 .vac-search__input::placeholder { color: var(--text-secondary); }
+
+/* Scrollable list wrapper */
+.vac-list-wrap {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+.vac-list-wrap::-webkit-scrollbar { width: 4px; }
+.vac-list-wrap::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
 
 /* List */
 .vac-list {
@@ -66,4 +81,58 @@
   align-self: start;
   position: sticky;
   top: 0;
+}
+
+/* ── Search row ── */
+.vac-search-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.vac-search-row .vac-search { flex: 1; margin-top: 0; }
+
+.vac-filter-btn { display: none; }
+
+@media (max-width: 600px) {
+
+  .vac-breadcrumbs { display: none; }
+
+  .vac-page {
+    flex-direction: column;
+    gap: 0;
+    margin-top: 0;
+    overflow: hidden;
+    flex: 1;
+    min-height: 0;
+  }
+
+  .vac-page__right--desktop { display: none; }
+  .vac-page__left { gap: 12px; }
+
+  .vac-filter-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 100%;
+    flex-shrink: 0;
+    background: none;
+    border: 1px solid var(--text-secondary);
+    border-radius: 12px;
+    cursor: pointer;
+    color: var(--text-secondary);
+  }
+
+  .vac-search-row { padding: 24px 16px ; }
+  .vac-search { margin-top: 0; }
+
+  .vac-list-wrap {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    padding: 0 16px 24px;
+  }
+
+  .vac-list { gap: 12px; }
 }

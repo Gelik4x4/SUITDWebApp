@@ -1,5 +1,5 @@
-import { useState, useMemo } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState, useMemo, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import './VacanciesPage.css';
 import VacancyCard        from '../components/vacancies/VacancyCard';
@@ -7,6 +7,8 @@ import VacancyDetail      from '../components/vacancies/VacancyDetail';
 import VacancyFilterPanel from '../components/filters/VacancyFilterPanel';
 import Breadcrumbs        from '../components/breadcrumbs/Breadcrumbs';
 import Icon from '@icon/Icon';
+import MobilePageHeader from '../components/MobilePageHeader/MobilePageHeader';
+import MobileVacancyFilter from '../components/filters/MobileVacancyFilter';
 
 /* ─── Trudvsem API ────────────────────────────────────────────────
    Открытый API Роструда — не требует регистрации.
@@ -54,7 +56,7 @@ const fetchVacancies = async () => {
 
     return {
       id:          v.id,
-      title:       v.job_name ?? 'Вакансия',
+      title:       v['job-name'] ?? v.job_name ?? v.title ?? v.name ?? v.position ?? 'Вакансия',
       company:     v.company?.name ?? '',
       companyLogo: v.company?.logo ?? null,
       salary,
@@ -87,6 +89,11 @@ const DIRECTION_OPTS  = ['Дизайн', 'IT', 'Frontend', 'Backend', 'Конт�
 /* ─── Page ────────────────────────────────────────────────────── */
 export default function VacanciesPage() {
   const navigate = useNavigate();
+  useEffect(() => {
+    document.body.classList.add('hide-tabbar');
+    return () => document.body.classList.remove('hide-tabbar');
+  }, []);
+  const location = useLocation();
   const [search,    setSearch]    = useState('');
   const [expSel,    setExpSel]    = useState([]);
   const [empSel,    setEmpSel]    = useState([]);
@@ -94,7 +101,9 @@ export default function VacanciesPage() {
   const [dirSel,    setDirSel]    = useState([]);
   const [favorites, setFavorites] = useState(new Set());
   const [showFav,   setShowFav]   = useState(false);
-  const [openVac,   setOpenVac]   = useState(null);
+  // Если пришли с виджета — сразу открываем выбранную вакансию
+  const [openVac,   setOpenVac]   = useState(location.state?.openVac ?? null);
+  const [filterOpen, setFilterOpen] = useState(false);
 
   const { data: vacancies = [], isLoading, error } = useQuery({
     queryKey: ['trudvsem-vacancies'],
@@ -133,11 +142,15 @@ export default function VacanciesPage() {
 
   return (
     <>
-    <Breadcrumbs items={[
+      <MobilePageHeader title="Вакансии" backTo="/services" />
+      <div className="vac-breadcrumbs">
+        <Breadcrumbs items={[
           { label: 'Сервисы', onClick: () => navigate('/services') },
           { label: 'Вакансии' },
         ]} />
+      </div>
 
+      <div className="vac-search-row">
         <div className="vac-search">
           <Icon name="Search" />
           <input
@@ -147,10 +160,15 @@ export default function VacanciesPage() {
             onChange={e => setSearch(e.target.value)}
           />
         </div>
+        <button className="vac-filter-btn" onClick={() => setFilterOpen(true)} aria-label="Фильтры">
+          <Icon name="Filter" size={24} />
+        </button>
+      </div>
     <div className="vac-page">
       <div className="vac-page__left">
         
 
+        <div className="vac-list-wrap">
         <div className="vac-list">
           {isLoading && <div className="vac-empty">Загрузка вакансий...</div>}
           {error && (
@@ -172,9 +190,10 @@ export default function VacanciesPage() {
             />
           ))}
         </div>
+        </div>
       </div>
 
-      <div className="vac-page__right">
+      <div className="vac-page__right vac-page__right--desktop">
         <VacancyFilterPanel
           showFav={showFav}      onToggleFav={() => setShowFav(v => !v)}
           expOptions={EXPERIENCE_OPTS} expSelected={expSel} onExpChange={setExpSel}
@@ -185,6 +204,20 @@ export default function VacanciesPage() {
         />
       </div>
     </div>
+      {filterOpen && (
+        <MobileVacancyFilter
+          onClose={() => setFilterOpen(false)}
+          favActive={showFav}
+          expOptions={EXPERIENCE_OPTS} expSelected={expSel}
+          empOptions={EMPLOYMENT_OPTS} empSelected={empSel}
+          fmtOptions={FORMAT_OPTS}     fmtSelected={fmtSel}
+          dirOptions={DIRECTION_OPTS}  dirSelected={dirSel}
+          onApply={({ fav, exp, emp, fmt, dir }) => {
+            setShowFav(fav); setExpSel(exp); setEmpSel(emp); setFmtSel(fmt); setDirSel(dir);
+          }}
+          onClear={clearAll}
+        />
+      )}
     </>
   );
 }

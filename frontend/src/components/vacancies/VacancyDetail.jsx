@@ -1,8 +1,10 @@
+import { useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import './VacancyDetail.css';
 import Breadcrumbs from '../breadcrumbs/Breadcrumbs';
 import FavButton   from '../buttons/FavButton';
 import Icon from '@icon/Icon';
+import MobilePageHeader from '../MobilePageHeader/MobilePageHeader';
 
 /* ─── Загрузка детальной информации о вакансии ─────────────────
    HH API: GET /vacancies/{id}  — возвращает полное описание
@@ -57,11 +59,23 @@ function Section({ title, items }) {
       <ul className="vd-list">
         {items.map((item, i) => <li key={i}>{item}</li>)}
       </ul>
+      {/* Мобильная фиксированная кнопка */}
+      <div className="vd__mobile-apply">
+        <a href={url} target="_blank" rel="noopener noreferrer"
+          className="vd__apply btn--primary">
+          Откликнуться
+        </a>
+      </div>
     </div>
   );
 }
 
 export default function VacancyDetail({ vacancy, onBack, isFav, onToggleFav }) {
+  useEffect(() => {
+    document.body.classList.add('hide-tabbar');
+    return () => document.body.classList.remove('hide-tabbar');
+  }, []);
+
   const { data: detail, isLoading } = useQuery({
     queryKey: ['vacancy-detail', vacancy.id],
     queryFn: () => fetchVacancyDetail(vacancy.id),
@@ -80,17 +94,18 @@ export default function VacancyDetail({ vacancy, onBack, isFav, onToggleFav }) {
 
   return (
     <div className="vd">
-      <Breadcrumbs items={[
+      <MobilePageHeader title="Вакансии" onBack={onBack} />
+      <div className="vd__breadcrumbs"><Breadcrumbs items={[
         { label: 'Сервисы',   onClick: () => window.history.go(-2) },
         { label: 'Вакансии',  onClick: onBack },
         { label: 'Информация о вакансии' },
-      ]} />
+      ]} /></div>
 
-      <div className="vd__body">
+      {/* ── Десктоп layout ── */}
+      <div className="vd__body vd__body--desktop">
 
         {/* Left — main content */}
         <div className="vd__main">
-          {/* Title row */}
           <div className="vd__titlerow">
             <h2 className="vd__title">{vacancy.title}</h2>
             <div className="vd__actions">
@@ -101,7 +116,6 @@ export default function VacancyDetail({ vacancy, onBack, isFav, onToggleFav }) {
               </a>
             </div>
           </div>
-
           {isLoading ? (
             <div className="vd__loading">Загрузка описания...</div>
           ) : (
@@ -114,9 +128,7 @@ export default function VacancyDetail({ vacancy, onBack, isFav, onToggleFav }) {
           )}
         </div>
 
-        {/* Right — sidebar */}
         <aside className="vd__meta">
-          {/* Компания */}
           <div className="vd__company">
             {companyLogo
               ? <img src={companyLogo} alt={companyName} className="vd__company-logo" />
@@ -124,47 +136,76 @@ export default function VacancyDetail({ vacancy, onBack, isFav, onToggleFav }) {
             }
             <div className="vd__company-name">{companyName}</div>
           </div>
-
           <div className="vd__divider" />
-
-          {/* Параметры */}
           <div className="vd__params">
-            {salary && (
-              <div className="vd__param">{salary}</div>
-            )}
-            {experience && (
-              <div className="vd__param">
-                <span className="vd__param-label">Опыт работы:</span> {experience}
-              </div>
-            )}
-            {employment && (
-              <div className="vd__param">
-                <span className="vd__param-label">{employment} занятость</span>
-              </div>
-            )}
-            {schedule && (
-              <div className="vd__param">
-                <span className="vd__param-label">График:</span> {schedule}
-              </div>
-            )}
-            {format && (
-              <div className="vd__param">
-                <span className="vd__param-label">Формат работы:</span> {format}
-              </div>
-            )}
+            {salary     && <div className="vd__param">{salary}</div>}
+            {experience && <div className="vd__param"><span className="vd__param-label">Опыт работы:</span> {experience}</div>}
+            {employment && <div className="vd__param"><span className="vd__param-label">{employment} занятость</span></div>}
+            {schedule   && <div className="vd__param"><span className="vd__param-label">График:</span> {schedule}</div>}
+            {format     && <div className="vd__param"><span className="vd__param-label">Формат работы:</span> {format}</div>}
           </div>
-
-          {/* Кнопка */}
-          <a
-            href={url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="vd__apply btn--primary"
-          >
+          <a href={url} target="_blank" rel="noopener noreferrer" className="vd__apply btn--primary">
             Откликнуться
           </a>
         </aside>
+      </div>
 
+      {/* ── Мобильный layout: 3 карточки ── */}
+      <div className="vd__mobile-layout">
+
+        {/* Карточка 1: название + параметры */}
+        <div className="vd__mobile-card">
+          <div className="vd__titlerow">
+            <h2 className="vd__title">{vacancy.title}</h2>
+            <div className="vd__actions">
+              <FavButton active={isFav} onClick={onToggleFav} />
+              <a href={url} target="_blank" rel="noopener noreferrer"
+                className="icon-btn" title="Открыть на hh.ru">
+                <Icon name="Share" />
+              </a>
+            </div>
+          </div>
+          <div className="vd__params">
+            {salary     && <div className="vd__param">{salary}</div>}
+            {experience && <div className="vd__param"><span className="vd__param-label">Опыт работы:</span> {experience}</div>}
+            {employment && <div className="vd__param"><span className="vd__param-label">{employment} занятость</span></div>}
+            {schedule   && <div className="vd__param"><span className="vd__param-label">График:</span> {schedule}</div>}
+            {format     && <div className="vd__param"><span className="vd__param-label">Формат работы:</span> {format}</div>}
+          </div>
+        </div>
+
+        {/* Карточка 2: работодатель */}
+        <div className="vd__mobile-card">
+          <div className="vd__company">
+            {companyLogo
+              ? <img src={companyLogo} alt={companyName} className="vd__company-logo" />
+              : <div className="vd__company-logo-placeholder">{companyName[0]}</div>
+            }
+            <div className="vd__company-name">{companyName}</div>
+          </div>
+        </div>
+
+        {/* Карточка 3: описание вакансии */}
+        <div className="vd__mobile-card">
+          {isLoading ? (
+            <div className="vd__loading">Загрузка описания...</div>
+          ) : (
+            <div className="vd__sections">
+              {sections.length > 0
+                ? sections.map((s, i) => <Section key={i} title={s.title} items={s.items} />)
+                : <p className="vd__desc">{vacancy.description}</p>
+              }
+            </div>
+          )}
+        </div>
+
+      </div>
+      {/* Мобильная фиксированная кнопка */}
+      <div className="vd__mobile-apply">
+        <a href={url} target="_blank" rel="noopener noreferrer"
+          className="vd__apply btn--primary">
+          Откликнуться
+        </a>
       </div>
     </div>
   );

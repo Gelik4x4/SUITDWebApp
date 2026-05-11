@@ -6,6 +6,11 @@
   flex-direction: column;
   gap: 16px;
   cursor: pointer;
+  box-shadow: 0px 0px 12px rgba(98, 98, 98, 0.15);
+}
+
+body.dark .vac-card {
+  box-shadow:none;
 }
 
 /* Header */
@@ -63,7 +68,7 @@
 .vac-card__desc {
   font-size: 16px;
   line-height: 1.2;
-  color: var(--text-secondary);
+  color: var(--text-primary);
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
@@ -101,4 +106,10 @@
   color: var(--text-primary);
   white-space: nowrap;
   flex-shrink: 0;
+}
+
+@media (max-width: 600px) {
+  .vac-card { border-radius: 14px; gap: 12px; }
+  .vac-card__title { font-size: 17px; }
+  .vac-card__salary { font-size: 16px; }
 }
