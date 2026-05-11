@@ -38,7 +38,7 @@ export default function SplashScreen({ onDone }) {
     <div className="splash">
       <div className="splash__content">
         <div className="splash__wordmark">
-          <span className="splash__suitd">SUITD</span>
+          <span className="splash__suitd">ЦАТ</span>
           <span className="splash__students">students</span>
         </div>
         <div className="splash__logo">
