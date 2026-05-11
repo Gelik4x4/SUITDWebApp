@@ -1,45 +1,97 @@
 .tab-about {
   display: flex;
   flex-direction: column;
-  gap: 14px;
-  max-width: 1080px;
-
+  gap: 8px;
+  max-width: 620px;
+  overflow-y: auto;
   padding-right: 4px;
 }
 .tab-about::-webkit-scrollbar { width: 4px; }
 .tab-about::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
 
-.tab-about__text {
-  font-size: 13px;
-  line-height: 1.7;
+.tab-about__title {
+  font-size: 16px;
+  font-weight: 600;
   color: var(--text-primary);
 }
 
 .tab-about__subtitle {
-  font-size: 13px;
-  font-weight: 700;
+  font-size: 16px;
+  font-weight: 600;
   color: var(--text-primary);
-  margin-top: 6px;
+  margin: 16px 0 0px;
+}
+
+.tab-about__text {
+  font-size: 14px;
+  line-height: 1.35;
+  color: var(--text-primary);
+  margin: 0;
 }
 
 .tab-about__list {
   list-style: none;
   padding: 0;
+  margin: 0;
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: 0px;
 }
 .tab-about__list li {
-  font-size: 13px;
+  font-size: 14px;
   line-height: 1.6;
   color: var(--text-primary);
   padding-left: 16px;
   position: relative;
 }
 .tab-about__list li::before {
-  content: '•';
+  content: '·';
   position: absolute;
-  left: 0;
-  color: var(--accent);
+  left: 2px;
+  font-size: 18px;
+  line-height: 1.2;
+  color: var(--text-primary);
   font-weight: 700;
+}
+
+.tab-about__link {
+  color: var(--text-primary);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.tab-about__link:hover { color: var(--accent); }
+
+/* ════════════════════════════════════════════════
+   Mobile — max-width: 480px
+   ════════════════════════════════════════════════ */
+@media (max-width: 480px) {
+  .tab-about {
+    max-width: 100%;
+    padding-right: 0;
+    overflow-y: auto;
+    flex: 1;
+    min-height: 0;
+    padding: 32px 16px calc(64px + env(safe-area-inset-bottom));
+    gap: 4px;
+  }
+
+  .tab-about__title {
+    font-size: 17px;
+    margin-bottom: 4px;
+  }
+
+  .tab-about__subtitle {
+    font-size: 15px;
+    font-weight: 700;
+    margin: 16px 0 4px;
+  }
+
+  .tab-about__text {
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  .tab-about__list li {
+    font-size: 14px;
+  }
 }

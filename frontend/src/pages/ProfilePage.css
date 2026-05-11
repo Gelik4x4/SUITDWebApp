@@ -4,7 +4,16 @@
   width: 100%;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
+}
+
+/* ── Desktop ── */
+.profile-desktop {
+  display: flex;
+  flex-direction: column;
   gap: 24px;
+  flex: 1;
+  min-height: 0;
   overflow: hidden;
 }
 
@@ -13,5 +22,99 @@
   min-height: 0;
   display: flex;
   flex-direction: column;
-  overflow: hidden;
+  overflow-y: auto;
+}
+.profile-page__content::-webkit-scrollbar { width: 4px; }
+.profile-page__content::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+/* Mobile blocks hidden on desktop */
+@media (min-width: 481px) {
+  .profile-mobile-menu-screen { display: none; }
+}
+
+/* ════════════════════════════════════════════════
+   Mobile — max-width: 480px
+   ════════════════════════════════════════════════ */
+@media (max-width: 480px) {
+
+  /* Hide desktop */
+  .profile-desktop { display: none; }
+
+  /* ── Menu screen ── */
+  .profile-mobile-menu-screen {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    padding-bottom: calc(80px + env(safe-area-inset-bottom));
+  }
+
+  .profile-mobile-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 32px 16px;
+    flex-shrink: 0;
+  }
+
+  .profile-mobile-header__title {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--text-primary);
+  }
+
+  .profile-mobile-header__actions {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .profile-mobile-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 0 16px;
+  }
+
+  .profile-mobile-menu__item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--card-bg);
+    border-radius: 14px;
+    padding: 18px 16px;
+    cursor: pointer;
+    border: 1.5px solid transparent;
+    font-family: inherit;
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--text-primary);
+    width: 100%;
+    text-align: left;
+    transition: opacity 0.15s;
+  }
+  .profile-mobile-menu__item:hover { opacity: 0.8; }
+
+  .profile-mobile-menu__item--danger {
+    color: #e53e3e;
+    border-color: #fca5a5;
+  }
+
+  .profile-mobile-menu__chevron { color: var(--text-secondary); flex-shrink: 0; }
+  .profile-mobile-menu__item--danger .profile-mobile-menu__chevron { color: #e53e3e; }
+
+  /* ── Tab screen ── */
+  .profile-page--tab {
+    overflow: hidden;
+    gap: 0;
+  }
+
+  .profile-page__tab-content {
+    flex: 1;
+    min-height: 0;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
 }

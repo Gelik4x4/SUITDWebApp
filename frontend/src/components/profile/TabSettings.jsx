@@ -2,22 +2,6 @@ import React, { useState } from 'react';
 import './TabSettings.css';
 import Icon from '@icon/Icon';
 
-const COLORS = ['#ffffff', '#f0f0f0', '#e8eeff', '#ffeaea', '#eafff0', '#fff8e1', '#f3e8ff'];
-
-
-function ColorSwatch({ color, active, onClick }) {
-  return (
-    <button
-      className={`color-swatch${active ? ' color-swatch--active' : ''}`}
-      style={{ background: color }}
-      onClick={() => onClick(color)}
-      title={color}
-    >
-      {active && <Icon name="Tick" />}
-    </button>
-  );
-}
-
 function Toggle({ checked, onChange }) {
   return (
     <button
@@ -46,26 +30,15 @@ function ThemeOption({ label, active, onClick }) {
 }
 
 export default function TabSettings() {
-  const [activeColor, setActiveColor] = useState(COLORS[0]);
-  const [theme,       setTheme]       = useState('system');
-  const [notify,      setNotify]      = useState(true);
+  const [theme,  setTheme]  = useState('system');
+  const [notify, setNotify] = useState(true);
 
   return (
     <div className="tab-settings">
 
-      {/* Основной цвет */}
+      {/* Внешний вид приложения */}
       <section className="settings-section">
-        <h3 className="settings-section__title">Основной цвет</h3>
-        <div className="color-swatches">
-          {COLORS.map(c => (
-            <ColorSwatch key={c} color={c} active={activeColor === c} onClick={setActiveColor} />
-          ))}
-        </div>
-      </section>
-
-      {/* Внешний вид */}
-      <section className="settings-section">
-        <h3 className="settings-section__title">Внешний вид</h3>
+        <h3 className="settings-section__title">Внешний вид приложения</h3>
         <div className="theme-options">
           <ThemeOption label="Системная тема" active={theme === 'system'} onClick={() => setTheme('system')} />
           <ThemeOption label="Светлая тема"   active={theme === 'light'}  onClick={() => setTheme('light')} />
@@ -84,8 +57,8 @@ export default function TabSettings() {
 
       {/* Кнопки */}
       <div className="settings-actions">
-        <button className="btn btn--ghost">Отмена</button>
         <button className="btn btn--primary">Сохранить</button>
+        <button className="btn btn--outline">Отмена</button>
       </div>
 
     </div>
