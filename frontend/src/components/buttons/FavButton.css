@@ -9,5 +9,22 @@
   flex-shrink: 0;
   transition: color 0.15s, background 0.15s;
 }
-.fav-btn:hover { color: #e03; }
-.fav-btn--active { color: #e03; background: #FFDBD3; }
+
+.fav-btn:hover { color: #D90000; }
+.fav-btn--active { color: #D90000; background: #D90000; }
+
+body.dark .fav-btn {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  background: none;
+  backdrop-filter: blur(4px);
+  border: none; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--text-secondary);
+  flex-shrink: 0;
+  transition: color 0.15s, background 0.15s;
+}
+
+body.dark .fav-btn:hover { color: #ffffff; }
+
+body.dark .fav-btn--active { color: #D90000; }
