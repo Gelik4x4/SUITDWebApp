@@ -35,6 +35,10 @@
   gap: 16px;
 }
 
+body.dark .ffp-checkbox__box {
+  border-color: #f0f0f2;
+}
+
 .ffp-checkbox {
   display: flex;
   align-items: center;

@@ -21,6 +21,10 @@
   gap: 16px;
 }
 
+body.dark .fp-checkbox__box {
+  border-color: #f0f0f2;
+}
+
 /* Checkbox */
 .fp-checkbox {
   display: flex;
