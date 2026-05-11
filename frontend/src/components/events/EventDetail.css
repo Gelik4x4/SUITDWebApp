@@ -127,3 +127,148 @@
 .btn { font-family: inherit; font-weight: 400; cursor: pointer; border: none; transition: opacity 0.15s; }
 .btn:hover { opacity: 0.88; }
 .btn--primary { background: var(--accent); color: #fff; }
+
+/* ── Мобильный hero — скрыт на десктопе ── */
+.evd__mobile-hero { display: none; }
+.evd__mobile-register { display: none; }
+.evd__breadcrumbs { display: block; }
+
+/* ════════════════════════════════════════════
+   MOBILE  ≤ 600px
+   ════════════════════════════════════════════ */
+@media (max-width: 600px) {
+
+  /* Скрываем десктопные breadcrumbs */
+  .evd__breadcrumbs { display: none; }
+
+  .evd {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    gap: 0;
+    padding-bottom: calc(80px + env(safe-area-inset-bottom));
+  }
+
+  .evd__section-title {
+    font-size: 17px;
+  }
+
+  /* Мобильный hero */
+  .evd__mobile-hero {
+    display: block;
+    position: relative;
+    width: 100%;
+    height: 55vw;
+    flex-shrink: 0;
+  }
+
+  .evd__mobile-hero__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .evd__mobile-hero__placeholder {
+    width: 100%;
+    height: 100%;
+    background: var(--border);
+  }
+
+  .evd__mobile-hero__overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    padding: 16px;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.35) 0%, transparent 50%);
+  }
+
+  .evd__mobile-hero__back {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.85);
+    backdrop-filter: blur(4px);
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-primary);
+  }
+
+  .evd__mobile-hero__actions {
+    display: flex;
+    gap: 8px;
+  }
+
+  .evd__mobile-hero__btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.85);
+    backdrop-filter: blur(4px);
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-primary);
+    text-decoration: none;
+  }
+
+  /* Body — одна колонка */
+  .evd__body {
+    grid-template-columns: 1fr;
+    gap: 0;
+    padding: 0 16px;
+  }
+
+  .evd__main {
+    grid-column: span 1;
+    border-radius: 0;
+    background: none;
+    padding: 24px 0;
+    gap: 12px;
+  }
+
+  /* Скрываем баннер — уже показан в hero */
+  .evd__banner { display: none; }
+
+  /* Meta — под main */
+  .evd__meta {
+    grid-column: span 1;
+    position: static;
+    border-radius: 12px;
+    margin-top: 0;
+    padding:  0;
+    background: none;
+    gap: 8px;
+  }
+
+  /* Скрываем кнопку Записаться в sidebar */
+  .evd__register { display: none; }
+
+  /* Фиксированная кнопка снизу */
+  .evd__mobile-register {
+    display: block;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 12px 16px;
+    z-index: 50;
+  }
+
+  .evd__mobile-register .evd__register {
+    display: block;
+    padding: 14px;
+    border-radius: 14px;
+    font-size: 16px;
+  }
+
+  .evd__title { font-size: 17px; }
+}

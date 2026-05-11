@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import './EventDetail.css';
 import Breadcrumbs from '../breadcrumbs/Breadcrumbs';
@@ -5,6 +6,11 @@ import FavButton   from '../buttons/FavButton';
 import Icon from '@icon/Icon';
 
 export default function EventDetail({ event, onBack, isFav, onToggleFav, fetchDetail }) {
+  useEffect(() => {
+    document.body.classList.add('hide-tabbar');
+    return () => document.body.classList.remove('hide-tabbar');
+  }, []);
+
   const { data: detail, isLoading } = useQuery({
     queryKey: ['event-detail', event.id],
     queryFn: () => fetchDetail(event.id),
@@ -21,11 +27,32 @@ export default function EventDetail({ event, onBack, isFav, onToggleFav, fetchDe
 
   return (
     <div className="evd">
-      <Breadcrumbs items={[
+      {/* Мобильный hero: фото + оверлей с кнопками */}
+      <div className="evd__mobile-hero">
+        {image
+          ? <img src={image} alt={event.title} className="evd__mobile-hero__img" />
+          : <div className="evd__mobile-hero__placeholder" />
+        }
+        <div className="evd__mobile-hero__overlay">
+          <button className="evd__mobile-hero__back" onClick={onBack} aria-label="Назад">
+            <Icon name="ArrowLeft" size={20} />
+          </button>
+          <div className="evd__mobile-hero__actions">
+            <button className="evd__mobile-hero__btn" onClick={onToggleFav}>
+              <Icon name={isFav ? 'HeartFilled' : 'Heart'} size={20} />
+            </button>
+            <a href={event.link} target="_blank" rel="noopener noreferrer" className="evd__mobile-hero__btn">
+              <Icon name="Share" size={20} />
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div className="evd__breadcrumbs"><Breadcrumbs items={[
         { label: 'Сервисы',     onClick: () => window.history.go(-2) },
         { label: 'Мероприятия', onClick: onBack },
         { label: 'Информация о мероприятии' },
-      ]} />
+      ]} /></div>
 
       <div className="evd__body">
 
@@ -92,6 +119,14 @@ export default function EventDetail({ event, onBack, isFav, onToggleFav, fetchDe
           </a>
         </aside>
 
+      </div>
+
+      {/* Мобильная фиксированная кнопка «Записаться» */}
+      <div className="evd__mobile-register">
+        <a href={event.link} target="_blank" rel="noopener noreferrer"
+          className="evd__register btn btn--primary">
+          Записаться
+        </a>
       </div>
     </div>
   );
