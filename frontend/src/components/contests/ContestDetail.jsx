@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import './ContestDetail.css';
 import Breadcrumbs from '../breadcrumbs/Breadcrumbs';
@@ -67,6 +67,20 @@ function useShare(url) {
 export default function ContestDetail({ contest, onBack, isFav, onToggleFav }) {
   const { copied, share } = useShare(contest.url);
 
+  useEffect(() => {
+    document.body.classList.add('hide-tabbar');
+    return () => document.body.classList.remove('hide-tabbar');
+  }, []);
+
+  /* Нативный share на мобиле */
+  const handleShare = () => {
+    if (navigator.share) {
+      navigator.share({ title: contest.title, url: contest.url }).catch(() => {});
+    } else {
+      share();
+    }
+  };
+
   const { data: detail, isLoading } = useQuery({
     queryKey: ['contest-detail', contest.id],
     queryFn: () => fetchContestDetail(contest.url),
@@ -83,13 +97,35 @@ export default function ContestDetail({ contest, onBack, isFav, onToggleFav }) {
 
   return (
     <div className="con-detail">
-      <Breadcrumbs items={[
+      {/* Мобильный hero: фото + кнопки поверх */}
+      <div className="con-detail__mobile-hero">
+        {image
+          ? <img src={image} alt={contest.title} className="con-detail__mobile-hero__img" />
+          : <div className="con-detail__mobile-hero__placeholder" />
+        }
+        <div className="con-detail__mobile-hero__overlay">
+          <button className="con-detail__mobile-hero__btn" onClick={onBack} aria-label="Назад">
+            <Icon name="ArrowLeft" size={20} />
+          </button>
+          <div className="con-detail__mobile-hero__right">
+            <button className="con-detail__mobile-hero__btn" onClick={onToggleFav}>
+              <Icon name={isFav ? 'HeartFilled' : 'Heart'} size={20} />
+            </button>
+            <button className="con-detail__mobile-hero__btn" onClick={handleShare}>
+              <Icon name="Share" size={20} />
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div className="con-detail__breadcrumbs"><Breadcrumbs items={[
         { label: 'Сервисы',   onClick: () => window.history.go(-2) },
         { label: 'Конкурсы',  onClick: onBack },
         { label: 'Информация о конкурсе' },
-      ]} />
+      ]} /></div>
 
-      <div className="con-detail__body">
+      {/* ── Десктоп ── */}
+      <div className="con-detail__body con-detail__body--desktop">
 
         {/* Left — основной контент */}
         <div className="con-detail__main">
@@ -151,6 +187,57 @@ export default function ContestDetail({ contest, onBack, isFav, onToggleFav }) {
           </a>
         </aside>
 
+      </div>
+      {/* ── Мобильный layout ── */}
+      <div className="con-detail__mobile-layout">
+
+        {/* Карточка 1: название + расписание */}
+        <div className="con-detail__mobile-card">
+          <h2 className="con-detail__title">{contest.title}</h2>
+
+          {(schedule.length > 0 || contest.deadline) && (
+            <>
+              <div className="con-detail__meta-title">Расписание</div>
+              {schedule.length > 0 ? (
+                schedule.map((item, i) => (
+                  <div key={i} className="con-meta-stage">
+                    <div className="con-meta-stage__label">{item.title}</div>
+                    <div className="con-meta-stage__date">{item.date}</div>
+                  </div>
+                ))
+              ) : (
+                <div className="con-meta-stage">
+                  <div className="con-meta-stage__label">Приём заявок</div>
+                  <div className="con-meta-stage__date">{contest.deadline}</div>
+                </div>
+              )}
+            </>
+          )}
+        </div>
+
+        {/* Карточка 2: описание */}
+        {(paragraphs.length > 0 || isLoading) && (
+          <div className="con-detail__mobile-card">
+            <div className="con-detail__meta-title">О мероприятии</div>
+            {isLoading ? (
+              <div className="con-detail__loading">Загрузка информации...</div>
+            ) : (
+              <div className="con-detail__text">
+                {paragraphs.map((p, i) => (
+                  <p key={i} className="con-detail__para">{p}</p>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
+      </div>
+
+      {/* Фиксированная кнопка снизу */}
+      <div className="con-detail__mobile-cta">
+        <a href={contest.url} target="_blank" rel="noopener noreferrer"
+          className="con-detail__cta btn--primary">
+          Подробнее
+        </a>
       </div>
     </div>
   );
