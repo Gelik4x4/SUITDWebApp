@@ -23,7 +23,7 @@
   gap: 8px;
   border: 1px solid var(--text-secondary);
   border-radius: 12px;
-  padding: 12px;
+  padding: 0px 12px;
   flex-shrink: 0;
   color: var(--text-secondary);
   transition: border-color 0.15s;
@@ -40,7 +40,7 @@
   font-size: 16px;
   font-weight: 200;
   color: var(--text-primary);
-  padding: 0px;
+  padding: 12px 0px;
 }
 .clubs-search__input::placeholder { color: var(--text-secondary); }
 
@@ -72,4 +72,65 @@
 
 .breadcrumbs {
   margin-bottom: 0px; /* или нужное значение */
+}
+/* ── Search row ── */
+.clubs-search-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.clubs-search-row .clubs-search { flex: 1; margin-top: 0; }
+
+/* Кнопка фильтра — скрыта на десктопе */
+.clubs-filter-btn { display: none; }
+
+/* ════════════════════════════════════════════
+   MOBILE  ≤ 600px
+   ════════════════════════════════════════════ */
+@media (max-width: 600px) {
+
+  /* Скрываем десктопные breadcrumbs */
+  .clubs-breadcrumbs { display: none; }
+
+  /* Страница скроллится */
+  .clubs-page {
+    flex-direction: column;
+    gap: 0;
+    margin-top: 0;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    padding: 0 16px 24px;
+    flex: 1;
+    min-height: 0;
+  }
+
+  /* Скрываем десктопные фильтры */
+  .clubs-page__right--desktop { display: none; }
+
+  .clubs-page__left { gap: 12px; }
+
+  /* Кнопка фильтра */
+  .clubs-filter-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    flex-shrink: 0;
+    background: none;
+    border: 1px solid var(--text-secondary);
+    border-radius: 12px;
+    cursor: pointer;
+    color: var(--text-secondary);
+  }
+
+  /* Search row */
+  .clubs-search-row { padding: 24px 16px; }
+  .clubs-search { margin-top: 0; }
+
+  /* Сетка 2 колонки, gutter 8px */
+  .clubs-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
 }
