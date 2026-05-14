@@ -18,7 +18,7 @@ export const PAGE_TITLES = {
   '/services/specialoffers': 'Специальные предложения',
 
   '/services/podcasts': 'Подкасты',
-  '/services/articles': 'Статьи',
+  '/services/articles': 'Научные публикации',
 
   '/chats': 'Чаты'
 };
