@@ -1,3 +1,6 @@
+import podcast1 from '@/assets/img/podcasts/podcast-1.png';
+
+
 export const SHOWS = [
   {
     id: 'pod1',
@@ -11,7 +14,7 @@ export const SHOWS = [
       'каждого студента, а еще – приглашаем к беседе студентов и преподавателей. Разбираемся ' +
       'в контексте, задаем глупые вопросы и примеряем каждую тему на себя.\n\n' +
       'Ведущие: Яна Базина и Дарья Соколова.',
-    cover: '/src/assets/img/podcasts/podcast-1.png',
+    cover: podcast1,
   },
 ];
 

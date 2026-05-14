@@ -1,3 +1,5 @@
+import youngDesignImg from '@/assets/img/contests/youngdesign.png';
+
 export const CONTESTS = [
   {
     id: '1',
@@ -8,7 +10,7 @@ export const CONTESTS = [
     direction: 'Дизайн',
     category: 'Дизайн',
     status: 'active',
-    image: '/src/assets/img/contests/youngdesign.png',
+    image: youngDesignImg,
     url: 'https://youngdesignspb.ru/spetstrek/',
     schedule: [
       { title: 'Прием заявок',            date: 'До 20 апреля 2026 г., 23:00' },
