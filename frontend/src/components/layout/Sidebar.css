@@ -173,7 +173,7 @@ body.dark .sidebar__logo-sub {
 @media (max-width: 480px) {
   .sidebar {
     position: fixed;
-    bottom: calc(24px + env(safe-area-inset-bottom));
+    bottom: 16px;
     left: 16px;
     right: 16px;
     top: auto;
@@ -259,4 +259,5 @@ body.dark .sidebar__logo-sub {
     border-radius: 14px;
     font-size: 15px;
   }
+
 }
