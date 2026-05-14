@@ -81,3 +81,78 @@ body.dark .lesson-item__divider {
   background: #919191;
 }
 
+/* ── Mobile adaptive ── */
+@media (max-width: 480px) {
+  .lesson-item {
+    position: relative;
+    width: 100%;
+    min-height: 88px;
+    border-radius: 12px;
+    background: var(--card-bg);
+    box-shadow: 0 4px 14px rgba(20, 20, 40, 0.08);
+  }
+
+  .lesson-item__time-col {
+    min-width: 56px;
+    width: 56px;
+    padding: 0;
+    gap: 3px;
+  }
+
+  .lesson-item__time-start {
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 1.25;
+  }
+
+  .lesson-item__time-end {
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 1.25;
+  }
+
+  .lesson-item__divider {
+    width: 1px;
+    background: #9ca3af;
+  }
+
+  .lesson-item__body {
+    padding: 12px 48px 12px 12px;
+    gap: 6px;
+    justify-content: center;
+  }
+
+  .lesson-item__subject {
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: -0.1px;
+  }
+
+  .lesson-item__location {
+    font-size: 14px;
+    line-height: 1.35;
+    white-space: normal;
+    overflow: visible;
+    text-overflow: unset;
+  }
+
+  .lesson-item__right {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    padding: 0;
+  }
+
+  .lesson-item__right .shed-badge {
+    min-width: 30px;
+    height: 24px;
+    padding: 0 7px;
+    border-radius: 7px;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 24px;
+    text-align: center;
+  }
+}
+
