@@ -2,7 +2,7 @@
   display: flex;
   height: 100vh;
   width: 100vw;
-  background: #f0f0f2;
+  background: #F7F6FB;
   overflow: hidden;
 }
 
@@ -104,6 +104,43 @@
   box-shadow: 0 0 0 3px rgba(59,82,224,0.10);
 }
 
+.auth-password {
+  position: relative;
+  width: 100%;
+}
+
+.auth-password .auth-input {
+  padding-right: 48px;
+}
+
+.auth-password__toggle {
+  position: absolute;
+  top: 50%;
+  right: 14px;
+  transform: translateY(-50%);
+  width: 24px;
+  height: 24px;
+  color: #6b7280;
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  outline: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.auth-password__toggle:hover {
+  color: #213FF9;
+}
+
+.auth-password__toggle svg {
+  width: 20px;
+  height: 20px;
+  display: block;
+}
+
 .auth-select {
   font-family: 'Onest', 'Segoe UI', sans-serif;
   font-size: 15px;
@@ -138,32 +175,43 @@
   margin-bottom: clamp(16px, 2.5vh, 24px);
   margin-top: 4px;
 }
-.auth-checkbox {
+
+.auth-checkbox-box {
   width: 18px;
   height: 18px;
   border: 1.5px solid #d1d5db;
   border-radius: 4px;
-  appearance: none;
-  -webkit-appearance: none;
+  background: #fff;
   cursor: pointer;
   flex-shrink: 0;
-  background: #fff;
-  transition: background 0.15s, border-color 0.15s;
   position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  transition: background 0.15s, border-color 0.15s;
 }
-.auth-checkbox:checked {
+
+.auth-checkbox-box--checked {
   background: #213FF9;
   border-color: #3b52e0;
 }
-.auth-checkbox:checked::after {
-  content: '';
-  position: absolute;
-  left: 4px; top: 1px;
-  width: 7px; height: 11px;
-  border-right: 2px solid #fff;
-  border-bottom: 2px solid #fff;
-  transform: rotate(45deg);
+
+.auth-checkbox-box svg {
+  width: 13px;
+  height: 13px;
+  display: block;
+  pointer-events: none;
 }
+
+.auth-checkbox {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  margin: 0;
+  cursor: pointer;
+}
+
 .auth-checkbox-label {
   font-size: 14px;
   color: #262626;
@@ -315,8 +363,17 @@
 
   .auth-input,
   .auth-select {
-    font-size: 16px; /* prevent zoom on iOS */
+    font-size: 16px;
     padding: 12px 14px;
+  }
+
+  .auth-password .auth-input {
+    padding-right: 48px;
+  }
+  
+  .auth-input--password {
+    font-size: 16px;
+    line-height: 20px;
   }
 }
 
