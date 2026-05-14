@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import AuthLayout from './AuthLayout';
 import './AuthLayout.css';
+import Icon from '@icon/Icon';
 
 import { supabase } from '@supabaseClient'
 
@@ -34,6 +35,7 @@ async function handleRegister(email, password) {
 export default function LoginScreen({ onLogin, onGoRegister }) {
   const [email,    setEmail]    = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [remember, setRemember] = useState(false);
   const [error,    setError]    = useState('');
 
@@ -103,27 +105,39 @@ export default function LoginScreen({ onLogin, onGoRegister }) {
           <label className="auth-field__label">Пароль</label>
           <a className="auth-field__link" href="#">Забыли пароль?</a>
         </div>
-        <input
-          className="auth-input"
-          type="password"
-          autoComplete="current-password"
-          placeholder="Пароль"
-          value={password}
-          onChange={e => setPassword(e.target.value)}
-          onKeyDown={e => e.key === 'Enter' && handleSubmit()}
-        />
+        <div className="auth-password">
+          <input
+            className="auth-input auth-input--password"
+            type={showPassword ? 'text' : 'password'}
+            autoComplete="current-password"
+            placeholder="Пароль"
+            value={password}
+            onChange={e => setPassword(e.target.value)}
+            onKeyDown={e => e.key === 'Enter' && handleSubmit()}
+          />
+          <button
+            type="button"
+            className="auth-password__toggle"
+            onClick={() => setShowPassword(value => !value)}
+            aria-label={showPassword ? 'Скрыть пароль' : 'Показать пароль'}
+          >
+            {showPassword ? <Icon name="Eye" /> : <Icon name="EyeСlosed" />}
+          </button>
+        </div>
       </div>
 
       <label className="auth-checkbox-row" style={{ marginBottom: '24px' }}>
-        <input
-          type="checkbox"
-          className="auth-checkbox"
-          checked={remember}
-          onChange={e => setRemember(e.target.checked)}
-        />
+        <span className={`auth-checkbox-box ${remember ? 'auth-checkbox-box--checked' : ''}`}>
+          <input
+            type="checkbox"
+            className="auth-checkbox"
+            checked={remember}
+            onChange={e => setRemember(e.target.checked)}
+          />
+          {remember && <Icon name="Tick" />}
+        </span>
         <span className="auth-checkbox-label">Запомнить меня</span>
       </label>
-
       {error && (
         <p style={{ color: '#ef4444', fontSize: 13, marginBottom: 12, textAlign: 'center' }}>
           {error}
