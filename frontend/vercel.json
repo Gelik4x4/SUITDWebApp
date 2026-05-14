@@ -1,0 +1,36 @@
+{
+  "rewrites": [
+    {
+      "source": "/rss-proxy",
+      "destination": "https://sutd.ru/rss.php"
+    },
+    {
+      "source": "/trudvsem-proxy/:path*",
+      "destination": "https://opendata.trudvsem.ru/:path*"
+    },
+    {
+      "source": "/sutd-proxy/:path*",
+      "destination": "https://sutd.ru/:path*"
+    },
+    {
+      "source": "/contests-proxy/:path*",
+      "destination": "https://xn--j1aaidmgm0e.xn--p1ai/:path*"
+    },
+    {
+      "source": "/conferences-proxy/:path*",
+      "destination": "https://sutd.ru/:path*"
+    },
+    {
+      "source": "/leader-proxy/:path*",
+      "destination": "https://leader-id.ru/:path*"
+    },
+    {
+      "source": "/teachers-proxy/:path*",
+      "destination": "https://sutd.ru/:path*"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ]
+}
