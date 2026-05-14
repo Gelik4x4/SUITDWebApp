@@ -116,7 +116,7 @@ body.dark .topbar {
 /* Mobile sidebar (tab bar) in dark */
 @media (max-width: 480px) {
   body.dark .sidebar {
-    background: var(--sidebar-bg);
+    background: #353535;
     box-shadow: 0 4px 24px rgba(0,0,0,0.4);
   }
 }
