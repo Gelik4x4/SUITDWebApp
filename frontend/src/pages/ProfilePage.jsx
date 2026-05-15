@@ -125,7 +125,7 @@ export default function ProfilePage() {
               onClick={() => setMobileScreen(item.id)}
             >
               <span>{item.label}</span>
-              <Icon name="ChevronRight" size={20} className="profile-mobile-menu__chevron" />
+              <Icon name="ArrowRight" size={20} className="profile-mobile-menu__chevron" />
             </button>
           ))}
           <button
@@ -133,7 +133,7 @@ export default function ProfilePage() {
             onClick={() => setShowLogout(true)}
           >
             <span>Выйти</span>
-            <Icon name="ChevronRight" size={20} className="profile-mobile-menu__chevron" />
+            <Icon name="ArrowRight" size={20} className="profile-mobile-menu__chevron" />
           </button>
         </div>
 
