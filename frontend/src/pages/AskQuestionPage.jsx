@@ -6,6 +6,8 @@ import ChatInput   from '../components/askquestion/ChatInput';
 import Breadcrumbs from '../components/breadcrumbs/Breadcrumbs';
 import Icon from '@icon/Icon';
 
+import botAvatar from '@/assets/img/bot-avatar.png';
+
 /* ─── Системный промпт ────────────────────────────────────────── */
 const SYSTEM_PROMPT = `Ты — ЦАТ Помощник, чат-бот студенческого портала СПбГУПТД.
 Отвечай кратко, дружелюбно и по делу. Пиши только на русском языке.
@@ -140,7 +142,7 @@ export default function AskQuestionPage() {
         </div>
         <div className="aq-page__bot-avatar aq-page__mobile-avatar">
           <img
-            src="/src/assets/img/bot-avatar.png"
+            src={botAvatar}
             alt="ЦАТ Помощник"
             className="aq-page__bot-photo"
             onError={e => { e.target.style.display='none'; }}
@@ -161,7 +163,7 @@ export default function AskQuestionPage() {
         <div className="aq-page__bot-header">
           <div className="aq-page__bot-avatar">
             <img
-              src="/src/assets/img/bot-avatar.png"
+              src={botAvatar}
               alt="ЦАТ Помощник"
               className="aq-page__bot-photo"
               onError={e => { e.target.style.display='none'; e.target.nextSibling.style.display='flex'; }}

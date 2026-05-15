@@ -3,6 +3,11 @@ import SplashScreen    from './SplashScreen';
 import OnboardingSlide from './OnboardingSlide';
 import LoginScreen     from '../auth/LoginScreen';
 
+import welcomeImage from '@/assets/img/auth/welcome.png';
+import onboarding1Image from '@/assets/img/auth/on-boarding-1.png';
+import onboarding2Image from '@/assets/img/auth/on-boarding-2.png';
+import onboarding3Image from '@/assets/img/auth/on-boarding-3.png';
+
 
 
 const S = {
@@ -28,7 +33,7 @@ export default function OnboardingFlow({ onDone }) {
 
   if (step === S.WELCOME)  return (
     <OnboardingSlide
-      imageSrc="/src/assets/img/auth/welcome.png"          
+      imageSrc={welcomeImage}          
       title="Добро пожаловать<br/>в ЦАТ students!"
       subtitle="Единый сервис для учёбы, карьеры и студенческой жизни"
       step={null} isWelcome
@@ -38,7 +43,7 @@ export default function OnboardingFlow({ onDone }) {
 
   if (step === S.OB1)  return (
     <OnboardingSlide
-      imageSrc="/src/assets/img/auth/on-boarding-1.png"         
+      imageSrc={onboarding1Image}         
       title="Расписание<br/>всегда под рукой"
       subtitle="Актуальное расписание занятий, аудитории и преподавателей"
       step={0} totalSteps={3} onBack={back} onNext={next}
@@ -47,7 +52,7 @@ export default function OnboardingFlow({ onDone }) {
 
   if (step === S.OB2)  return (
     <OnboardingSlide
-      imageSrc="/src/assets/img/auth/on-boarding-2.png"  
+      imageSrc={onboarding2Image}  
       title="Не пропустите важное"
       subtitle="Напомним о парах, дедлайнах и важных событиях вовремя"
       step={1} totalSteps={3} onBack={back} onNext={next}
@@ -56,7 +61,7 @@ export default function OnboardingFlow({ onDone }) {
 
   if (step === S.OB3)  return (
     <OnboardingSlide
-      imageSrc="/src/assets/img/auth/on-boarding-3.png"        
+      imageSrc={onboarding3Image}        
       title="Больше, чем просто учёба"
       subtitle="Конкурсы, стажировки и материалы для профессионального роста – прямо в ленте"
       step={2} totalSteps={3} onBack={back} onNext={next}

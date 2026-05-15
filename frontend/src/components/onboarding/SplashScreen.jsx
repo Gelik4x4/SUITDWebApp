@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import favicon from '@/assets/img/favicon.svg';
 import './SplashScreen.css';
 
 export default function SplashScreen({ onDone }) {
@@ -32,7 +33,7 @@ export default function SplashScreen({ onDone }) {
     <div className="splash">
       <div className="splash__content">
         <img
-          src="/favicon.svg"
+          src={favicon}
           alt="SUITD"
           className="splash__logo"
           width="160"

@@ -3,6 +3,8 @@ import AuthLayout from './AuthLayout';
 import './AuthLayout.css';
 import Icon from '@icon/Icon';
 
+import authImage from '@/assets/img/auth/login.png';
+
 import { supabase } from '@supabaseClient'
 
 
@@ -85,7 +87,7 @@ export default function LoginScreen({ onLogin, onGoRegister }) {
   };
 
   return (
-    <AuthLayout imageSrc="/src/assets/img/auth/login.png">
+    <AuthLayout imageSrc={authImage}>
       <h1 className="auth-title">Вход</h1>
 
       <div className="auth-field">

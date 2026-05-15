@@ -4,6 +4,11 @@ import './VacanciesWidget.css';
 import Icon from '@icon/Icon';
 import FavButton from '../buttons/FavButton';
 
+import vacancy1 from '@/assets/img/vacancy/vacancy-1.png';
+import vacancy2 from '@/assets/img/vacancy/vacancy-2.png';
+import vacancy3 from '@/assets/img/vacancy/vacancy-3.png';
+import vacancy4 from '@/assets/img/vacancy/vacancy-4.png';
+
 /* ─── Trudvsem API — идентично VacanciesPage ──────────────────── */
 const REGION = '7800000000000';
 
@@ -69,10 +74,10 @@ const fetchVacancies = async () => {
 
 /* ─── Статические картинки для карточек (у API нет изображений) ── */
 const CARD_IMAGES = [
-  '/src/assets/img/vacancy/vacancy-1.png',
-  '/src/assets/img/vacancy/vacancy-2.png',
-  '/src/assets/img/vacancy/vacancy-3.png',
-  '/src/assets/img/vacancy/vacancy-4.png',
+  vacancy1,
+  vacancy2,
+  vacancy3,
+  vacancy4,
 ];
 
 /* ─── Карточка ─────────────────────────────────────────────────── */

@@ -5,6 +5,8 @@ import './Sidebar.css';
 import Icon from '@icon/Icon';
 import { supabase } from '@supabaseClient';
 
+import favicon from '@/assets/img/favicon.svg';
+
 export function LogoutModal({ onConfirm, onCancel }) {
   return (
     <div className="logout-overlay" onClick={onCancel}>
@@ -55,7 +57,7 @@ export default function Sidebar() {
       <aside className="sidebar">
         <div className="sidebar__logo">
           <div className="sidebar__logo-icon">
-            <img src="/src/assets/img/favicon.svg" alt="SUITD" />
+            <img src={favicon} alt="SUITD" />
           </div>
           <div>
             <div className="sidebar__logo-title">ЦАТ</div>

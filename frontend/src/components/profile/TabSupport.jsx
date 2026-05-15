@@ -2,6 +2,8 @@ import { useState, useRef, useEffect } from 'react';
 import './TabSupport.css';
 import Icon from '@icon/Icon';
 
+import supportLogo from '@/assets/img/support_logo.png';
+
 const INITIAL_MESSAGES = [];
 
 function DateDivider({ label }) {
@@ -20,7 +22,7 @@ function ChatMessage({ msg }) {
     <div className={`chat-msg chat-msg--${msg.side}`}>
       {!isUser && (
         <div className="chat-msg__avatar">
-          <Icon name="Smile" size={22} />
+          <img src={supportLogo} alt="Поддержка" className="chat-support-logo" />
         </div>
       )}
       <div className="chat-msg__bubble">
@@ -82,9 +84,9 @@ export default function TabSupport({ onBack }) {
       {/* Desktop header */}
       <div className="chat-header">
         <div className="chat-header__avatar">
-          <Icon name="Smile" size={24} />
+          <img src={supportLogo} alt="Поддержка" className="chat-support-logo" />
         </div>
-        <span className="chat-header__title">Техподдержка</span>
+        <span className="chat-header__title">Поддержка</span>
       </div>
       <div className="chat-header__divider" />
 
@@ -97,9 +99,9 @@ export default function TabSupport({ onBack }) {
         >
           <Icon name="ArrowLeft" size={22} />
         </button>
-        <span className="chat-mobile-header__title">Техподдержка</span>
+        <span className="chat-mobile-header__title">Поддержка</span>
         <div className="chat-mobile-header__icon" aria-hidden="true">
-          <Icon name="Smile" size={22} />
+          <img src={supportLogo} alt="Поддержка" className="chat-support-logo" />
         </div>
       </div>
 
