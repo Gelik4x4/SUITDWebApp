@@ -140,14 +140,14 @@ export default function TabData() {
           {emailDirty && (
             <div className="tab-data__email-actions">
               <button
-                className="btn btn--primary"
+                className="btn btn--primary med-btn"
                 onClick={() => saveEmailMutation.mutate(notifEmail)}
                 disabled={saveEmailMutation.isLoading}
               >
                 Сохранить
               </button>
               <button
-                className="btn btn--ghost"
+                className="btn btn--ghost med-btn"
                 onClick={handleEmailCancel}
               >
                 Отмена

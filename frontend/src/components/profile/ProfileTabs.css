@@ -7,7 +7,7 @@
 .profile-tabs__wrapper {
   display: flex;
   gap: 4px;
-  background: var(--bg-secondary, #E4E8FF);
+  background: #E4E8FF;
   padding: 4px;
   border-radius: 14px;
   width: fit-content;   /* или inline-flex */
@@ -23,15 +23,24 @@
   padding: 10px 24px;
   border-radius: 10px;
   background: transparent;
-  color: var(--text-secondary);
+  color: var(--text-primary);
   transition: background 0.15s, color 0.15s;
 }
 .profile-tabs__btn:hover {
   color: var(--text-primary);
   background: #D6DCFC;
 }
+
 .profile-tabs__btn--active {
   background: var(--accent);
   color: #ffffff;
-  font-weight: 600;
+  font-weight: 500;
+}
+
+.dark .profile-tabs__wrapper{
+  background:#484848;
+}
+
+.dark .profile-tabs__btn:hover{
+  background:#5B5B5B;
 }

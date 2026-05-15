@@ -101,24 +101,16 @@
 }
 
 /* ── Buttons ───────────────────────────────────────────────────── */
-.btn {
-  font-family: inherit;
-  font-size: 14px;
-  font-weight: 600;
-  padding: 14px 22px;
-  border-radius: 10px;
-  cursor: pointer;
-  border: none;
-  outline: none;
-  transition: opacity 0.15s;
-  text-align: center;
-}
-.btn:hover { opacity: 0.88; }
 
-.btn--primary { background: var(--accent); color: #fff; border: none; }
-.btn--outline  { background: transparent; color: var(--accent); border: 1.5px solid var(--accent) !important; }
-.btn--ghost    { background: var(--bg); color: var(--text-secondary); border: 1.5px solid var(--border); }
+.btn.btn--primary { font-size: 16px; padding: 12px 22px; background: var(--accent); color: #fff; border: none; }
+.btn.btn--outline  { font-size: 16px; padding: 12px 22px; background: transparent; color: var(--accent); border: 1.5px solid var(--accent) !important; }
+.btn.btn--outline:hover { background: #E4E6FF; color: #1932CE;}
 
+.dark .btn.btn--outline{ border: 1.5px solid #BCC6FF !important; }
+.dark .theme-option {background: transparent; }
+.dark .theme-option--active { border-color: #BCC6FF; }
+.dark .theme-option__check { color: #BCC6FF;}
+.dark .theme-option:hover {background: #353535; border: 1.5px solid #353535}
 /* ════════════════════════════════════════════════
    Mobile — max-width: 480px
    ════════════════════════════════════════════════ */
@@ -152,7 +144,7 @@
     flex-direction: column;
     gap: 8px;
     position: fixed;
-    bottom: calc(64px + env(safe-area-inset-bottom));
+    bottom: 16px;
     left: 16px;
     right: 16px;
   }

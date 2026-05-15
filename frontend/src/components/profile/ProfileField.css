@@ -16,7 +16,7 @@
   color: var(--text-primary);
   background: #F7F6FB;
   border-radius: 10px;
-  padding: 13px 16px;
+  padding: 12px 16px;
   outline: none;
   transition: border-color 0.15s;
   width: 100%;
@@ -31,11 +31,25 @@
 
 /* Readonly — выглядит как обычное поле но не редактируется */
 .profile-field__input--readonly {
-  color: #B7B7B7;
+  color: #797979;
   cursor: default;
   background: #F7F6FB;
-  border: 1.5px solid var(--border);
+  border: 1.n5px solid #dedede;
 }
 .profile-field__input--readonly:focus {
   border-color: var(--border);
+}
+
+.dark .profile-field__input {
+  background: #262626;
+}
+
+.dark .profile-field__input--readonly {
+  color: #797979;
+  background: #262626;
+  border: 1px solid #535353;
+}
+
+.dark .profile-field__input:focus {
+  border-color: #8E9EFF;
 }
