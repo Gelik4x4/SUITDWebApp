@@ -97,8 +97,7 @@
   .profile-mobile-menu__item:hover { opacity: 0.8; }
 
   .profile-mobile-menu__item--danger {
-    color: #e53e3e;
-    border-color: #fca5a5;
+    color: #FF666C;
   }
 
   .profile-mobile-menu__chevron { color: var(--text-secondary); flex-shrink: 0; }
