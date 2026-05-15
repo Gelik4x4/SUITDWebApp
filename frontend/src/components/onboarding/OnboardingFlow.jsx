@@ -4,9 +4,9 @@ import OnboardingSlide from './OnboardingSlide';
 import LoginScreen     from '../auth/LoginScreen';
 
 import welcomeImage from '@/assets/img/auth/welcome.png';
-import onboarding1Image from '@/assets/img/auth/on-boarding-1.png';
-import onboarding2Image from '@/assets/img/auth/on-boarding-2.png';
-import onboarding3Image from '@/assets/img/auth/on-boarding-3.png';
+import onboarding1Image from '@/assets/img/auth/On-Boarding-1.png';
+import onboarding2Image from '@/assets/img/auth/On-Boarding-2.png';
+import onboarding3Image from '@/assets/img/auth/On-Boarding-3.png';
 
 
 
