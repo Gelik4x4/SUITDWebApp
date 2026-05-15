@@ -67,7 +67,7 @@
   text-decoration: none;
 }
 .sidebar__link:hover {
-  color: var(--accent);
+  color: #3551FF;
 }
 .sidebar__link--active {
   background: var(--accent-light);
@@ -101,8 +101,8 @@
 .logout-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(10, 15, 40, 0.35);
-  backdrop-filter: blur(2px);
+  background: rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(1.5px);
   z-index: 500;
   display: flex;
   align-items: center;
@@ -145,17 +145,25 @@
   cursor: pointer;
   transition: opacity 0.15s;
 }
-.logout-modal__btn:hover { opacity: 0.88; }
 
 .logout-modal__btn--confirm {
   background: var(--accent);
   color: #fff;
 }
 
+.logout-modal__btn--confirm:hover {
+  background: #1932CE;
+}
+
 .logout-modal__btn--cancel {
   background: #E4E8FF;
   color: var(--text-primary);
 }
+
+.logout-modal__btn--cancel:hover {
+  background: #D4D9FC;
+}
+
 
 body.dark .sidebar__link--active {
   color: #8E9EFF;
@@ -165,15 +173,20 @@ body.dark .sidebar__logo-title {
   color: #ffffff;
 }
 
+
 body.dark .sidebar__logo-sub {
   color: #ffffff;
+}
+
+body.dark .logout-modal__btn--cancel {
+  color: #262626;
 }
 
 /* ── Mobile: floating bottom tab bar ─────────── */
 @media (max-width: 480px) {
   .sidebar {
     position: fixed;
-    bottom: 16px;
+    bottom: 8px;
     left: 16px;
     right: 16px;
     top: auto;
