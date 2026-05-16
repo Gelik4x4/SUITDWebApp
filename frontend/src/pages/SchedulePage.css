@@ -2,7 +2,6 @@
   display: flex;
   flex-direction: column;
   max-width: 100%;
-  gap: 16px;
 }
 
 /* ── Controls row ── */
@@ -35,7 +34,7 @@
   font-family: inherit;
 }
 .sched-icon-btn:hover {
-  background: var(--border);
+  background: #E4E8FF;
   color: var(--accent);
 }
 
@@ -94,6 +93,7 @@
   flex-shrink: 0;
 }
 
+
 .sched-breadcrumb {
   font-size: 14px;
   font-weight: 400;
@@ -135,6 +135,9 @@
   top: 59px;
   z-index: 10;
   background: var(--bg, #f5f5f7);
+}
+
+.breadcrumb {
   padding-bottom: 4px;
 }
 
@@ -187,6 +190,7 @@
     display: none;
   }
 
+
   /* Убираем рамку у группы со стрелками — внутри только «Сегодня» */
   .sched-nav-group--week {
     border: 1.5px solid var(--border, #e0e0e0);
@@ -210,4 +214,46 @@
   .sched-list {
     gap: 6px;
   }
+}
+
+
+/* Индикатор текущей недели под контролами */
+.sched-week-indicator {
+  padding: 4px 16px 8px;
+  display: flex;
+  align-items: center;
+}
+
+.sched-week-label {
+  font-size: 12px;
+  color: var(--color-text-secondary, #888);
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
+
+
+/* ─── Кликабельные ячейки календаря ────────────────────────────── */
+
+.cal-cell--clickable {
+  cursor: pointer;
+  transition: background 0.12s;
+}
+.cal-cell--clickable:hover {
+  background:#ecefff;
+}
+.cal-cell--clickable:hover .cal-cell__num {
+  background: var(--accent);
+  color: #fff;
+}
+
+.cal-mobile-cell--clickable {
+  cursor: pointer;
+}
+.cal-mobile-cell--clickable:hover .cal-mobile-cell__num {
+  background: var(--accent);
+  color: #fff;
+}
+
+.dark .cal-cell--clickable:hover {
+  background: #484848;
 }

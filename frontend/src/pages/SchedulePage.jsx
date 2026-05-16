@@ -67,6 +67,62 @@ const buildWeekStrip = (anchorDate) => {
   });
 };
 
+/* ─── Week parity helpers ─────────────────────────────────────── */
+
+/**
+ * Возвращает номер недели по ISO 8601.
+ * Неделя 1 года — та, в которую входит первый четверг января.
+ */
+const getISOWeekNumber = (date) => {
+  const d = new Date(date);
+  d.setHours(0, 0, 0, 0);
+  // Четверг текущей недели определяет год недели
+  d.setDate(d.getDate() + 3 - ((d.getDay() + 6) % 7));
+  const yearStart = new Date(d.getFullYear(), 0, 4);
+  return (
+    1 +
+    Math.round(
+      ((d.getTime() - yearStart.getTime()) / 86400000 -
+        3 +
+        ((yearStart.getDay() + 6) % 7)) /
+        7
+    )
+  );
+};
+
+/**
+ * По условию задачи: неделя 1 года — чётная.
+ * Чётная неделя → "числитель" (числ), нечётная → "знаменатель" (знам).
+ *
+ * isEvenWeek(date) === true  ⟹ неделя чётная ⟹ показываем числитель
+ * isEvenWeek(date) === false ⟹ неделя нечётная ⟹ показываем знаменатель
+ */
+const isEvenWeek = (date) => getISOWeekNumber(date) % 2 === 0;
+
+/**
+ * Определяет, подходит ли запись расписания под текущую неделю.
+ * week_type может содержать: 'числ', 'знам', или быть пустым/null (каждую неделю).
+ */
+const matchesWeek = (weekType, date) => {
+  if (!weekType) return true;
+  const wt = weekType.toLowerCase().trim();
+  if (!wt || wt === 'каждую' || wt === 'каждая') return true;
+
+  const even = isEvenWeek(date);
+  if (wt.includes('числ')) return even;   // числитель — чётная
+  if (wt.includes('знам')) return !even;  // знаменатель — нечётная
+  return true; // неизвестный тип — показываем всегда
+};
+
+/**
+ * Лейбл текущей недели для UI
+ */
+const getWeekLabel = (date) => {
+  const week = getISOWeekNumber(date);
+  const parity = isEvenWeek(date) ? 'чётная (числитель)' : 'нечётная (знаменатель)';
+  return `${week} неделя — ${parity}`;
+};
+
 /* ─── Data fetching ───────────────────────────────────────────── */
 
 const DAY_KEY = {
@@ -74,9 +130,46 @@ const DAY_KEY = {
   'четверг': 3, 'пятница': 4, 'суббота': 5, 'воскресенье': 6,
 };
 
+/**
+ * Собираем расписание в формат:
+ * { dayIndex: { even: [...], odd: [...] } }
+ *
+ * even — пары числителя (чётная неделя)
+ * odd  — пары знаменателя (нечётная неделя)
+ * Записи без указания недели попадают в оба массива.
+ */
+const buildScheduleMap = (data) => {
+  const schedule = {};
+  for (let i = 0; i <= 6; i++) {
+    schedule[i] = { even: [], odd: [] };
+  }
+
+  data.forEach((item) => {
+    const dayIndex = DAY_KEY[item.day_of_week.toLowerCase().trim()];
+    if (dayIndex === undefined) return;
+
+    const wt = (item.week_type || '').toLowerCase().trim();
+    const lesson = {
+      time: item.time,
+      subject: item.subject,
+      teacher: item.teacher,
+      room: item.room,
+      class_type: item.class_type,
+    };
+
+    const isNumerator   = wt.includes('числ');
+    const isDenominator = wt.includes('знам');
+    const isEvery       = !isNumerator && !isDenominator;
+
+    if (isNumerator || isEvery) schedule[dayIndex].even.push(lesson);
+    if (isDenominator || isEvery) schedule[dayIndex].odd.push(lesson);
+  });
+
+  return schedule;
+};
+
 /* Получаем расписание для конкретной группы по её названию */
 const fetchScheduleByGroupName = async (groupName) => {
-  /* 1. Найти group_id по названию */
   const { data: groupData, error: groupError } = await supabase
     .from('groups')
     .select('id')
@@ -84,7 +177,6 @@ const fetchScheduleByGroupName = async (groupName) => {
     .single();
   if (groupError) throw groupError;
 
-  /* 2. Получить расписание */
   const { data, error } = await supabase
     .from('schedule')
     .select('*')
@@ -92,21 +184,7 @@ const fetchScheduleByGroupName = async (groupName) => {
     .order('time', { ascending: true });
   if (error) throw error;
 
-  const schedule = { 0: [], 1: [], 2: [], 3: [], 4: [], 5: [], 6: [] };
-  data.forEach((item) => {
-    const dayIndex = DAY_KEY[item.day_of_week.toLowerCase().trim()];
-    if (dayIndex === undefined) return;
-    if (!item.week_type.includes('числ')) return;
-    schedule[dayIndex].push({
-      time: item.time,
-      subject: item.subject,
-      teacher: item.teacher,
-      room: item.room,
-      class_type: item.class_type,
-    });
-  });
-
-  return schedule;
+  return buildScheduleMap(data);
 };
 
 /* Получаем своё расписание + имя группы */
@@ -130,21 +208,20 @@ const fetchMySchedule = async () => {
 
   if (error) throw error;
 
-  const schedule = { 0: [], 1: [], 2: [], 3: [], 4: [], 5: [], 6: [] };
-  data.forEach((item) => {
-    const dayIndex = DAY_KEY[item.day_of_week.toLowerCase().trim()];
-    if (dayIndex === undefined) return;
-    if (!item.week_type.includes('числ')) return;
-    schedule[dayIndex].push({
-      time: item.time,
-      subject: item.subject,
-      teacher: item.teacher,
-      room: item.room,
-      class_type: item.class_type,
-    });
-  });
+  return { schedule: buildScheduleMap(data), groupName: userData.groups?.name };
+};
 
-  return { schedule, groupName: userData.groups?.name };
+/* ─── Get lessons for a specific date from the schedule map ───── */
+
+/**
+ * Возвращает уроки для конкретной даты, учитывая чётность недели.
+ * scheduleMap: { dayIndex: { even: [], odd: [] } }
+ */
+const getLessonsForDate = (scheduleMap, date) => {
+  const dayIndex = weekdayIndex(date);
+  const dayData = scheduleMap[dayIndex];
+  if (!dayData) return [];
+  return isEvenWeek(date) ? (dayData.even ?? []) : (dayData.odd ?? []);
 };
 
 /* ─── Scroll helper ───────────────────────────────────────────── */
@@ -159,14 +236,18 @@ function scrollToSection(container, target) {
 
 /* ─── Day section ─────────────────────────────────────────────── */
 
-function DaySection({ date, lessons, sectionRef, onTeacherClick }) {
+function DaySection({ date, scheduleMap, sectionRef, onTeacherClick }) {
+  const lessons = getLessonsForDate(scheduleMap, date);
+
   return (
     <section
       className="sched-day-section"
       data-date={date.toISOString()}
       ref={sectionRef}
     >
-      <h2 className="sched-day-title">{formatDayTitle(date)}</h2>
+      <h2 className="sched-day-title">
+        {formatDayTitle(date)}
+      </h2>
       {lessons.length === 0 ? (
         <div className="sched-empty">Нет событий</div>
       ) : (
@@ -180,21 +261,38 @@ function DaySection({ date, lessons, sectionRef, onTeacherClick }) {
   );
 }
 
-/* ─── Inner schedule view (переиспользуем для своей и чужой группы) ── */
+/* ─── Inner schedule view ─────────────────────────────────────── */
 
-function ScheduleView({ schedule, groupName, onGroupClick, onCalendarClick, onTeacherClick }) {
+function ScheduleView({ scheduleMap, groupName, onGroupClick, onCalendarClick, onTeacherClick, scrollToDateRef }) {
   const dateList = useRef(buildDateList());
   const [activeDate, setActiveDate] = useState(today());
   const sectionRefs = useRef([]);
   const scrollRef = useRef(null);
-  const scrollElRef = useRef(null); // фактический scroll-контейнер (mobile: sched-scroll, desktop: .main)
+  const scrollElRef = useRef(null);
   const isProgrammaticScroll = useRef(false);
+
+  /* Скролл к произвольной дате — вызывается из CalendarModal через ref */
+  const scrollToDate = useCallback((date) => {
+    const todayDate = today();
+    const target = date < todayDate ? todayDate : date;
+    setActiveDate(target);
+    const idx = dateList.current.findIndex(
+      d => d.toDateString() === target.toDateString()
+    );
+    if (idx < 0) return;
+    isProgrammaticScroll.current = true;
+    scrollToSection(scrollElRef.current ?? scrollRef.current, sectionRefs.current[idx]);
+    setTimeout(() => { isProgrammaticScroll.current = false; }, 900);
+  }, []);
+
+  useEffect(() => {
+    if (scrollToDateRef) scrollToDateRef.current = scrollToDate;
+  }, [scrollToDate, scrollToDateRef]);
 
   const stripDays = buildWeekStrip(activeDate);
   const activeDayIndex = weekdayIndex(activeDate);
 
   useEffect(() => {
-    // На мобиле скроллит .sched-scroll, на десктопе — .main
     const isMobile = window.matchMedia('(max-width: 600px)').matches;
     scrollElRef.current = isMobile
       ? scrollRef.current
@@ -221,7 +319,7 @@ function ScheduleView({ schedule, groupName, onGroupClick, onCalendarClick, onTe
 
     sectionRefs.current.forEach(ref => { if (ref) observer.observe(ref); });
     return () => observer.disconnect();
-  }, [schedule]);
+  }, [scheduleMap]);
 
   const handleDayChange = useCallback((dayIndex) => {
     const targetDate = stripDays[dayIndex].fullDate;
@@ -262,41 +360,40 @@ function ScheduleView({ schedule, groupName, onGroupClick, onCalendarClick, onTe
   return (
     <>
       <div className="sched-sticky-header">
-      {/* Controls */}
-      <div className="sched-controls">
-        <div onClick={onGroupClick} style={{ cursor: 'pointer' }}>
-          <GroupSelector group={groupName} />
-        </div>
-        <div className="sched-controls__right">
-          
-          <div className="sched-nav-group sched-nav-group--week">
-            <button className="sched-icon-btn" onClick={handlePrevWeek}>
-              <Icon name="ArrowLeft" />
-            </button>
-            <button className="sched-icon-btn" onClick={handleToday}>
-              Сегодня
-            </button>
-            <button className="sched-icon-btn" onClick={handleNextWeek}>
-              <Icon name="ArrowRight" />
-            </button>
+        {/* Controls */}
+        <div className="sched-controls">
+          <div onClick={onGroupClick} style={{ cursor: 'pointer' }}>
+            <GroupSelector group={groupName} />
           </div>
-          <div className="sched-nav-group sched-nav-group--calendar">
-            <button className="sched-icon-btn" onClick={onCalendarClick}>
-              <Icon name="Calendar" />
-            </button>
+          <div className="sched-controls__right">
+            <div className="sched-nav-group sched-nav-group--week">
+              <button className="sched-icon-btn" onClick={handlePrevWeek}>
+                <Icon name="ArrowLeft" />
+              </button>
+              <button className="sched-icon-btn" onClick={handleToday}>
+                Сегодня
+              </button>
+              <button className="sched-icon-btn" onClick={handleNextWeek}>
+                <Icon name="ArrowRight" />
+              </button>
+            </div>
+            <div className="sched-nav-group sched-nav-group--calendar">
+              <button className="sched-icon-btn" onClick={onCalendarClick}>
+                <Icon name="Calendar" />
+              </button>
+            </div>
           </div>
         </div>
-      </div>
 
-      {/* DayStrip */}
-      <DayStrip
-        activeDay={activeDayIndex}
-        onDayChange={handleDayChange}
-        days={stripDays}
-        onPrevWeek={handlePrevWeek}
-        onNextWeek={handleNextWeek}
-      />
-      </div>{/* /sched-sticky-header */}
+        {/* DayStrip */}
+        <DayStrip
+          activeDay={activeDayIndex}
+          onDayChange={handleDayChange}
+          days={stripDays}
+          onPrevWeek={handlePrevWeek}
+          onNextWeek={handleNextWeek}
+        />
+      </div>
 
       {/* Scroll area */}
       <div className="sched-scroll" ref={scrollRef}>
@@ -304,7 +401,7 @@ function ScheduleView({ schedule, groupName, onGroupClick, onCalendarClick, onTe
           <DaySection
             key={date.toISOString()}
             date={date}
-            lessons={schedule[weekdayIndex(date)] ?? []}
+            scheduleMap={scheduleMap}
             sectionRef={el => (sectionRefs.current[i] = el)}
             onTeacherClick={onTeacherClick}
           />
@@ -319,10 +416,11 @@ function ScheduleView({ schedule, groupName, onGroupClick, onCalendarClick, onTe
 export default function SchedulePage() {
   const [calendarOpen, setCalendarOpen] = useState(false);
   const [groupModalOpen, setGroupModalOpen] = useState(false);
-  /* null = смотрим свою группу; string = название выбранной чужой группы */
   const [viewingGroup, setViewingGroup] = useState(null);
-  /* null = нет; string = имя выбранного преподавателя */
   const [viewingTeacher, setViewingTeacher] = useState(null);
+
+  /* Ref-колбэк: CalendarModal вызывает scrollToDateRef.current(date) */
+  const scrollToDateRef = useRef(null);
 
   /* Своё расписание */
   const { data: myData, isLoading: myLoading, error: myError } = useQuery({
@@ -331,8 +429,8 @@ export default function SchedulePage() {
     staleTime: 5 * 60 * 1000,
   });
 
-  /* Расписание выбранной группы (только когда viewingGroup !== null) */
-  const { data: otherSchedule, isLoading: otherLoading } = useQuery({
+  /* Расписание выбранной группы */
+  const { data: otherScheduleMap, isLoading: otherLoading } = useQuery({
     queryKey: ['scheduleByGroup', viewingGroup],
     queryFn: () => fetchScheduleByGroupName(viewingGroup),
     enabled: viewingGroup !== null,
@@ -342,17 +440,15 @@ export default function SchedulePage() {
   if (myLoading) return <div>Загрузка расписания...</div>;
   if (myError) return <div style={{ color: 'red' }}>Ошибка: {myError.message}</div>;
 
-  const mySchedule = myData?.schedule || {};
+  const myScheduleMap = myData?.schedule || {};
   const myGroupName = myData?.groupName || 'Группа';
 
-  /* Активные данные для отображения */
-  const activeSchedule = viewingGroup ? (otherSchedule ?? {}) : mySchedule;
+  const activeScheduleMap = viewingGroup ? (otherScheduleMap ?? {}) : myScheduleMap;
   const activeGroupName = viewingGroup ?? myGroupName;
   const isViewingOther = viewingGroup !== null;
 
   const handleSelectGroup = (groupName) => {
     setViewingTeacher(null);
-    /* Если выбрали свою группу — сбрасываем режим просмотра */
     if (groupName === myGroupName) {
       setViewingGroup(null);
     } else {
@@ -360,11 +456,16 @@ export default function SchedulePage() {
     }
   };
 
+  const handleCalendarSelectDate = (date) => {
+    setCalendarOpen(false);
+    /* Даём модалу закрыться, затем скроллим */
+    setTimeout(() => scrollToDateRef.current?.(date), 50);
+  };
+
   return (
     <>
       <div className="sched-page">
 
-        {/* Расписание преподавателя */}
         {viewingTeacher ? (
           <>
             <Breadcrumbs items={[
@@ -378,7 +479,6 @@ export default function SchedulePage() {
           </>
         ) : (
           <>
-            {/* Хлебные крошки — только при просмотре чужой группы */}
             {isViewingOther && (
               <Breadcrumbs items={[
                 { label: 'Расписание', onClick: () => setViewingGroup(null) },
@@ -390,10 +490,12 @@ export default function SchedulePage() {
               <div className="sched-loading">Загрузка расписания группы {viewingGroup}...</div>
             ) : (
               <ScheduleView
-                schedule={activeSchedule}
+                scheduleMap={activeScheduleMap}
                 groupName={activeGroupName}
                 onGroupClick={() => setGroupModalOpen(true)}
                 onCalendarClick={() => setCalendarOpen(true)}
+                onTeacherClick={(t) => setViewingTeacher(t)}
+                scrollToDateRef={scrollToDateRef}
               />
             )}
           </>
@@ -404,7 +506,9 @@ export default function SchedulePage() {
       {calendarOpen && (
         <CalendarModal
           onClose={() => setCalendarOpen(false)}
-          schedule={activeSchedule}
+          schedule={activeScheduleMap}
+          getLessonsForDate={getLessonsForDate}
+          onSelectDate={handleCalendarSelectDate}
         />
       )}
       {groupModalOpen && (
