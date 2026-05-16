@@ -8,28 +8,39 @@ export default function DayStrip({ activeDay, onDayChange, days, onPrevWeek, onN
   const listRef = useRef(null);
   const dragState = useRef(null);
 
-  /* ── Touch/mouse swipe для переключения недели ── */
-  const onPointerDown = (e) => {
-    dragState.current = { startX: e.clientX, moved: false };
-    listRef.current.setPointerCapture(e.pointerId);
-  };
+const isMobile = () => window.matchMedia('(max-width: 600px)').matches;
 
-  const onPointerMove = (e) => {
-    if (!dragState.current) return;
-    if (Math.abs(e.clientX - dragState.current.startX) > 5) {
-      dragState.current.moved = true;
-    }
-  };
+const onPointerDown = (e) => {
+  if (!isMobile()) return;
 
-  const onPointerUp = (e) => {
-    if (!dragState.current) return;
-    const dx = e.clientX - dragState.current.startX;
-    if (Math.abs(dx) >= SWIPE_THRESHOLD) {
-      if (dx < 0) onNextWeek?.();
-      else onPrevWeek?.();
-    }
-    dragState.current = null;
+  dragState.current = {
+    startX: e.clientX,
+    moved: false,
   };
+};
+
+const onPointerMove = (e) => {
+  if (!dragState.current) return;
+
+  if (Math.abs(e.clientX - dragState.current.startX) > 5) {
+    dragState.current.moved = true;
+  }
+};
+
+const onPointerUp = (e) => {
+  if (!dragState.current) return;
+
+  const dx = e.clientX - dragState.current.startX;
+
+  if (Math.abs(dx) >= SWIPE_THRESHOLD) {
+    e.preventDefault();
+
+    if (dx < 0) onNextWeek?.();
+    else onPrevWeek?.();
+  }
+
+  dragState.current = null;
+};
 
   return (
     <div className="day-strip">
