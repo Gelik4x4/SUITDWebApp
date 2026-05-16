@@ -83,7 +83,7 @@
 }
 
 .schedule-item__location {
-  font-size: 14px;
+  font-size: 16px;
   color: var(--text-secondary);
   white-space: nowrap;
   overflow: hidden;
@@ -113,6 +113,10 @@
     text-overflow: ellipsis;
 }
 
+.dark .schedule-item {
+  box-shadow: none;
+}
+
 /* ── Mobile ───────────────────────────────────── */
 @media (max-width: 480px) {
   .home-mobile__schedule .card {
@@ -136,7 +140,7 @@
     font-size: 14px;
   }
   .home-mobile__schedule .card__subtitle {
-    font-size: 14px;
+    font-size: 17px;
   }
 
   .home-mobile__schedule .schedule-item__body {

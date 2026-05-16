@@ -2,8 +2,45 @@ import { useQuery } from '@tanstack/react-query';
 import './ScheduleWidget.css';
 import Icon from '@icon/Icon';
 import { supabase } from '@supabaseClient';
+import { useNavigate } from 'react-router-dom';
 
-/* Определяем цвет полоски по типу занятия */
+/* ─── Week parity helpers ─────────────────────────────────────── */
+
+const getISOWeekNumber = (date) => {
+  const d = new Date(date);
+  d.setHours(0, 0, 0, 0);
+  d.setDate(d.getDate() + 3 - ((d.getDay() + 6) % 7));
+  const yearStart = new Date(d.getFullYear(), 0, 4);
+  return (
+    1 +
+    Math.round(
+      ((d.getTime() - yearStart.getTime()) / 86400000 -
+        3 +
+        ((yearStart.getDay() + 6) % 7)) /
+        7
+    )
+  );
+};
+
+/* Неделя 1 = чётная = числитель */
+const isEvenWeek = (date) => getISOWeekNumber(date) % 2 === 0;
+
+/**
+ * Подходит ли запись расписания под текущую неделю.
+ * week_type: 'числ' | 'знам' | пусто/null → каждую неделю
+ */
+const matchesCurrentWeek = (weekType) => {
+  if (!weekType) return true;
+  const wt = weekType.toLowerCase().trim();
+  if (!wt || wt === 'каждую' || wt === 'каждая') return true;
+  const even = isEvenWeek(new Date());
+  if (wt.includes('числ')) return even;
+  if (wt.includes('знам')) return !even;
+  return true;
+};
+
+/* ─── Badge color ─────────────────────────────────────────────── */
+
 const accentColor = (classType) => {
   if (!classType) return 'purple';
   const t = classType.toLowerCase();
@@ -11,8 +48,9 @@ const accentColor = (classType) => {
   return 'purple';
 };
 
+/* ─── Schedule item ───────────────────────────────────────────── */
+
 function ScheduleItem({ time, class_type: classType, subject, teacher, room }) {
-  /* time приходит как "08:30-09:55" или "08:30 – 09:55" */
   const [start, end] = time?.split(/[-–]/).map(s => s.trim()) ?? [time, ''];
   const color = accentColor(classType);
 
@@ -40,6 +78,8 @@ function ScheduleItem({ time, class_type: classType, subject, teacher, room }) {
   );
 }
 
+/* ─── Data fetching ───────────────────────────────────────────── */
+
 const fetchMySchedule = async (capitalizedWeekday) => {
   const { data: { user } } = await supabase.auth.getUser();
   const { data: userData } = await supabase
@@ -58,17 +98,24 @@ const fetchMySchedule = async (capitalizedWeekday) => {
     .order('time', { ascending: true });
 
   if (error) throw error;
-  return data;
+
+  /* Фильтруем по чётности текущей недели */
+  return data.filter(item => matchesCurrentWeek(item.week_type));
 };
 
+/* ─── Widget ──────────────────────────────────────────────────── */
+
 export default function ScheduleWidget() {
+  const navigate = useNavigate();
   const now = new Date();
   const dateFormatted = now.toLocaleDateString('ru-RU', { day: 'numeric', month: 'long' });
   const weekday = now.toLocaleDateString('ru-RU', { weekday: 'long' });
   const capitalizedWeekday = weekday.charAt(0).toUpperCase() + weekday.slice(1).toLowerCase();
-  // const capitalizedWeekday = "Понедельник";
+
+  const weekLabel = isEvenWeek(now) ? 'числитель' : 'знаменатель';
+
   const { data: scheduleData, isLoading, error } = useQuery({
-    queryKey: ['schedule', capitalizedWeekday],
+    queryKey: ['schedule', capitalizedWeekday, weekLabel],
     queryFn: () => fetchMySchedule(capitalizedWeekday),
     staleTime: 5 * 60 * 1000,
     cacheTime: 10 * 60 * 1000,
@@ -84,7 +131,9 @@ export default function ScheduleWidget() {
           <span className="card__title">Расписание</span>
           <span className="card__subtitle"> · {capitalizedWeekday}, {dateFormatted}</span>
         </div>
-        <button className="icon-btn"><Icon name="ArrowUp" /></button>
+        <button className="icon-btn" onClick={() => navigate('/schedule')}>
+          <Icon name="ArrowUp" />
+        </button>
       </div>
       {scheduleData.length === 0 ? (
         <div className="schedule-empty">
