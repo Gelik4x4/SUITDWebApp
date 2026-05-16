@@ -94,7 +94,7 @@ export default function TeacherDetail({ teacher, onBack }) {
   /* ── Schedule view ── */
   if (view === 'schedule') {
     return (
-      <div className="td td--full">
+      <div className="tdd td--full">
         <div className="td__breadcrumbs"><Breadcrumbs items={breadcrumbs} /></div>
         <button className="td-view-back" onClick={() => setView('info')} aria-label="Назад">
           <Icon name="ArrowLeft" size={20} />

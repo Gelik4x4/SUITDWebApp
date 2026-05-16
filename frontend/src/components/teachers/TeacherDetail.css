@@ -228,7 +228,7 @@ body.dark .td-accordion__header:hover { color: #8E9EFF; }
     backdrop-filter: blur(4px);
     border: none;
     cursor: pointer;
-    color: var(--text-primary);
+    color: #262626;
     z-index: 10;
   }
 
