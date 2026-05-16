@@ -64,7 +64,7 @@ body.dark {
   --blob-blue:       #7bb3ff;
   --blob-pink:       #ffb3b3;
   --blob-yellow:     #ffe066;
-  --blob-orange:     #ffb47b;
+  --blob-orange:     #ffb07a;
   --blob-blue-light: #aac4f7;
 }
 
@@ -76,7 +76,6 @@ body.dark .sidebar {
 /* Cards in dark */
 body.dark .card {
   background: #353535 !important;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.35);
 }
 
 body.dark {
@@ -84,7 +83,7 @@ body.dark {
 }
 
 body.dark .schedule-item {
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.35);
+  background: #484848;
 }
 
 /* Icon buttons in dark */
@@ -96,7 +95,7 @@ body.dark .icon-btn:hover {
 }
 
 body.dark .schedule-item__divider {
-  background: var(--border);
+  background: #646464;
 }
 
 body.dark .sched-icon-btn:hover {
@@ -249,7 +248,7 @@ body {
 }
 
 .card__subtitle {
-  font-size: 20px;
+  font-size: 19px;
   font-weight: 200;
   color: var(--text-secondary);
 }
@@ -390,9 +389,19 @@ body {
     overflow: visible;
   }
 
-  body.dark .card {
-  background: none !important;
-}
+  body.dark .home-mobile__news .card,
+  body.dark .home-mobile__events .card,
+  body.dark .home-mobile__vacancies .card {
+    background: transparent !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+  }
+
+  body.dark .home-mobile__schedule .card {
+    background: #353535 !important;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    border-radius: 16px !important;
+  }
 
   .home-mobile__schedule .card,
   .home-mobile__offer-a .card,

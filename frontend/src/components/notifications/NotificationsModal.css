@@ -2,8 +2,8 @@
 .notif-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(10, 15, 40, 0.28);
-  backdrop-filter: blur(4px);
+  background: rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(1.5px);
   z-index: 400;
   display: flex;
   align-items: flex-start;
@@ -67,8 +67,13 @@
   font-size: 14px;
   padding: 12px 0px;
   color: var(--text-primary);
+  transition: border-color 0.15s, box-shadow 0.15s, color 0.15s;
 }
 .notif-search__input::placeholder { color: #c0c4cc; }
+
+.notif-search:focus-within {
+  border-color: #213FF9;
+}
 
 /* ── Filters ─────────────────────────────────────────────────────── */
 .notif-filters {
@@ -92,7 +97,7 @@
 }
 .notif-filter:hover {
   border-color: var(--accent);
-  color: #ffffff;
+  color: var(--accent);
 }
 .notif-filter--active {
   background: var(--accent);
@@ -109,7 +114,7 @@
   padding-bottom: 20px;
   gap: 8px;
 }
-.notif-list::-webkit-scrollbar {  background: var(--border); width: 4px; }
+.notif-list::-webkit-scrollbar {  background: var(--border); width: 4px; border-radius: 2px; }
 .notif-list::-webkit-scrollbar-thumb { background: #647AFF; border-radius: 2px; }
 
 .notif-empty {
@@ -221,14 +226,22 @@ body.dark .notif-search__input::placeholder {
   color: #666;
 }
 
+body.dark .notif-search:focus-within {
+  border-color: #7789ff;
+}
+
 body.dark .notif-filter {
-  border-color: #4a4a4a;
+  border-color: #5d5d5d;
   color: var(--text-primary);
 }
 
 body.dark .notif-filter:hover {
-  border-color: var(--accent);
+  border-color: #7789ff;
   color: var(--text-primary);
+}
+
+body.dark .notif-filter--active {
+  border-color: #213FF9 !important;
 }
 
 body.dark .notif-list::-webkit-scrollbar {  background: #DDDDDD; width: 4px; }
@@ -239,7 +252,7 @@ body.dark .notif-item {
   border: none;
 }
 body.dark .notif-item:hover {
-  background: #333333;
+  background: #525252;
 }
 
 /* Непрочитанное — сиреневато-синий, как на прототипе */
@@ -254,50 +267,44 @@ body.dark .notif-item__date {
   color: #ffffff;
 }
 /* ════════════════════════════════════════════
-   MOBILE  ≤ 600px  — bottom sheet
+   MOBILE  ≤ 600px  — full screen
    ════════════════════════════════════════════ */
 @media (max-width: 600px) {
 
-  /* Оверлей — bottom sheet */
+  /* Оверлей — на весь экран */
   .notif-overlay {
-    align-items: flex-end;
+    align-items: flex-start;
     justify-content: stretch;
     padding: 0;
   }
 
-  /* Модалка */
+  /* Модалка — полноэкранная */
   .notif-modal {
     width: 100%;
     max-width: 100%;
-    max-height: 92vh;
-    border-radius: 20px 20px 0 0;
+    height: 100%;
+    max-height: 100vh;
+    border-radius: 0;
     padding: 0 16px 0;
     gap: 16px;
     animation: notif-slidein-mobile 0.25s ease;
   }
 
   @keyframes notif-slidein-mobile {
-    from { transform: translateY(100%); }
-    to   { transform: translateY(0); }
+    from { transform: translateX(-100%); }
+    to   { transform: translateX(0); }
   }
 
-  /* Drag handle */
+  /* Drag handle — скрываем, т.к. полноэкранный режим */
   .notif-modal::before {
-    content: '';
-    display: block;
-    width: 36px;
-    height: 4px;
-    background: var(--border, #e5e7eb);
-    border-radius: 2px;
-    margin: 12px auto 0;
-    flex-shrink: 0;
+    display: none;
   }
 
   /* Заголовок по центру */
   .notif-modal__header {
     justify-content: center;
     position: relative;
-    padding: 12px 0 4px;
+    padding: 56px 0 4px;
   }
 
   .notif-modal__title {
@@ -335,6 +342,9 @@ body.dark .notif-item__date {
     padding: 6px 16px;
     font-size: 14px;
   }
+  .notif-list {
+    padding-right: 8px;
+  }
 
   /* Список — добавляем safe-area снизу */
   .notif-list {
@@ -347,6 +357,7 @@ body.dark .notif-item__date {
     border-radius: 12px;
     background: var(--bg, #f5f5f7);
     padding: 14px 14px 14px 18px;
+    margin-right: 0;
   }
   .notif-item:hover {
     background: var(--bg, #f5f5f7);
@@ -359,5 +370,4 @@ body.dark .notif-item__date {
     background: #e4e7ff;
   }
 
-  
 }

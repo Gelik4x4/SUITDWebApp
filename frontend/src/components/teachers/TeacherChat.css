@@ -243,6 +243,10 @@ body.dark .tc-send { color: #8E9EFF; }
     flex-shrink: 0;
   }
 
+  body.dark .tc {
+    background: #262626;
+  }
+
   .tc-mobile-header__back {
     background: none;
     border: none;

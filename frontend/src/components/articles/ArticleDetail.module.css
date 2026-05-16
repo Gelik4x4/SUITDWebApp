@@ -216,7 +216,6 @@
 
 /* Mobile-only elements — hidden on desktop */
 @media (min-width: 481px) {
-  .artdMobCard,
   .artdMobBtn {
     display: none;
   }

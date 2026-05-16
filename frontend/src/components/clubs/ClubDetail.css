@@ -215,7 +215,7 @@
     bottom: 0;
     left: 0;
     right: 0;
-    padding: 12px var(--page-padding, 24px) calc(env(safe-area-inset-bottom) + 12px);
+    padding: 12px 16px calc(env(safe-area-inset-bottom) + 12px);
 
     z-index: 50;
   }

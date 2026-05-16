@@ -72,7 +72,7 @@ body.dark .srv-card--mint { background: #1e2e28; }
   }
 
   .srv-card__img {
-    width: 60%;
-    height: 70%;
+    width: 100%;   /* растянуть на всю карточку */
+    height: 100%;  /* браузер сам выберет масштаб под канвас PNG */
   }
 }

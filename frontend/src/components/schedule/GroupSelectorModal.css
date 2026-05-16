@@ -112,6 +112,10 @@
   border-color: var(--accent);
 }
 
+.dark .gsm-search:focus-within {
+  border-color: #BCC6FF;
+}
+
 .gsm-search__input {
   flex: 1;
   border: none;
@@ -164,6 +168,11 @@
 
 body.dark .gsm-search  {
   border: 1px solid #929292;
+}
+
+body.dark .gsm-item:hover {
+  color: #BCC6FF;
+  padding-left: 8px;
 }
 
 /* ════════════════════════════════════════════

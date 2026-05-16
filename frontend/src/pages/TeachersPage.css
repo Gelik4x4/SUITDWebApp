@@ -33,6 +33,8 @@
 }
 .tp-search:focus-within { border-color: var(--accent); }
 
+.dark .tp-search:focus-within { border-color: #BCC6FF; }
+
 .tp-search__input {
   flex: 1;
   border: none;
