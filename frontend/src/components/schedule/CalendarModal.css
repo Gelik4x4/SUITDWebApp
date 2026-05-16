@@ -2,8 +2,8 @@
 .cal-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(10, 15, 40, 0.32);
-  backdrop-filter: blur(2px);
+  background: rgba(0, 0, 0, 0.32);
+  backdrop-filter: blur(1.5px);
   z-index: 100;
   display: flex;
   align-items: center;
@@ -93,8 +93,7 @@
   border-right: 1px solid var(--border);
   border-bottom: 1px solid var(--border);
   padding: 6px 5px 5px;
-  /* Все ячейки одинаковой высоты через min-height + flex */
-  min-height: clamp(80px, 12vh, 120px);
+  min-height: clamp(70px, 12vh, 120px);
   display: flex;
   flex-direction: column;
   gap: 2px;
@@ -102,8 +101,13 @@
 }
 
 .cal-cell--today .cal-cell__num {
-  background: var(--accent);
-  color: #fff;
+  border: 1px solid var(--accent);
+  color: var(--accent);
+}
+
+.dark .cal-cell--today .cal-cell__num {
+  border: 1px solid #BCC6FF;
+  color: #BCC6FF;
 }
 
 /* Day number */
@@ -169,7 +173,7 @@
   transition: background 0.12s, color 0.12s;
 }
 .cal-nav__btn:hover:not(.cal-nav__btn--disabled) {
-  background: var(--border);
+  background: #E4E8FF;
 }
 .cal-nav__btn--disabled {
   opacity: 0.3;
@@ -201,7 +205,7 @@ body.dark .cal-cell {
 
 /* Чипы занятий в тёмной теме — прозрачный фон, яркий текст с обводкой */
 body.dark .cal-chip {
-  background: transparent !important;
+  background: #383838 !important;
   border: 1px solid currentColor;
   opacity: 0.9;
 }

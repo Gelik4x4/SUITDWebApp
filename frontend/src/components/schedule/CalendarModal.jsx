@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import './CalendarModal.css';
 import Icon from '@icon/Icon';
 
@@ -36,12 +36,7 @@ function getLessonColor(classType) {
   return lessonColors[classType.trim()] ?? defaultColor;
 }
 
-/* Нормализуем тип в CSS-класс: «Лек» → «lek», «Пр» → «pr», «Лаб» → «lab» */
-const typeClassMap = {
-  'Лек': 'lek',
-  'Пр':  'pr',
-  'Лаб': 'lab',
-};
+const typeClassMap = { 'Лек': 'lek', 'Пр': 'pr', 'Лаб': 'lab' };
 
 function LessonChip({ subject, class_type }) {
   const { bg, text } = getLessonColor(class_type);
@@ -57,18 +52,23 @@ function LessonChip({ subject, class_type }) {
   );
 }
 
-function DayCell({ day, year, month, schedule, isToday, isPast }) {
-  const lessons = day
-    ? schedule[weekdayIndex(new Date(year, month, day))] ?? []
-    : [];
+/* ── Desktop day cell ── */
+function DayCell({ day, year, month, schedule, getLessonsForDate, isToday, isPast, onSelectDate }) {
+  const cellDate = day ? new Date(year, month, day) : null;
+  const lessons = cellDate ? getLessonsForDate(schedule, cellDate) : [];
+  const isClickable = day && !isPast;
 
   return (
-    <div className={[
-      'cal-cell',
-      !day ? 'cal-cell--empty' : '',
-      isToday ? 'cal-cell--today' : '',
-      isPast ? 'cal-cell--past' : '',
-    ].filter(Boolean).join(' ')}>
+    <div
+      className={[
+        'cal-cell',
+        !day          ? 'cal-cell--empty'    : '',
+        isToday       ? 'cal-cell--today'    : '',
+        isPast        ? 'cal-cell--past'     : '',
+        isClickable   ? 'cal-cell--clickable': '',
+      ].filter(Boolean).join(' ')}
+      onClick={() => isClickable && onSelectDate(cellDate)}
+    >
       {day && (
         <>
           <span className="cal-cell__num">{day}</span>
@@ -83,10 +83,9 @@ function DayCell({ day, year, month, schedule, isToday, isPast }) {
   );
 }
 
-
 /* ── Mobile: список месяцев скроллом ── */
 
-function MobileMonthBlock({ year, month, todayDate }) {
+function MobileMonthBlock({ year, month, todayDate, onSelectDate }) {
   const cells = buildMonth(year, month);
 
   return (
@@ -102,15 +101,19 @@ function MobileMonthBlock({ year, month, todayDate }) {
           const cellDate = day ? new Date(year, month, day) : null;
           const isToday = cellDate?.toDateString() === todayDate.toDateString();
           const isPast = cellDate && cellDate < todayDate && !isToday;
+          const isClickable = day && !isPast;
+
           return (
             <div
               key={i}
               className={[
                 'cal-mobile-cell',
-                !day ? 'cal-mobile-cell--empty' : '',
-                isToday ? 'cal-mobile-cell--today' : '',
-                isPast ? 'cal-mobile-cell--past' : '',
+                !day        ? 'cal-mobile-cell--empty'    : '',
+                isToday     ? 'cal-mobile-cell--today'    : '',
+                isPast      ? 'cal-mobile-cell--past'     : '',
+                isClickable ? 'cal-mobile-cell--clickable': '',
               ].filter(Boolean).join(' ')}
+              onClick={() => isClickable && onSelectDate(cellDate)}
             >
               {day && <span className="cal-mobile-cell__num">{day}</span>}
             </div>
@@ -121,27 +124,26 @@ function MobileMonthBlock({ year, month, todayDate }) {
   );
 }
 
-function MobileCalendarModal({ onClose, schedule = {} }) {
+function MobileCalendarModal({ onClose, schedule = {}, getLessonsForDate, onSelectDate }) {
   const todayDate = new Date();
   todayDate.setHours(0, 0, 0, 0);
 
-  /* Скрываем таббар пока открыт календарь */
   useEffect(() => {
     document.body.classList.add('cal-open');
     return () => document.body.classList.remove('cal-open');
   }, []);
 
-  /* Показываем текущий + 11 следующих месяцев */
   const months = Array.from({ length: 12 }, (_, i) => {
     const d = new Date(todayDate.getFullYear(), todayDate.getMonth() + i, 1);
     return { year: d.getFullYear(), month: d.getMonth() };
   });
 
+  const handleSelect = (date) => { onSelectDate(date); onClose(); };
+
   return (
     <div className="cal-overlay cal-overlay--mobile" onClick={onClose}>
       <div className="cal-modal cal-modal--mobile" onClick={e => e.stopPropagation()}>
 
-        {/* Header */}
         <div className="cal-modal__header">
           <span className="cal-modal__title">Календарь</span>
           <button className="cal-close-btn" onClick={onClose}>
@@ -149,7 +151,6 @@ function MobileCalendarModal({ onClose, schedule = {} }) {
           </button>
         </div>
 
-        {/* Scrollable months */}
         <div className="cal-mobile-scroll">
           {months.map(({ year, month }) => (
             <MobileMonthBlock
@@ -157,6 +158,7 @@ function MobileCalendarModal({ onClose, schedule = {} }) {
               year={year}
               month={month}
               todayDate={todayDate}
+              onSelectDate={handleSelect}
             />
           ))}
         </div>
@@ -166,7 +168,9 @@ function MobileCalendarModal({ onClose, schedule = {} }) {
   );
 }
 
-export default function CalendarModal({ onClose, schedule = {} }) {
+/* ── Desktop modal ── */
+
+export default function CalendarModal({ onClose, schedule = {}, getLessonsForDate, onSelectDate }) {
   const todayDate = new Date();
   todayDate.setHours(0, 0, 0, 0);
 
@@ -188,15 +192,23 @@ export default function CalendarModal({ onClose, schedule = {} }) {
     return () => mq.removeEventListener('change', handler);
   }, []);
 
+  const handleSelect = (date) => { onSelectDate(date); onClose(); };
+
   if (isMobile) {
-    return <MobileCalendarModal onClose={onClose} schedule={schedule} />;
+    return (
+      <MobileCalendarModal
+        onClose={onClose}
+        schedule={schedule}
+        getLessonsForDate={getLessonsForDate}
+        onSelectDate={onSelectDate}
+      />
+    );
   }
 
   return (
     <div className="cal-overlay" onClick={onClose}>
       <div className="cal-modal" onClick={e => e.stopPropagation()}>
 
-        {/* Header */}
         <div className="cal-modal__header">
           <span className="cal-modal__title">{MONTH_NAMES[month]}</span>
           <button className="cal-close-btn" onClick={onClose}>
@@ -204,15 +216,11 @@ export default function CalendarModal({ onClose, schedule = {} }) {
           </button>
         </div>
 
-        {/* Grid wrapper — растягивается на всё доступное место */}
         <div className="cal-grid-wrap">
           <div className="cal-grid">
-            {/* Заголовки дней */}
             {DAY_NAMES.map(d => (
               <div key={d} className="cal-grid__head">{d}</div>
             ))}
-
-            {/* Ячейки дней */}
             {cells.map((day, i) => {
               const cellDate = day ? new Date(year, month, day) : null;
               const isToday = cellDate?.toDateString() === todayDate.toDateString();
@@ -224,15 +232,16 @@ export default function CalendarModal({ onClose, schedule = {} }) {
                   year={year}
                   month={month}
                   schedule={schedule}
+                  getLessonsForDate={getLessonsForDate}
                   isToday={isToday}
                   isPast={isPast}
+                  onSelectDate={handleSelect}
                 />
               );
             })}
           </div>
         </div>
 
-        {/* Navigation */}
         <div className="cal-nav">
           <button
             className={`cal-nav__btn${!canPrev ? ' cal-nav__btn--disabled' : ''}`}
