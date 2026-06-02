@@ -34,7 +34,7 @@
   color: #797979;
   cursor: default;
   background: #F7F6FB;
-  border: 1.n5px solid #dedede;
+  border: 1.5px solid #dedede;
 }
 .profile-field__input--readonly:focus {
   border-color: var(--border);

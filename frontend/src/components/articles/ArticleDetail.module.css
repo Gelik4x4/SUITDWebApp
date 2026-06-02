@@ -14,7 +14,7 @@
   flex: 1;
   min-height: 0;
   display: grid;
-  grid-template-columns: 17fr 7fr;
+  grid-template-columns: 16fr 8fr;
   gap: 16px;
   overflow: hidden;
 }
@@ -48,7 +48,7 @@
 
 .artdTitle {
   font-size: 20px;
-  font-weight: 700;
+  font-weight: 500;
   color: var(--text-primary);
   line-height: 1.35;
   letter-spacing: -0.2px;
@@ -282,7 +282,7 @@
 
   .artdTitle {
     font-size: 16px;
-    font-weight: 700;
+    font-weight: 500;
     line-height: 1.35;
   }
 

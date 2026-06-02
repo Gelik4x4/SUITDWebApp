@@ -30,13 +30,13 @@
   font-size: 16px;
   font-weight: 600;
   line-height: 1.1;
-  color: var(--accent);
+  color: #6D74F6;
   letter-spacing: -0.3px;
 }
 
 .sidebar__logo-sub {
   font-size: 14px;
-  color: var(--accent);
+  color: #6D74F6;
   font-weight: 600;
 }
 
