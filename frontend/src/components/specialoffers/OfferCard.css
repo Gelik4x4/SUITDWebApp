@@ -1,5 +1,5 @@
 .offer-card-item {
-  background: var(--card-bg);
+  background: var(--card-bg)!important;
   border-radius: var(--radius);
   overflow: hidden;
   cursor: pointer;
@@ -108,7 +108,6 @@ body.dark .offer-card-item {
     overflow: hidden;
     min-height: 96px;
     position: relative;
-    background: var(--mob-card-bg, var(--accent));
   }
   .offer-card-item:hover {
     transform: none;
@@ -156,7 +155,7 @@ body.dark .offer-card-item {
   .offer-card-item__title {
     font-size: 15px;
     font-weight: 600;
-    color: #ffffff;
+    color: #262626;
     line-height: 1.3;
   }
  
@@ -167,8 +166,8 @@ body.dark .offer-card-item {
   /* Badge in body — shown on mobile */
   .offer-card-item__badge--body {
     display: inline-block;
-    background: rgba(255, 255, 255, 0.28);
-    color: #ffffff;
+    background: #FFAE77;
+    color: #262626;
     font-size: 11px;
     font-weight: 600;
     padding: 3px 10px;
@@ -197,5 +196,10 @@ body.dark .offer-card-item {
     position: relative;
     z-index: 2;
   }
+
+  .dark .offer-card-item__title {
+    color: #ffffff;
+  }
+
   .offer-card-item__fav--mob.offer-card-item__fav--active { color: #e53e3e; }
 }
