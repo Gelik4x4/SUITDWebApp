@@ -85,4 +85,8 @@
   .chat-msg--bot .chat-msg__bubble {
     background: #ffffff;
   }
+
+  body.dark   .chat-msg--bot .chat-msg__bubble {
+    background: #353535;
+  }
 }

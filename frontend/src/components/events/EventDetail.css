@@ -208,6 +208,10 @@
     color: var(--text-primary);
   }
 
+  body.dark .evd__mobile-hero__back {
+    background: rgba(84,84,84,0.85);
+  }
+
   .evd__mobile-hero__actions {
     display: flex;
     gap: 8px;
@@ -227,6 +231,12 @@
     color: var(--text-primary);
     text-decoration: none;
   }
+
+  
+  body.dark .evd__mobile-hero__btn {
+    background: rgba(84,84,84,0.85);
+  }
+
 
   /* Body — одна колонка */
   .evd__body {

@@ -243,6 +243,10 @@
     text-decoration: none;
   }
 
+  body.dark .con-detail__mobile-hero__btn{
+    background: rgba(84,84,84,0.85);
+  }
+
   /* Мобильный layout */
   .con-detail__mobile-layout {
     display: flex;

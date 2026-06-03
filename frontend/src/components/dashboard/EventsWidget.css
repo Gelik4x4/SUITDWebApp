@@ -83,6 +83,11 @@
   padding: 12px;
   flex: 1;
 }
+
+
+ body.dark .ev-card__body {
+  background: #353535;
+}
  
 .ev-card__title {
   font-size: 14px;
@@ -93,6 +98,10 @@
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
+}
+
+body.dark .ev-card__date-badge {
+  background: #161616;
 }
  
 /* ── Mobile — идентично VacanciesWidget ── */

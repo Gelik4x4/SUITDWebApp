@@ -18,3 +18,4 @@
 body.dark .fav-btn:hover { color: #ffffff; }
 
 body.dark .fav-btn--active { color: #D90000; }
+body.dark .fav-btn { background: #5a5a5a; }
