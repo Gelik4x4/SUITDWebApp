@@ -361,8 +361,8 @@ body.cal-open .sidebar {
 
 /* Сегодня — обводка */
 .cal-mobile-cell--today .cal-mobile-cell__num {
-  border: 2px solid #ffffff;
-  color: #ffffff;
+  border: 2px solid #213FF9;
+  color: #213FF9;
   font-weight: 600;
 }
 
