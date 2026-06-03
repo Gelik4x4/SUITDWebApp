@@ -1,11 +1,11 @@
 /*  Google Font  */
 @import url('https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700;800&display=swap');
-
+ 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
+ 
 :root {
   --gap: 16px;
-
+ 
   --bg:             #F7F6FB;
   --sidebar-bg:     #ffffff;
   --card-bg:        #ffffff;
@@ -23,7 +23,7 @@
   --radius-sm:      10px;
   --schedule-item:  #f4f4f4;
   --barcode-color:   #262626;
-
+ 
   /* blobs color */
   --blob-purple:     #a89bff;
   --blob-blue:       #7bb3ff;
@@ -31,14 +31,14 @@
   --blob-yellow:     #ffe066;
   --blob-orange:     #ffb47b;
   --blob-blue-light: #aac4f7;
-
+ 
   /* subject color */
   --subject-purple: #8E9EFF;
-
+ 
   /* mobile page padding */
   --page-padding: 24px;
 }
-
+ 
 /* ══════════════════════════════════════════
    Dark theme — applied via .dark on <body>
    ══════════════════════════════════════════ */
@@ -58,7 +58,7 @@ body.dark {
   --border:         #333344;
   --schedule-item:  #2c2c38;
   --barcode-color:  #ffffff;
-
+ 
   /* blobs */
   --blob-purple:     #a89bff;
   --blob-blue:       #7bb3ff;
@@ -67,25 +67,25 @@ body.dark {
   --blob-orange:     #ffb07a;
   --blob-blue-light: #aac4f7;
 }
-
+ 
 /* Sidebar in dark */
 body.dark .sidebar {
   background: #353535;
 }
-
+ 
 /* Cards in dark */
 body.dark .card {
   background: #353535 !important;
 }
-
+ 
 body.dark {
   --card-bg: #353535;
 }
-
+ 
 body.dark .schedule-item {
   background: #484848;
 }
-
+ 
 /* Icon buttons in dark */
 body.dark .icon-btn {
   color: var(--text-secondary);
@@ -93,25 +93,25 @@ body.dark .icon-btn {
 body.dark .icon-btn:hover {
   color: var(--text-primary);
 }
-
+ 
 body.dark .schedule-item__divider {
   background: #646464;
 }
-
+ 
 body.dark .sched-icon-btn:hover {
   background: #353535;
   color: #ffffff;
 }
-
-
+ 
+ 
 /* sidebar logout hover in dark */
 body.dark .sidebar__logout:hover { color: #f87171; }
-
+ 
 /* topbar bg in dark */
 body.dark .topbar {
   background: var(--bg);
 }
-
+ 
 /* Mobile sidebar (tab bar) in dark */
 @media (max-width: 480px) {
   body.dark .sidebar {
@@ -119,25 +119,25 @@ body.dark .topbar {
     box-shadow: 0 4px 24px rgba(0,0,0,0.4);
   }
 }
-
+ 
 html, body {
   height: 100%;
 }
-
+ 
 body {
   font-family: 'Onest', 'Segoe UI', sans-serif;
   background: var(--bg);
   color: var(--text-primary);
   transition: background 0.25s, color 0.25s;
 }
-
+ 
 /*  Layout  */
 .layout {
   display: flex;
   height: 100vh;
   overflow: hidden;
 }
-
+ 
 /*  Main  */
 .main {
   flex: 1;
@@ -149,7 +149,7 @@ body {
   flex-direction: column;
   gap: 20px;
 }
-
+ 
 /* Внешний контейнер — две колонки (левая и центральная) */
 .grid {
   display: flex;
@@ -158,7 +158,7 @@ body {
   flex: 1;
   min-height: 0;
 }
-
+ 
 /* ─── Левая колонка: расписание + спецпредложения ─── */
 .grid-col--left {
   flex: 10 1 0;
@@ -167,27 +167,27 @@ body {
   flex-direction: column;
   gap: var(--gap);
 }
-
+ 
 .grid-schedule {
   flex: 0 0 auto;
   min-height: 250px;
 }
-
+ 
 .grid-schedule .card {
   height: auto;
   min-height: 250px;
 }
-
+ 
 .grid-schedule .schedule-list {
   flex: 0 0 auto;
 }
-
+ 
 .grid-offers {
   flex: 1 1 0;
   min-height: 140px;
   min-width: 0;
 }
-
+ 
 /* ─── Центральная колонка ─── */
 .grid-col--center {
   flex: 11 1 0;
@@ -196,29 +196,29 @@ body {
   flex-direction: column;
   gap: var(--gap);
 }
-
+ 
 .grid-col--center .top-row {
   display: flex;
   gap: var(--gap);
   flex: 0 0 auto;
 }
-
+ 
 .grid-col--center .top-row .grid-vacancies {
   flex: 11 1 0;
   min-width: 0;
 }
-
+ 
 .grid-col--center .top-row .grid-news {
   flex: 3 1 0;
   min-width: 0;
 }
-
+ 
 .grid-col--center .grid-events {
   flex: 1 1 0;
   min-height: 0;
   width: 100%;
 }
-
+ 
 /*  Card base  */
 .card {
   background: var(--card-bg);
@@ -233,26 +233,26 @@ body {
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
   transition: background 0.25s, box-shadow 0.25s;
 }
-
+ 
 .card__header {
   display: flex;
   align-items: center;
   justify-content: space-between;
   flex-shrink: 0;
 }
-
+ 
 .card__title {
   font-size: 20px;
   font-weight: 500;
   color: var(--text-primary);
 }
-
+ 
 .card__subtitle {
   font-size: 19px;
   font-weight: 200;
   color: var(--text-secondary);
 }
-
+ 
 /*  Icon button  */
 .icon-btn {
   border: none;
@@ -266,7 +266,7 @@ body {
   transition: color 0.15s;
 }
 .icon-btn:hover { color: var(--text-primary); }
-
+ 
 /* ─── FavButton ─── */
 .fav-btn {
   width: 32px;
@@ -283,7 +283,7 @@ body {
   transition: color 0.15s, background 0.25s;
 }
 .fav-btn:hover { color: #D90000; }
-
+ 
 /* ─── Badge ─── */
 .badge {
   background: #FFAE77;
@@ -299,7 +299,7 @@ body {
   text-overflow: ellipsis;
   transition: background 0.25s, color 0.25s;
 }
-
+ 
 /*  Shared two-column grid  */
 .two-col-grid {
   display: grid;
@@ -308,54 +308,54 @@ body {
   flex: 1;
   min-height: 0;
 }
-
+ 
 /* Desktop: скрыть мобильный блок */
 .home-mobile { display: none; }
-
+ 
 /* ════════════════════════════════════════════════
    Mobile — max-width: 480px
    ════════════════════════════════════════════════ */
 @media (max-width: 480px) {
-
+ 
   html, body {
     height: 100%;
     overflow: hidden;
   }
-
+ 
   #root {
     height: 100%;
     overflow: hidden;
   }
-
+ 
   .layout {
     flex-direction: column;
     height: 100%;
     overflow: hidden;
   }
-
+ 
   .main {
     flex: 1;
     min-height: 0;
     height: auto;
-    overflow: hidden;
+    overflow: hidden; 
     padding: 0;
     gap: 0;
     display: flex;
     flex-direction: column;
   }
-
+ 
   .card {
     padding: 16px;
   }
-
+ 
   /* ── Десктоп скрыт ── */
   .home-desktop { display: none !important; }
-
+ 
   /* ── Мобильный контейнер ── */
   .home-mobile {
     display: flex;
     flex-direction: column;
-    gap: 40px;
+    gap: 32px;
     padding: 8px 0 calc(64px + 48px + env(safe-area-inset-bottom));
     box-sizing: border-box;
     width: 100%;
@@ -364,14 +364,14 @@ body {
     flex: 1;
     min-height: 0;
   }
-
+ 
   .home-mobile__news {
     padding-left: 16px;
     padding-right: 0px;
     box-sizing: border-box;
     width: 100%;
   }
-
+ 
   .home-mobile__schedule,
   .home-mobile__offer-a,
   .home-mobile__offer-b {
@@ -380,7 +380,7 @@ body {
     box-sizing: border-box;
     width: 100%;
   }
-
+ 
   .home-mobile__events,
   .home-mobile__vacancies {
     width: 100%;
@@ -388,7 +388,7 @@ body {
     box-sizing: border-box;
     overflow: visible;
   }
-
+ 
   body.dark .home-mobile__news .card,
   body.dark .home-mobile__events .card,
   body.dark .home-mobile__vacancies .card {
@@ -396,13 +396,13 @@ body {
     box-shadow: none !important;
     border-radius: 0 !important;
   }
-
+ 
   body.dark .home-mobile__schedule .card {
     background: #353535 !important;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     border-radius: 16px !important;
   }
-
+ 
   .home-mobile__schedule .card,
   .home-mobile__offer-a .card,
   .home-mobile__offer-b .card {
