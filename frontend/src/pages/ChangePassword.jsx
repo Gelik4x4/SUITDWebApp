@@ -110,7 +110,7 @@ function ChangePassword() {
   return (
     <div className="modal-overlay">
       <div className="modal-container">
-        <form onSubmit={handleSubmit} className="card">
+        <form onSubmit={handleSubmit} className="change-password-card">
           <h2 className="title">Смена пароля</h2>
 
           <label>Введите старый пароль</label>
