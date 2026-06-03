@@ -117,6 +117,7 @@ body.dark .topbar {
   body.dark .sidebar {
     background: #353535;
     box-shadow: 0 4px 24px rgba(0,0,0,0.4);
+    border: 1px solid #5c5c5c;
   }
 }
  
