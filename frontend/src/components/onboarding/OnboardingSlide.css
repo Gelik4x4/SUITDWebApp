@@ -215,7 +215,7 @@
     align-items: center;
   width: 100%;
   height: clamp(210px, 34svh, 290px);
-  margin-top: clamp(40px, 8svh, 62px);
+  margin-top: clamp(50px, 8svh, 62px);
   background: #ffffff;
   border-radius: 18px;
   overflow: hidden;
