@@ -18,58 +18,29 @@ const fetchEvents = async () => {
   const res = await fetch(EVENTS_URL);
   if (!res.ok) throw new Error(`HTTP ${res.status}`);
   const html = await res.text();
-  const doc  = new DOMParser().parseFromString(html, 'text/html');
 
-  /*
-   * Реальная структура leader-id SSR:
-   * <a href="/events/ID"><img ...></a>
-   * <p>Тип</p>
-   * <p>Время до окончания регистрации...</p>
-   * <h4><a href="/events/ID">Название</a></h4>
-   * <p>Дата...</p>
-   * <p>Город</p>
-   *
-   * Ищем h4 > a[href^="/events/"] — это надёжная точка входа.
-   */
-  const headings = [...doc.querySelectorAll('h4 a[href^="/events/"], h3 a[href^="/events/"]')];
+  const nuxtMatch = html.match(/<script>window\.__NUXT__\s*=\s*([\s\S]*?);<\/script>/);
+  if (!nuxtMatch) return [];
 
-  return headings.map((a, i) => {
-    const href  = a.getAttribute('href') ?? '';
-    const id    = href.split('/').filter(Boolean).pop() ?? String(i);
-    const title = a.textContent.trim();
-
-    /* Ищем img-ссылку с тем же href рядом (раньше в DOM) */
-    const imgLink = doc.querySelector(`a[href="${href}"] img, a[href="https://leader-id.ru${href}"] img`);
-    const rawSrc  = imgLink?.getAttribute('src') ?? '';
-    const image   = rawSrc.startsWith('http') ? rawSrc
-                  : rawSrc ? `https://leader-id.ru${rawSrc}` : null;
-
-    /*
-     * Соседние элементы h4: ищем параграфы до и после.
-     * h4.parentElement содержит всё нужное.
-     */
-    const parent   = a.closest('h4, h3')?.parentElement;
-    const allTexts = parent
-      ? [...parent.querySelectorAll('p, span')].map(el => el.textContent.trim()).filter(Boolean)
-      : [];
-
-    /* Тип — первый короткий текст без цифр и слова "регистрации" */
-    const type = allTexts.find(t =>
-      t.length < 30 && !/регистрац|кол-во|\d/.test(t.toLowerCase())
-    ) ?? 'Другое';
-
-    /* Дата — содержит числа и месяц */
-    const date = allTexts.find(t =>
-      /\d/.test(t) && /апрел|мая|июн|июл|август|сентябр|октябр|ноябр|декабр|январ|феврал|март/i.test(t)
-    ) ?? '';
-
-    /* Локация */
-    const location = allTexts.find(t =>
-      /Санкт-Петербург|Москва|онлайн/i.test(t)
-    ) ?? 'Санкт-Петербург';
-
-    return { id, title, type, date, location, image, link: `https://leader-id.ru${href}`, description: '' };
-  }).filter(ev => ev.title);
+  try {
+    const nuxtData = new Function('return ' + nuxtMatch[1])();
+    const eventsFromNuxt = nuxtData?.state?.events?.events;
+    if (eventsFromNuxt && Array.isArray(eventsFromNuxt)) {
+      return eventsFromNuxt.map(ev => ({
+        id: String(ev.id),
+        title: ev.name,
+        type: ev.categories?.[0]?.label || 'Другое',
+        date: ev.dateShort || ev.date,
+        location: ev.location || 'Санкт-Петербург',
+        image: ev.photo_360 || ev.photo || null,
+        link: `https://leader-id.ru/events/${ev.id}`,
+        description: ev.subtitle || ''
+      }));
+    }
+  } catch (e) {
+    console.warn('Ошибка парсинга __NUXT__ для списка', e);
+  }
+  return [];
 };
 
 /* ─── Парсинг детальной страницы мероприятия ─────────────────── */
@@ -78,36 +49,92 @@ const fetchEventDetail = async (eventId) => {
   const res = await fetch(`/leader-proxy/events/${eventId}`);
   if (!res.ok) throw new Error(`HTTP ${res.status}`);
   const html = await res.text();
-  const doc  = new DOMParser().parseFromString(html, 'text/html');
 
-  /* Большое фото мероприятия — берём src из og:image или первую картинку
-     из yandexcloud, которая НЕ является логотипом (содержит ID события или user_photo) */
+  // Пробуем извлечь __NUXT__
+  const nuxtMatch = html.match(/<script>window\.__NUXT__\s*=\s*([\s\S]*?);<\/script>/);
+  if (nuxtMatch) {
+    try {
+      const nuxtData = new Function('return ' + nuxtMatch[1])();
+      const eventData = nuxtData?.state?.event?.event;
+      if (eventData) {
+        // Логируем для отладки (потом можно убрать)
+        console.log('eventData keys:', Object.keys(eventData));
+        
+        const image = eventData.photo_360 || eventData.photo || null;
+        const date = eventData.date || eventData.dateStart || '';
+        const location = eventData.place?.name || eventData.location || 'Санкт-Петербург';
+        const address = eventData.place?.address || '';
+        
+        // --- Универсальное извлечение описания ---
+        let description = '';
+        
+        // 1. full_info (часто содержит JSON редактора)
+        if (eventData.full_info) {
+          try {
+            const parsed = typeof eventData.full_info === 'string' 
+              ? JSON.parse(eventData.full_info) 
+              : eventData.full_info;
+            if (parsed && parsed.blocks) {
+              description = parsed.blocks
+                .map(block => block.data?.text || '')
+                .join('\n');
+            } else if (typeof parsed === 'string') {
+              description = parsed;
+            } else if (parsed && parsed.text) {
+              description = parsed.text;
+            }
+          } catch(e) {
+            description = eventData.full_info;
+          }
+        }
+        // 2. info.blocks
+        if (!description && eventData.info && eventData.info.blocks) {
+          description = eventData.info.blocks
+            .map(block => block.data?.text || '')
+            .join('\n');
+        }
+        // 3. description или long_description
+        if (!description && eventData.description) {
+          description = eventData.description;
+        }
+        if (!description && eventData.long_description) {
+          description = eventData.long_description;
+        }
+        if (!description && eventData.text) {
+          description = eventData.text;
+        }
+        // 4. Если ничего не нашли, пробуем взять первый абзац из info (если строка)
+        if (!description && eventData.info && typeof eventData.info === 'string') {
+          description = eventData.info;
+        }
+        
+        const regDeadline = eventData.registrationDateEnd
+          ? `Регистрация закончится ${eventData.registrationDateEnd}`
+          : '';
+        
+        return { image, date, location, address, description, regDeadline };
+      }
+    } catch (e) {
+      console.warn('Ошибка парсинга __NUXT__ для детальной страницы', e);
+    }
+  }
+
+  // Fallback: старый парсинг через DOMParser
+  const doc = new DOMParser().parseFromString(html, 'text/html');
   const ogImage = doc.querySelector('meta[property="og:image"]')?.getAttribute('content');
   const allImgs = [...doc.querySelectorAll('img[src*="leader-id.storage.yandexcloud.net"]')]
     .map(img => img.getAttribute('src'))
     .filter(src => src && !src.includes('4345976') && !src.includes('user_photo'));
   const image = ogImage || allImgs[0] || null;
 
-  /* Дата — строка с "по Московскому времени" */
   const allTexts = [...doc.querySelectorAll('p, span, div, h2, h3')]
     .map(el => el.textContent.trim()).filter(Boolean);
-
-  const date = allTexts.find(t =>
-    /по Московскому времени/i.test(t) && t.length < 120
-  ) ?? '';
-
-  /* Локация — ссылки на places или адрес */
+  const date = allTexts.find(t => /по Московскому времени/i.test(t) && t.length < 120) || '';
   const placeLink = doc.querySelector('a[href*="/places/"]');
-  const location  = placeLink?.textContent?.trim() ?? 'Санкт-Петербург';
-
-  /* Адрес */
-  const addressSection = [...doc.querySelectorAll('h3')]
-    .find(h => h.textContent.includes('Адрес'));
-  const address = addressSection?.nextElementSibling?.textContent?.trim() ?? '';
-
-  /* Описание — секция "О мероприятии" */
-  const descSection = [...doc.querySelectorAll('h2')]
-    .find(h => h.textContent.includes('О мероприятии'));
+  const location = placeLink?.textContent?.trim() || 'Санкт-Петербург';
+  const addressSection = [...doc.querySelectorAll('h3')].find(h => h.textContent.includes('Адрес'));
+  const address = addressSection?.nextElementSibling?.textContent?.trim() || '';
+  const descSection = [...doc.querySelectorAll('h2')].find(h => h.textContent.includes('О мероприятии'));
   let description = '';
   if (descSection) {
     let el = descSection.nextElementSibling;
@@ -119,15 +146,10 @@ const fetchEventDetail = async (eventId) => {
     }
     description = parts.join('\n').trim();
   }
-
-  /* Регистрация — дедлайн */
-  const regDeadline = allTexts.find(t =>
-    /Регистрация закончится/i.test(t) && t.length < 80
-  ) ?? '';
-
+  const regDeadline = allTexts.find(t => /Регистрация закончится/i.test(t) && t.length < 80) || '';
+  
   return { image, date, location, address, description, regDeadline };
 };
-
 
 
 const EVENT_TYPES = [

@@ -6,18 +6,18 @@
   flex: 1;
   min-height: 0;
 }
-
+ 
 .grid-events .events-grid {
   height: 100%;
 }
-
+ 
 .events-widget-empty {
   font-size: 13px;
   color: var(--text-secondary);
   padding: 12px 0;
   text-align: center;
 }
-
+ 
 .ev-card {
   background: var(--card-bg);
   border-radius: var(--radius);
@@ -29,12 +29,12 @@
   transition: box-shadow 0.15s, transform 0.15s;
   height: 100%;
 }
-
+ 
 .ev-card:hover {
   box-shadow: 0 6px 24px rgba(0, 0, 0, 0.12);
   transform: translateY(-2px);
 }
-
+ 
 .ev-card__img {
   position: relative;
   width: 100%;
@@ -43,20 +43,20 @@
   flex-shrink: 0;
   background: var(--bg);
 }
-
+ 
 .ev-card__photo {
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
 }
-
+ 
 .ev-card__img-placeholder {
   width: 100%;
   height: 100%;
   background: var(--border);
 }
-
+ 
 .ev-card__date-badge {
   position: absolute;
   top: 10px;
@@ -71,19 +71,19 @@
   z-index: 2;
   white-space: nowrap;
 }
-
+ 
 .ev-card__fav-wrap {
   position: absolute;
   top: 8px;
   right: 8px;
   z-index: 2;
 }
-
+ 
 .ev-card__body {
   padding: 12px;
   flex: 1;
 }
-
+ 
 .ev-card__title {
   font-size: 14px;
   font-weight: 400;
@@ -94,10 +94,10 @@
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
-
-/* ── Mobile ── */
+ 
+/* ── Mobile — идентично VacanciesWidget ── */
 @media (max-width: 480px) {
-  /* Прозрачная обёртка — заголовок визуально снаружи */
+  /* Прозрачная обёртка */
   .home-mobile__events .card {
     background: transparent !important;
     box-shadow: none !important;
@@ -105,19 +105,19 @@
     border-radius: 0 !important;
     overflow: visible !important;
   }
-
-  /* Заголовок выровнен по сетке (24px) */
+ 
+  /* Заголовок по сетке */
   .home-mobile__events .card__header {
-    padding: 0px 16px !important;
+    padding: 0 16px !important;
     margin: 0 !important;
   }
-
+ 
   .home-mobile__events .card__title {
     font-size: 20px;
     font-weight: 600;
   }
-
-  /* Горизонтальный скролл — строго от 0 до 0, без паддингов */
+ 
+  /* Горизонтальный скролл — точно как у вакансий */
   .home-mobile__events .events-grid {
     display: flex !important;
     flex-direction: row !important;
@@ -133,25 +133,24 @@
     width: 100%;
   }
   .home-mobile__events .events-grid::-webkit-scrollbar { display: none; }
-
-  /* Карточка: 7 колонок из 12
-     viewport=480, отступов нет → 1col=(480-11*8)/12=32px
-     7cols = 7*32 + 6*8 = 224+48 = 272px */
+ 
+  /* Карточка такой же ширины как у вакансий */
   .home-mobile__events .ev-card {
     flex-shrink: 0;
-    width: 272px;
+    width: 260px;
     scroll-snap-align: start;
     border-radius: 16px !important;
     overflow: hidden;
     height: auto;
   }
-
-  /* Первая карточка — отступ слева по сетке */
+ 
+  /* Первая карточка — отступ слева 24px */
   .home-mobile__events .ev-card:first-child {
     margin-left: 24px;
   }
-
+ 
   .home-mobile__events .ev-card__img {
     aspect-ratio: 4 / 3;
   }
 }
+ 
